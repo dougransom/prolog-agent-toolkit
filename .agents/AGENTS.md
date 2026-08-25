@@ -24,12 +24,26 @@ AI assistants MUST select and follow the specific dialect standards correspondin
   - ISO compliance, WASM embedding, fast standard library parsing.
 - **Portable ISO Prolog Conventions**: [.agents/skills/prolog-conventions/SKILL.md](.agents/skills/prolog-conventions/SKILL.md)
   - Engine-agnostic ISO standard code compatible across all conforming implementations.
+- **Prolog Testing**: [.agents/skills/prolog-testing/SKILL.md](.agents/skills/prolog-testing/SKILL.md)
+  - Scryer `testing.pl` (default), SWI `plunit`, and portable ISO assertions.
+- **Prolog Packaging**: [.agents/skills/prolog-packaging/SKILL.md](.agents/skills/prolog-packaging/SKILL.md)
+  - Scryer `bakage` manifests (default) and SWI `pack` manager.
+- **Prolog Release & Versioning**: [.agents/skills/prolog-release/SKILL.md](.agents/skills/prolog-release/SKILL.md)
+  - Multi-file version synchronization (`pack.pl`, `pyproject.toml`, `README.md`), Git tagging, and post-release prompts.
+
+## Project Bootstrapping & Setup Workflow
+
+
+When initializing, bootstrapping, or creating a new Prolog project/repository, all AI assistants MUST prompt the user:
+1. **Testing Setup**: *"Would you like to set up unit testing (`testing.pl` for Scryer, `plunit` for SWI)?"*
+2. **Packaging Setup**: *"Would you like to set up package metadata (`bakage` manifest `pack.pl` for Scryer, `pack.pl` for SWI)?"*
 
 ## Safety & Cross-Platform Execution
 
 - **CLI Entry Points**: ALL Prolog code executions MUST use the cross-platform CLI safety entry points (`prolog-safe`, `scryer-safe`, `swi-safe`, `trealla-safe`).
 - **Forbidden Invocations**: AI assistants MUST NEVER execute raw interpreter binaries (`scryer-prolog`, `swipl`, `tpl`, `gprolog`, `ciao`) directly.
 - **Specifying Engine**: Set `PROLOG_ENGINE` environment variable (e.g., `export PROLOG_ENGINE=scryer`, `export PROLOG_ENGINE=swi`, `export PROLOG_ENGINE=trealla`).
+
 
 ## Git Branching & Release Workflow
 

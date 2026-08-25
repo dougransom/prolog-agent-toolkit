@@ -24,3 +24,7 @@ trealla-safe = "prolog_agent_toolkit.cli:trealla_safe_main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["prolog_agent_toolkit"]
+
+[tool.pytest.ini_options]
+cache_dir = ".cache/pytest"
+

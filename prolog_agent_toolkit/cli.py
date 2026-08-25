@@ -1,6 +1,11 @@
 import sys
 import os
+
+sys.dont_write_bytecode = True
+os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
+
 from prolog_agent_toolkit.runner import run_prolog_safe
+
 
 
 def prolog_safe_main() -> None:
