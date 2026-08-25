@@ -16,3 +16,9 @@ When writing, refactoring, or reviewing Prolog code for Scryer Prolog, adhere to
 - **DCGs**: Use pure DCG syntax for all parsing and matching logic.
 - **Purity**: Prefer `dif/2` (`library(dif)`) and `if_/3` (`library(reif)`). Avoid `->` when `if_/3` can be used.
 - **Safety**: Execute code using `scryer-safe` or `prolog-safe` with `PROLOG_ENGINE=scryer`.
+
+## References & Further Reading
+
+- [Covington Prolog Style Guide](references/covington_style.md)
+- [Scryer Purity Guidelines](references/prolog_guidelines.md)
+
