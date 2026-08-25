@@ -43,36 +43,47 @@ scryer-safe --help
 
 ### 2. Integrating Agent Rules & Skills with AI Assistants
 
-To make your AI coding assistant (Google Antigravity, Claude Code, Cursor, Windsurf) follow these Prolog standards and execution rules in your target project:
+To ensure your rules and skills **never get clobbered or overwritten** when updating or working inside target repositories, use one of the following recommended methods:
 
-#### A. Google Antigravity
-Copy or symlink the `.agents/` directory into your target Prolog repository root:
+---
+
+#### Option A: Symlink into Target Project (Recommended for Team & Project Scope)
+Symlinking links your target project to `prolog-agent-toolkit` directly. When you update `prolog-agent-toolkit`, all linked projects get the updates automatically without clobbering local repo files!
+
 ```bash
-# In your target Prolog repository:
-cp -r /path/to/prolog-agent-toolkit/.agents ./
-```
-*Antigravity automatically discovers `.agents/AGENTS.md` rules and `.agents/skills/*` skills.*
-
-#### B. Claude Code
-Append the rules to your project's `CLAUDE.md` and copy skills:
-```bash
-# Append universal rules to CLAUDE.md
-cat /path/to/prolog-agent-toolkit/.agents/AGENTS.md >> CLAUDE.md
-
-# Copy skills to .claude/skills (or .agents/skills)
-mkdir -p .claude/skills
-cp -r /path/to/prolog-agent-toolkit/.agents/skills/* .claude/skills/
+# Inside your target Prolog project root:
+ln -s /home/doug/code/prolog-agent-toolkit/.agents .agents
 ```
 
-#### C. Cursor / Windsurf / Copilot
-Copy the guidelines to your project rules file:
-```bash
-# For Cursor:
-cat /path/to/prolog-agent-toolkit/.agents/AGENTS.md >> .cursorrules
+---
 
-# For Windsurf:
-cat /path/to/prolog-agent-toolkit/.agents/AGENTS.md >> .windsurfrules
-```
+#### Option B: Global Machine Installation (Recommended for Personal Setup)
+Install rules and skills into your global AI configuration folder so **every** project automatically inherits them across your system:
+
+* **Google Antigravity**:
+  ```bash
+  mkdir -p ~/.gemini/config/skills
+  cp -r /home/doug/code/prolog-agent-toolkit/.agents/skills/* ~/.gemini/config/skills/
+  cat /home/doug/code/prolog-agent-toolkit/.agents/AGENTS.md >> ~/.gemini/config/AGENTS.md
+  ```
+
+* **Claude Code**:
+  ```bash
+  mkdir -p ~/.claude/skills
+  cp -r /home/doug/code/prolog-agent-toolkit/.agents/skills/* ~/.claude/skills/
+  cat /home/doug/code/prolog-agent-toolkit/.agents/AGENTS.md >> ~/.claude/CLAUDE.md
+  ```
+
+* **Cursor / Windsurf**:
+  ```bash
+  # Append to project rules without overwriting existing instructions
+  cat /home/doug/code/prolog-agent-toolkit/.agents/AGENTS.md >> .cursorrules
+  ```
+
+> [!TIP]
+> **Why Symlinks / Global Configs prevent clobbering:**
+> 1. **Symlinking (`ln -s`)**: Keeps rules in `prolog-agent-toolkit` as the single source of truth. Updates to `prolog-agent-toolkit` propagate instantly without `git` merge conflicts in target projects.
+> 2. **Global Config (`~/.gemini/config`)**: Persists across all workspace folders independent of individual project Git repositories.
 
 ---
 
