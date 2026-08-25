@@ -18,35 +18,63 @@ Multi-engine, cross-platform (Linux, macOS, BSD, Windows) Prolog execution sandb
   - **Packaging**: `prolog-packaging` (Scryer [`bakage`](https://github.com/bakaq/bakage) manifests, SWI `pack`).
   - **Release & Versioning**: `prolog-release` (Multi-file version synchronization, Git tagging, post-release workflows).
 
-## Installation
+## Installation & Setup
 
-### 1. Install `uv` (if not already installed)
+### 1. Install CLI Safety Tools (`scryer-safe`, `swi-safe`, etc.)
 
-- **Linux / macOS (Bash)**:
-  ```bash
-  curl -LsSf https://astral.sh/uv/install.sh | sh
-  ```
-- **Windows (PowerShell)**:
-  ```powershell
-  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-  ```
-- **Via Pip**:
-  ```bash
-  pip install uv
-  ```
+First, install the Python CLI package so safety runners (`scryer-safe`, `swi-safe`, `trealla-safe`, `prolog-safe`) are accessible globally on your system PATH:
 
-### 2. Install Prolog Agent Toolkit
-
-Using [`uv`](https://github.com/astral-sh/uv):
+Using [`uv`](https://github.com/astral-sh/uv) (recommended):
 
 ```bash
-# Install as CLI tools on PATH
-uv tool install prolog-agent-toolkit --force
+# Install directly from local repository directory
+uv tool install . --force
 
-# Or install in editable mode for local development
+# Or install in editable mode for development
 uv pip install -e .
 ```
 
+Verify installation:
+```bash
+scryer-safe --help
+```
+
+---
+
+### 2. Integrating Agent Rules & Skills with AI Assistants
+
+To make your AI coding assistant (Google Antigravity, Claude Code, Cursor, Windsurf) follow these Prolog standards and execution rules in your target project:
+
+#### A. Google Antigravity
+Copy or symlink the `.agents/` directory into your target Prolog repository root:
+```bash
+# In your target Prolog repository:
+cp -r /path/to/prolog-agent-toolkit/.agents ./
+```
+*Antigravity automatically discovers `.agents/AGENTS.md` rules and `.agents/skills/*` skills.*
+
+#### B. Claude Code
+Append the rules to your project's `CLAUDE.md` and copy skills:
+```bash
+# Append universal rules to CLAUDE.md
+cat /path/to/prolog-agent-toolkit/.agents/AGENTS.md >> CLAUDE.md
+
+# Copy skills to .claude/skills (or .agents/skills)
+mkdir -p .claude/skills
+cp -r /path/to/prolog-agent-toolkit/.agents/skills/* .claude/skills/
+```
+
+#### C. Cursor / Windsurf / Copilot
+Copy the guidelines to your project rules file:
+```bash
+# For Cursor:
+cat /path/to/prolog-agent-toolkit/.agents/AGENTS.md >> .cursorrules
+
+# For Windsurf:
+cat /path/to/prolog-agent-toolkit/.agents/AGENTS.md >> .windsurfrules
+```
+
+---
 
 ## Usage
 
