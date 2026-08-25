@@ -13,3 +13,8 @@ Guidelines for writing idiomatic SWI-Prolog code:
 2. **Data Structures**: Utilize SWI dicts (`_{key: Value}`) and SWI strings where appropriate for modern SWI applications.
 3. **Packs & Libraries**: Manage external packages using SWI-Prolog `pack_install/1`.
 4. **Safety**: Always execute code using `swi-safe` or `prolog-safe` with `PROLOG_ENGINE=swi`.
+
+## Universal Guidelines & References
+
+- [Covington Prolog Style Guide](../../references/covington_style.md)
+- [Prolog Purity Guidelines](../../references/prolog_guidelines.md)

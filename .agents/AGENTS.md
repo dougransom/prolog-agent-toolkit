@@ -1,10 +1,20 @@
 # Prolog Agent Toolkit Guidelines & Standards
 
-When writing, refactoring, reviewing, or running Prolog code, all AI assistants MUST adhere to the standards defined below.
+When writing, refactoring, reviewing, or running Prolog code across any project or Prolog engine, all AI assistants MUST adhere to the standards defined below.
+
+## Universal Prolog Style & Purity Guidelines
+
+All Prolog code (regardless of target engine) MUST follow the universal style and purity principles:
+
+- **Covington Prolog Style Guide**: [.agents/references/covington_style.md](.agents/references/covington_style.md)
+  - Write for humans first; keep clauses simple and readable; use explicit goal ordering and clean predicate naming.
+- **Purity Guidelines**: [.agents/references/prolog_guidelines.md](.agents/references/prolog_guidelines.md)
+  - Prefer logical purity (`if_/3`, `dif/2`, pure DCGs); avoid unnecessary cuts (`!`) and side effects.
+  - When relating conditions to values, isolate the test-value relation (e.g. `if_(G, A="A", A="B"), write(A)`).
 
 ## Multi-Engine Dialect Selection & Rules
 
-AI assistants MUST select and follow the dialect standards corresponding to the target Prolog engine:
+AI assistants MUST select and follow the specific dialect standards corresponding to the target Prolog engine:
 
 - **ISO Scryer Prolog**: [.agents/skills/scryer-prolog-standards/SKILL.md](.agents/skills/scryer-prolog-standards/SKILL.md)
   - Pure DCGs, `library(si)`, `chars` strings, `dif/2`, `if_/3` from `library(reif)`.

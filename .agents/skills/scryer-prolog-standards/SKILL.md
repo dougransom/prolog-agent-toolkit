@@ -17,8 +17,7 @@ When writing, refactoring, or reviewing Prolog code for Scryer Prolog, adhere to
 - **Purity**: Prefer `dif/2` (`library(dif)`) and `if_/3` (`library(reif)`). Avoid `->` when `if_/3` can be used.
 - **Safety**: Execute code using `scryer-safe` or `prolog-safe` with `PROLOG_ENGINE=scryer`.
 
-## References & Further Reading
+## Universal Guidelines & References
 
-- [Covington Prolog Style Guide](references/covington_style.md)
-- [Scryer Purity Guidelines](references/prolog_guidelines.md)
-
+- [Covington Prolog Style Guide](../../references/covington_style.md)
+- [Prolog Purity Guidelines](../../references/prolog_guidelines.md)

@@ -14,3 +14,8 @@ Guidelines for writing clean, portable, pure ISO-compliant Prolog.
 3. **Control Structures**: Use standard ISO control structures: `(\+)/1`, `(,)/2`, `(;)/2`.
 4. **Avoid Non-Standard Extensions**: Do not rely on engine-specific types (e.g. SWI dicts or SWI strings) when writing portable code. Represent text as lists of characters or standard atoms.
 5. **Safety**: Execute code using `prolog-safe`.
+
+## Universal Guidelines & References
+
+- [Covington Prolog Style Guide](../../references/covington_style.md)
+- [Prolog Purity Guidelines](../../references/prolog_guidelines.md)
