@@ -1,0 +1,38 @@
+# Prolog Agent Toolkit Guidelines & Standards
+
+When writing, refactoring, reviewing, or running Prolog code, all AI assistants MUST adhere to the standards defined below.
+
+## Multi-Engine Dialect Selection & Rules
+
+AI assistants MUST select and follow the dialect standards corresponding to the target Prolog engine:
+
+- **ISO Scryer Prolog**: [.agents/skills/scryer-prolog-standards/SKILL.md](.agents/skills/scryer-prolog-standards/SKILL.md)
+  - Pure DCGs, `library(si)`, `chars` strings, `dif/2`, `if_/3` from `library(reif)`.
+- **SWI-Prolog**: [.agents/skills/swi-prolog-standards/SKILL.md](.agents/skills/swi-prolog-standards/SKILL.md)
+  - SWI dicts, SWI string types, module declarations, pack manager.
+- **Trealla Prolog**: [.agents/skills/trealla-prolog-standards/SKILL.md](.agents/skills/trealla-prolog-standards/SKILL.md)
+  - ISO compliance, WASM embedding, fast standard library parsing.
+- **Portable ISO Prolog**: [.agents/skills/iso-prolog-standards/SKILL.md](.agents/skills/iso-prolog-standards/SKILL.md)
+  - Engine-agnostic ISO standard code compatible across all conforming implementations.
+
+## Safety & Cross-Platform Execution
+
+- **CLI Entry Points**: ALL Prolog code executions MUST use the cross-platform CLI safety entry points (`prolog-safe`, `scryer-safe`, `swi-safe`, `trealla-safe`).
+- **Forbidden Invocations**: AI assistants MUST NEVER execute raw interpreter binaries (`scryer-prolog`, `swipl`, `tpl`, `gprolog`, `ciao`) directly.
+- **Specifying Engine**: Set `PROLOG_ENGINE` environment variable (e.g., `export PROLOG_ENGINE=scryer`, `export PROLOG_ENGINE=swi`, `export PROLOG_ENGINE=trealla`).
+
+## Git Branching & Release Workflow
+
+AI assistants MUST adhere to the following release workflow:
+
+1. **Development Branching**: Development commits for current work take place on branch `DEV202608` (or active development branch).
+2. **Dev Version Format**: Working version numbers follow the `X.Y.Z.devN` convention (e.g. `0.0.1.dev1`) across `README.md`, `pyproject.toml`, and `prolog_agent_toolkit/__init__.py`.
+3. **Release Execution**:
+   - Update version in `README.md`, `pyproject.toml`, and `prolog_agent_toolkit/__init__.py` to release version (e.g. `0.0.1`).
+   - Create annotated Git tag (e.g. `git tag -a v0.0.1 -m "Release v0.0.1"`).
+   - Commit and push.
+4. **Post-Release Prompting**:
+   - Immediately after a release, ask the user:
+     1. Is a new dev branch warranted?
+     2. What is the current release number?
+     3. What is the next release to work on (and update version with `.dev1`)?
