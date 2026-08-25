@@ -1,9 +1,9 @@
 ---
-name: iso-prolog-standards
+name: prolog-conventions
 description: Coding standards and guidelines for portable, pure ISO-compliant Prolog across all conforming engines. Use when writing Prolog code intended to run on any ISO Prolog interpreter.
 ---
 
-# ISO Prolog Standards
+# Prolog Conventions
 
 Guidelines for writing clean, portable, pure ISO-compliant Prolog.
 

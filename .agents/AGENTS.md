@@ -22,7 +22,7 @@ AI assistants MUST select and follow the specific dialect standards correspondin
   - SWI dicts, SWI string types, module declarations, pack manager.
 - **Trealla Prolog**: [.agents/skills/trealla-prolog-standards/SKILL.md](.agents/skills/trealla-prolog-standards/SKILL.md)
   - ISO compliance, WASM embedding, fast standard library parsing.
-- **Portable ISO Prolog**: [.agents/skills/iso-prolog-standards/SKILL.md](.agents/skills/iso-prolog-standards/SKILL.md)
+- **Portable ISO Prolog Conventions**: [.agents/skills/prolog-conventions/SKILL.md](.agents/skills/prolog-conventions/SKILL.md)
   - Engine-agnostic ISO standard code compatible across all conforming implementations.
 
 ## Safety & Cross-Platform Execution
