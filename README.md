@@ -80,10 +80,36 @@ Install rules and skills into your global AI configuration folder so **every** p
   cat /home/doug/code/prolog-agent-toolkit/.agents/AGENTS.md >> .cursorrules
   ```
 
+#### Option C: Custom Search Paths via `skills.json` (Multi-Directory Search Path)
+Google Antigravity automatically loads rules and skills from **both**:
+1. **Global Root**: `~/.gemini/config` (active across all your workspaces)
+2. **Workspace Root**: `.agents` (active in the specific project)
+
+If you have skills scattered across multiple repositories or team folders (e.g., `prolog-agent-toolkit`, `data-science-skills`, `team-shared-skills`), you can create a `skills.json` file in your `.agents/` or `~/.gemini/config/` directory to act as a **search path**:
+
+Create `.agents/skills.json` (or `~/.gemini/config/skills.json`):
+```json
+{
+  "entries": [
+    { "path": "/home/doug/code/prolog-agent-toolkit/.agents/skills" },
+    { "path": "/home/doug/code/another-repo/.agents/skills" }
+  ],
+  "inherits": [
+    { "path": "/path/to/shared/team_skills.json" }
+  ],
+  "exclude": [
+    "optional_skill_to_ignore"
+  ]
+}
+```
+
+---
+
 > [!TIP]
-> **Why Symlinks / Global Configs prevent clobbering:**
-> 1. **Symlinking (`ln -s`)**: Keeps rules in `prolog-agent-toolkit` as the single source of truth. Updates to `prolog-agent-toolkit` propagate instantly without `git` merge conflicts in target projects.
-> 2. **Global Config (`~/.gemini/config`)**: Persists across all workspace folders independent of individual project Git repositories.
+> **Why Symlinks / Global Configs / `skills.json` prevent clobbering:**
+> 1. **Search Path (`skills.json`)**: Lets you keep skills in their native repos while referencing them dynamically in any project.
+> 2. **Symlinking (`ln -s`)**: Keeps rules in `prolog-agent-toolkit` as the single source of truth without `git` merge conflicts in target projects.
+> 3. **Global Config (`~/.gemini/config`)**: Automatically applies across all projects without modifying target repo files.
 
 ---
 
