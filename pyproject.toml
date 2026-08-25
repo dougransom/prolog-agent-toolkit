@@ -39,6 +39,11 @@ dependencies = [
     "psutil>=5.9.0",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+]
+
 [project.scripts]
 prolog-safe = "prolog_agent_toolkit.cli:prolog_safe_main"
 scryer-safe = "prolog_agent_toolkit.cli:scryer_safe_main"
