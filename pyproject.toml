@@ -12,6 +12,29 @@ license = { text = "Unlicense" }
 authors = [
     { name = "Doug Ransom" }
 ]
+keywords = [
+    "prolog",
+    "scryer-prolog",
+    "swi-prolog",
+    "trealla-prolog",
+    "agent-toolkit",
+    "antigravity",
+    "claude-code",
+    "copilot",
+    "cursor",
+    "dcg",
+    "clpz",
+    "purity",
+    "sandboxing"
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Software Development :: Compilers",
+    "Programming Language :: Prolog",
+    "Programming Language :: Python :: 3"
+]
 dependencies = [
     "psutil>=5.9.0",
 ]

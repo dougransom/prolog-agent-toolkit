@@ -1,8 +1,46 @@
+<!-- OpenGraph Metadata -->
+<meta property="og:title" content="Prolog Agent Toolkit" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="Multi-engine, cross-platform Prolog execution sandboxing, AI agent standards, and skills toolkit for Scryer Prolog, SWI-Prolog, and Trealla Prolog. Supporting Google Antigravity, Claude Code, GitHub Copilot, and Cursor." />
+<meta property="og:category" content="Developer Tools, Prolog, AI Agents" />
+
+<!-- Schema.org JSON-LD Metadata -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "Prolog Agent Toolkit",
+  "version": "0.0.1.dev1",
+  "description": "Multi-engine, cross-platform Prolog execution sandboxing, AI agent standards, and skills toolkit for Scryer Prolog, SWI-Prolog, and Trealla Prolog. Supporting Google Antigravity, Claude Code, GitHub Copilot, and Cursor.",
+  "programmingLanguage": "Prolog",
+  "targetProduct": [
+    { "@type": "SoftwareApplication", "name": "Google Antigravity" },
+    { "@type": "SoftwareApplication", "name": "Claude Code" },
+    { "@type": "SoftwareApplication", "name": "GitHub Copilot" },
+    { "@type": "SoftwareApplication", "name": "Cursor" }
+  ],
+  "keywords": ["prolog", "scryer-prolog", "swi-prolog", "trealla-prolog", "agent-toolkit", "antigravity", "claude-code", "copilot", "cursor", "dcg", "clpz", "sandboxing"]
+}
+</script>
+
 # Prolog Agent Toolkit
 
-**Version**: `0.0.1.dev1`
+**Version**: `0.0.1.dev1`  
+**Category**: AI Assistant Developer Tools / Prolog Language Tooling  
+**Metadata**: [schema.org.jsonld](schema.org.jsonld)
 
-Multi-engine, cross-platform (Linux, macOS, BSD, Windows) Prolog execution sandboxing and agent skills toolkit.
+Multi-engine, cross-platform (Linux, macOS, BSD, Windows) Prolog execution sandboxing and AI agent skills toolkit.
+
+## Categories & Supported Platforms
+
+| Category | Supported Technologies / Systems |
+|---|---|
+| **AI Assistants & IDEs** | Google Antigravity (AGY), Claude Code (Anthropic), GitHub Copilot, Cursor, Windsurf |
+| **Prolog Engines** | Scryer Prolog (ISO Default), SWI-Prolog, Trealla Prolog, GNU Prolog, Ciao Prolog |
+| **Language Standards** | ISO Prolog, Definite Clause Grammars (DCG), CLP(Z) Constraints, Reification (`reif`) |
+| **Agent Capabilities** | Execution Sandboxing, `testing.pl` Unit Testing, `bakage` Manifests, Multi-file Release Versioning |
+
+**Keywords**: `prolog`, `agent-toolkit`, `scryer-prolog`, `swi-prolog`, `trealla-prolog`, `antigravity`, `claude-code`, `copilot`, `cursor`, `dcg`, `clpz`, `sandboxing`, `testing.pl`, `bakage`
 
 ## Features
 

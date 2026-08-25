@@ -1,0 +1,49 @@
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "Prolog Agent Toolkit",
+  "version": "0.0.1.dev1",
+  "description": "Multi-engine, cross-platform Prolog execution sandboxing, AI agent standards, and skills toolkit for Scryer Prolog, SWI-Prolog, and Trealla Prolog. Supporting Google Antigravity, Claude Code, GitHub Copilot, and Cursor.",
+  "programmingLanguage": "Prolog",
+  "targetProduct": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Google Antigravity"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Claude Code"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "GitHub Copilot"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Cursor"
+    }
+  ],
+  "keywords": [
+    "prolog",
+    "scryer-prolog",
+    "swi-prolog",
+    "trealla-prolog",
+    "agent-toolkit",
+    "antigravity",
+    "claude-code",
+    "github-copilot",
+    "cursor",
+    "definite-clause-grammars",
+    "dcg",
+    "clpz",
+    "logical-purity",
+    "sandboxing",
+    "unit-testing",
+    "bakage"
+  ],
+  "license": "https://unlicense.org/",
+  "author": {
+    "@type": "Person",
+    "name": "Doug Ransom"
+  }
+}
