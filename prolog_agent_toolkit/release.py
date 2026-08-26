@@ -82,6 +82,25 @@ def run_release(new_version: str = None, target_dir: str = ".") -> int:
         f'"version": "{new_version}"'
     )
 
+    # 4. Update schema.org.jsonld
+    sync_file_version(
+        os.path.join(target_dir, "schema.org.jsonld"),
+        r'"version"\s*:\s*"[^"]+"',
+        f'"version": "{new_version}"'
+    )
+
+    # 5. Update README.md
+    sync_file_version(
+        os.path.join(target_dir, "README.md"),
+        r'"version"\s*:\s*"[^"]+"',
+        f'"version": "{new_version}"'
+    )
+    sync_file_version(
+        os.path.join(target_dir, "README.md"),
+        r'\*\*Version\*\*\s*:\s*`[^`]+`',
+        f'**Version**: `{new_version}`'
+    )
+
     # 4. Generate / update CHANGELOG.md
     changelog_path = os.path.join(target_dir, "CHANGELOG.md")
     today = datetime.date.today().isoformat()
