@@ -112,19 +112,11 @@ def init_project(project_name: str, engine: str = "scryer", base_dir: str = ".")
     # 5. README.md creation
     readme_path = os.path.join(project_dir, "README.md")
     if not os.path.exists(readme_path):
+        from prolog_agent_toolkit import get_version
+        toolkit_ver = get_version()
+        readme_content = generate_readme_content(project_name, engine=engine, version=toolkit_ver)
         with open(readme_path, "w", encoding="utf-8") as f:
-            f.write(f"# {project_name}\n\n")
-            f.write(f"Prolog project `{project_name}` initialized for engine `{engine}` using `prolog-agent-toolkit`.\n\n")
-            f.write("## Running Tests\n\n")
-            if engine == "swi":
-                f.write("Run unit tests with `swi-safe`:\n```bash\nswi-safe -g \"run_tests,halt\" tests/test_" + project_name + ".pl\n```\n\n")
-            else:
-                f.write("Run unit tests with `scryer-safe` or `prolog-safe`:\n```bash\nscryer-safe tests/testing.pl\n```\n\n")
-            f.write("## Using Safe Runners\n\n")
-            f.write("Always execute Prolog code using cross-platform safety runners:\n")
-            f.write("- `prolog-safe`\n- `scryer-safe`\n- `swi-safe`\n- `trealla-safe`\n- `tau-safe`\n\n")
-            f.write("## Agent Skills & Dialect Standards\n\n")
-            f.write("Link the toolkit's agent skills:\n```bash\nln -s ~/code/prolog-agent-toolkit/.agents .agents\n```\n")
+            f.write(readme_content)
 
     # 6. CHANGELOG.md creation
     changelog_path = os.path.join(project_dir, "CHANGELOG.md")
@@ -134,6 +126,214 @@ def init_project(project_name: str, engine: str = "scryer", base_dir: str = ".")
 
     print(f"Project '{project_name}' successfully initialized!")
     return 0
+
+
+def generate_readme_content(project_name: str, engine: str = "scryer", version: str = "0.0.1.dev6") -> str:
+    """
+    Generate a complete, opinionated README.md for a new Prolog project.
+    """
+    engine = (engine or "scryer").lower()
+
+    dialect_names = {
+        "scryer": "Scryer Prolog (ISO-compliant)",
+        "swi": "SWI-Prolog",
+        "trealla": "Trealla Prolog",
+        "tau": "Tau Prolog",
+        "iso": "ISO Standard Prolog",
+    }
+    dialect_name = dialect_names.get(engine, f"{engine.capitalize()} Prolog")
+
+    dialect_descriptions = {
+        "scryer": "Adheres strictly to ISO/IEC 13211-1 standard purity. Enforces `chars` double-quoted strings, pure reified logic (`library(reif)`), pure DCGs (`library(dcgs)`), integer constraints (`library(clpz)`), and side-effect-free type inspection (`library(si)`).",
+        "swi": "Features extensive developer tooling, module system, SWI dicts and string types, unit testing via `plunit`, and integer constraints (`library(clpfd)`).",
+        "trealla": "High-performance ISO-compliant Prolog engine designed for fast parsing, modularity, dynamic foreign function interfaces, and WebAssembly (WASM) embedding.",
+        "tau": "ISO-compliant Prolog engine written in JavaScript for seamless browser DOM integration (`library(dom)`), Node.js scripting, and web application embedding.",
+        "iso": "Engine-agnostic ISO standard Prolog baseline compatible across all conforming implementations.",
+    }
+    dialect_desc = dialect_descriptions.get(engine, "Standard Prolog dialect.")
+
+    dialect_skills = {
+        "scryer": "`.agents/skills/scryer-prolog-standards/SKILL.md` and `.agents/skills/prolog-conventions/SKILL.md`",
+        "swi": "`.agents/skills/swi-prolog-standards/SKILL.md` and `.agents/skills/prolog-conventions/SKILL.md`",
+        "trealla": "`.agents/skills/trealla-prolog-standards/SKILL.md` and `.agents/skills/prolog-conventions/SKILL.md`",
+        "tau": "`.agents/skills/tau-prolog-standards/SKILL.md` and `.agents/skills/prolog-conventions/SKILL.md`",
+        "iso": "`.agents/skills/prolog-conventions/SKILL.md`",
+    }
+    skill_ref = dialect_skills.get(engine, "`.agents/skills/prolog-conventions/SKILL.md`")
+
+    safe_runner_cmd = {
+        "scryer": f"scryer-safe -g \"use_module('src/{project_name}.pl'), hello(M), write(M), nl, halt.\"",
+        "swi": f"swi-safe -g \"use_module('src/{project_name}.pl'), hello(M), writeln(M), halt.\"",
+        "trealla": f"trealla-safe -g \"use_module('src/{project_name}.pl'), hello(M), write(M), nl, halt.\"",
+        "tau": f"tau-safe -g \"use_module('src/{project_name}.pl'), hello(M), write(M), nl, halt.\"",
+    }.get(engine, f"prolog-safe -g \"use_module('src/{project_name}.pl'), hello(M), write(M), nl, halt.\"")
+
+    test_cmd = {
+        "swi": f"swi-safe -g \"run_tests,halt\" tests/test_{project_name}.pl",
+    }.get(engine, "scryer-safe tests/testing.pl")
+
+    manifest_file = "pack.pl" if engine == "swi" else ("package.json" if engine == "tau" else "bakage.toml")
+
+    manifest_desc = {
+        "scryer": "`bakage.toml`: Scryer Prolog `bakage` manifest defining module exports and dependencies (alongside `pack.pl`).",
+        "swi": "`pack.pl`: SWI-Prolog package manager manifest for dependency installation via `pack_install`.",
+        "trealla": "`pack.pl`: Manifest metadata file (or standalone ISO files).",
+        "tau": "`package.json`: Node.js / npm package manifest declaring `tau-prolog` dependencies.",
+    }.get(engine, f"`{manifest_file}`: Packaging manifest file.")
+
+    test_file_name = f"test_{project_name}.pl" if engine == "swi" else "testing.pl"
+
+    if engine == "swi":
+        test_example = f"""```prolog
+:- use_module(library(plunit)).
+:- use_module('../src/{project_name}.pl').
+
+:- begin_tests({project_name}).
+
+test(hello) :-
+    hello(Msg),
+    assertion(Msg \\== []).
+
+test(parse_item) :-
+    phrase(parse_item("item1"), "[item1]").
+
+:- end_tests({project_name}).
+```"""
+    else:
+        test_example = f"""```prolog
+:- use_module(library(format)).
+:- use_module(library(dcgs)).
+:- use_module('../src/{project_name}.pl').
+
+:- initialization(run_tests).
+
+must_succeed(Goal) :-
+    (   call(Goal) ->
+        format("PASS: ~q~n", [Goal])
+    ;   format("FAIL: ~q~n", [Goal]),
+        halt(1)
+    ).
+
+run_tests :-
+    format("Running {project_name} Test Suite...~n~n", []),
+    must_succeed(hello(_Greeting)),
+    must_succeed(phrase(parse_item("test"), "[test]")),
+    format("~nAll tests passed successfully!~n", []).
+```"""
+
+    return f"""# {project_name}
+
+> Powered by [prolog-agent-toolkit](https://github.com/dougransom/prolog-agent-toolkit) **v{version}**
+
+A modern Prolog project configured for deterministic execution, engine safety, and automated AI agent collaboration.
+
+---
+
+## 1. Project Overview
+
+This project uses **`prolog-agent-toolkit` (v{version})**.
+
+The `prolog-agent-toolkit` provides a standardized development environment for writing safe, pure, high-quality Prolog software. Its primary capabilities include:
+
+- **Deterministic Safe Runners**: Cross-platform command-line entry points (`scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`, `prolog-safe`) that run Prolog execution under strict CPU and memory resource limits.
+- **Dialect Standards & Purity**: Enforced coding guidelines, Covington style standards, reified logical predicates (`if_/3`, `dif/2`), pure DCGs, and CLP constraint logic.
+- **Agent Skill Architecture**: Integrated `.agents/` directory providing structured skills and linting rules so AI assistants (e.g. Gemini, Cursor, Claude, Copilot) generate pure, idiomatic code.
+- **Multi-Engine Support**: Seamless portability across ISO-compliant engines (Scryer Prolog, SWI-Prolog, Trealla Prolog, Tau Prolog).
+
+---
+
+## 2. Directory Layout
+
+Recommended project structure:
+
+```text
+{project_name}/
+├── src/
+│   └── {project_name}.pl      # Main module source file
+├── tests/
+│   └── {test_file_name}         # Unit test suite
+├── .agents -> /path/to/prolog-agent-toolkit/.agents # Symlink to shared agent skills & rules
+├── {manifest_file}              # Packaging manifest
+├── CHANGELOG.md               # Version release history
+└── README.md                  # Developer & AI agent onboarding guide
+```
+
+### Directory Roles
+
+- **`src/`**: Houses application and library Prolog source files. Modules explicitly declare exports and follow pure ISO standards.
+- **`tests/`**: Contains unit test harnesses and test cases.
+- **`.agents/`**: Workspace symlink pointing to the shared `prolog-agent-toolkit/.agents` directory. Gives AI coding agents immediate access to project guidelines, dialect rules, refactoring subagents, and linter specifications.
+- **`{manifest_file}`**: {manifest_desc}
+- **`README.md`**: Canonical onboarding document for developers and AI agents.
+
+---
+
+## 3. Dialect Selection
+
+This project is configured to use **{dialect_name}**.
+
+### Dialect Overview
+{dialect_desc}
+
+### Dialect Standards Reference
+When writing code or directing AI agents, consult the dialect standards provided by the toolkit:
+- **Primary Dialect Skill**: {skill_ref}
+- **Universal Style Guide**: `.agents/references/covington_style.md`
+- **Purity Guidelines**: `.agents/references/prolog_guidelines.md`
+
+---
+
+## 4. Safe Runners
+
+All Prolog executions **MUST** use the safe runner entry points provided by `prolog-agent-toolkit`. Developers and AI agents MUST NEVER invoke raw binary interpreters directly (e.g. `scryer-prolog`, `swipl`, `tpl`).
+
+### Executing Code
+
+```bash
+# Run goal safely using the target runner:
+{safe_runner_cmd}
+
+# Run using generic wrapper (select engine via environment variable):
+export PROLOG_ENGINE={engine}
+prolog-safe -g "hello(M), write(M), nl, halt." src/{project_name}.pl
+```
+
+### Why Safe Runners Are Required
+
+1. **Resource Sandboxing**: Prevents non-terminating recursive searches or infinite choice-point backtracking loops from locking up CPU cores or exhausting system memory.
+2. **Environment Determinism**: Standardizes standard library module imports, string encoding, and error reporting across environments.
+3. **Execution Safety**: Enforces safety policies required for agent-driven autonomous execution.
+
+---
+
+## 5. Agent Skills Architecture
+
+The `.agents/` directory connects this repository to the `prolog-agent-toolkit` knowledge base.
+
+### How `.agents` Is Used
+- **Shared via Symlink**: Link the toolkit's `.agents` directory during workspace setup:
+  ```bash
+  ln -s ~/code/prolog-agent-toolkit/.agents .agents
+  ```
+- **Deterministic Assistant Behavior**: When an AI coding assistant operates in this project, it automatically reads `.agents/AGENTS.md` and active skills to enforce pure Prolog standards, first-argument indexing, and Covington styling.
+- **Modular Capabilities**: Exposes automated skills for static analysis, unit test generation, DCG mastery, CLP constraints, and release management.
+
+---
+
+## 6. Testing
+
+### Running Tests
+
+Execute the unit test suite using the appropriate safe runner:
+
+```bash
+{test_cmd}
+```
+
+### Test Suite Example (`tests/{test_file_name}`)
+
+{test_example}
+"""
 
 
 def generate_module(module_name: str, engine: str = "scryer", output_dir: str = "src") -> int:

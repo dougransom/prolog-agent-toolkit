@@ -26,7 +26,7 @@ If dialect is omitted, default to **scryer**.
    - **Scryer / Trealla / ISO**: Create `tests/testing.pl`.
    - **SWI**: Create `tests/test_<project-name>.pl` using `plunit`.
 5. **Dialect Standards**: Include `scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, and `prolog-conventions`.
-6. **README.md**: Create standard README detailing execution with `scryer-safe` or `swi-safe`, skill symlinks, and test runs.
+6. **README.md**: Create canonical onboarding README with 6 structured sections (Project Overview, Directory Layout, Dialect Selection, Safe Runners, Agent Skills, and Testing).
 
 ---
 
