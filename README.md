@@ -10,7 +10,7 @@
   "@context": "https://schema.org",
   "@type": "SoftwareSourceCode",
   "name": "Prolog Agent Toolkit",
-  "version": "0.0.1.dev4",
+  "version": "0.0.1.dev5",
   "description": "Multi-engine, cross-platform Prolog execution sandboxing, AI agent standards, and skills toolkit for Scryer Prolog, SWI-Prolog, Trealla Prolog, and Tau Prolog. Supporting Google Antigravity, Claude Code, GitHub Copilot, Cursor, aidermacs, agent-shell, and gptel.",
   "programmingLanguage": "Prolog",
   "targetProduct": [
@@ -28,7 +28,7 @@
 
 # Prolog Agent Toolkit
 
-**Version**: `0.0.1.dev4`  
+**Version**: `0.0.1.dev5`  
 **Category**: AI Assistant Developer Tools / Prolog Language Tooling  
 **Metadata**: [schema.org.jsonld](schema.org.jsonld)
 
