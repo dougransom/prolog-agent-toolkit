@@ -8,14 +8,20 @@ os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
 
 
 def get_pyproject_version(target_dir: str) -> str:
-    """Read canonical release version from pyproject.toml."""
+    """Read canonical release version from pyproject.toml using standard Python libraries."""
     pyproject_path = os.path.join(target_dir, "pyproject.toml")
     if os.path.exists(pyproject_path):
-        with open(pyproject_path, "r", encoding="utf-8") as f:
-            content = f.read()
-        m = re.search(r'version\s*=\s*["\']([^"\']+)["\']', content)
-        if m:
-            return m.group(1)
+        if sys.version_info >= (3, 11):
+            import tomllib
+            with open(pyproject_path, "rb") as f:
+                data = tomllib.load(f)
+                return data.get("project", {}).get("version", "0.0.1")
+        else:
+            with open(pyproject_path, "r", encoding="utf-8") as f:
+                content = f.read()
+            m = re.search(r'version\s*=\s*["\']([^"\']+)["\']', content)
+            if m:
+                return m.group(1)
     return "0.0.1"
 
 
