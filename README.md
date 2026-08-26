@@ -105,18 +105,22 @@ Install rules and skills into your global AI configuration folder so **every** p
   cat /home/doug/code/prolog-agent-toolkit/.agents/AGENTS.md >> ~/.gemini/config/AGENTS.md
   ```
 
-* **Claude Code**:
+* **Claude Code / Cursor / Windsurf Symlinks**:
   ```bash
-  mkdir -p ~/.claude/skills
-  cp -r /home/doug/code/prolog-agent-toolkit/.agents/skills/* ~/.claude/skills/
-  cat /home/doug/code/prolog-agent-toolkit/.agents/AGENTS.md >> ~/.claude/CLAUDE.md
+  # In Claude Code or Cursor project roots, symlink to AGENTS.md:
+  ln -s /home/doug/code/prolog-agent-toolkit/.agents/AGENTS.md CLAUDE.md
+  ln -s /home/doug/code/prolog-agent-toolkit/.agents/AGENTS.md .cursorrules
   ```
 
-* **Cursor / Windsurf**:
-  ```bash
-  # Append to project rules without overwriting existing instructions
-  cat /home/doug/code/prolog-agent-toolkit/.agents/AGENTS.md >> .cursorrules
-  ```
+---
+
+### Single Source of Truth Architecture
+
+To prevent instruction drift across different AI tools (Google Antigravity, Claude Code, Cursor IDE, Windsurf):
+
+- **Master Definition**: [.agents/AGENTS.md](.agents/AGENTS.md) is the single source of truth for all Prolog rules, dialect choices, and safety constraints.
+- **Root Symlinks**: `CLAUDE.md` and `.cursorrules` in this repository are Git symlinks pointing directly to `.agents/AGENTS.md`.
+- **Zero Maintenance Overhead**: Editing `.agents/AGENTS.md` automatically updates Claude Code, Cursor, and Google Antigravity instantly without copy-pasting or file duplication.
 
 #### Option C: Custom Search Paths via `skills.json` (Multi-Directory Search Path)
 Google Antigravity automatically loads rules and skills from **both**:
