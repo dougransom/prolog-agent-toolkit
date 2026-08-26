@@ -11,6 +11,10 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
 - **Purity Guidelines**: [.agents/references/prolog_guidelines.md](.agents/references/prolog_guidelines.md)
   - Prefer logical purity (`if_/3`, `dif/2`, pure DCGs); avoid unnecessary cuts (`!`) and side effects.
   - When relating conditions to values, isolate the test-value relation (e.g. `if_(G, A="A", A="B"), write(A)`).
+- **Declarative AI Workflow**: [.agents/skills/prolog-declarative-workflow/SKILL.md](.agents/skills/prolog-declarative-workflow/SKILL.md)
+  - Use declarative reasoning based on unification, constraints, and backtracking (never imperative thinking).
+  - Specify mode (`+`/`-`), determinism (`det`, `semidet`, `nondet`), and choice-point expectations.
+  - Use test-first scaffolding (`testing.pl` / `plunit`) and DCG structure generation.
 
 ## Multi-Engine Dialect Selection & Rules
 

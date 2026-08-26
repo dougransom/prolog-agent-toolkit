@@ -28,6 +28,17 @@ Leverage Prolog's compile-time expansion hooks (`user:term_expansion/2` and `use
 - **`goal_expansion/2`**: Use to rewrite specific inline goals before compilation (e.g., optimizing expressions, rewriting custom syntax shortcuts, or inserting compile-time instrumentation).
 - **Static over Dynamic**: Prefer compile-time expansion (`term_expansion/2`) over dynamic runtime assertions (`asserta`/`assertz`) to maintain code clarity, static analysis, and compiler optimization properties.
 
+### Mode, Determinism & Choice-Point Contracts
+
+Always reason declaratively based on unification, constraints, and backtracking (never imperatively).
+
+- **Mode Annotations**: Document arguments as input (`+`), output (`-`), or semi-instantiated (`?`) to clarify operational expectations.
+- **Determinism Specification**:
+  - `det`: Always succeeds with exactly 1 solution (no left-over choice points).
+  - `semidet`: Succeeds 0 or 1 time; fails cleanly on invalid input without unwanted choice points.
+  - `multi`/`nondet`: Explicitly intended for backtracking enumeration.
+- **Choice-Point Audits**: Audit predicates to ensure cuts (`!`) are avoided where pure constructs (`if_/3`, `dif/2`, `clpz`) apply, and verify predicates fail cleanly when inputs violate contracts.
+
 Use logging for diagnostics meant to be left in and activated at runtime.
 
 See the guidelines in [Covington](covington_style.md).

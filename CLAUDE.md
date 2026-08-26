@@ -11,6 +11,8 @@ When working with Prolog code in this repository or target Prolog projects, adhe
 - **ISO Scryer Prolog**: Prefer pure Scryer Prolog (ISO-compliant).
 - **Strings**: Treat strings as lists of characters (`chars`).
 - **Logical Purity**: Prefer `dif/2`, `clpz`, and `if_/3` from `library(reif)`. Avoid unnecessary cuts (`!`).
+- **Declarative Reasoning**: Do not use imperative reasoning. Use declarative reasoning based on unification, logical constraints, and backtracking.
+- **Modes & Determinism**: Specify mode (`+`/`-`), determinism (`det`, `semidet`, `nondet`), and choice-point expectations.
 - **Definite Clause Grammars (DCGs)**: Use pure DCG syntax (`-->`) for parsing, formatting, string building, and state threading.
 - **Term & Goal Expansion**: Use compile-time hooks (`user:term_expansion/2`, `user:goal_expansion/2`) to eliminate boilerplate code.
 

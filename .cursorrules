@@ -4,6 +4,8 @@
 
 - **CLI Execution**: Always use cross-platform safety wrappers (`scryer-safe`, `swi-safe`, `trealla-safe`, `prolog-safe`). Never run unconstrained `scryer-prolog`, `swipl`, or `tpl` directly.
 - **Dialect Target**: Default to pure ISO Scryer Prolog (`library(si)`, `chars` strings).
+- **Declarative Reasoning**: Do not use imperative reasoning. Use declarative reasoning based on unification, constraints, and backtracking.
+- **Modes & Determinism**: Specify mode (`+`/`-`), determinism (`det`, `semidet`, `nondet`), and choice-point expectations.
 - **Purity**: Use `dif/2`, `clpz`, and `if_/3` (from `library(reif)`). Avoid non-deterministic cuts (`!`) where pure constructs apply.
 - **DCGs**: Prefer Definite Clause Grammars (`-->`) for state accumulation, sequence matching, parsing, and text formatting.
 - **Boilerplate Reduction**: Use `user:term_expansion/2` and `user:goal_expansion/2` for compile-time code generation instead of duplicating clauses.
