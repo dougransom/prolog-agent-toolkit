@@ -30,9 +30,10 @@ Always annotate or specify predicate operational semantics:
 
 ## 3. Test-First Scaffolding Workflow
 
-Write test assertions (`testing.pl` or `plunit`) *before* implementing or refactoring complex logic:
+Write test assertions using the project's chosen unit testing framework (`testing.pl` for Scryer Prolog, `plunit` for SWI-Prolog, portable ISO assertions, or whichever framework is selected for the target project) *before* implementing or refactoring complex logic:
 
 ```prolog
+% Example using Scryer Prolog's testing.pl:
 :- use_module(library(testing)).
 
 test(parse_literal) :-
@@ -44,7 +45,7 @@ test(parse_kleene) :-
     AST == star(lit("a")).
 ```
 
-Prompt the assistant with the test harness and ask it to generate the DCG or predicate clauses satisfying the tests.
+Prompt the assistant with the expected test harness and ask it to generate the DCG or predicate clauses satisfying the tests.
 
 ---
 

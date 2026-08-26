@@ -14,7 +14,7 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
 - **Declarative AI Workflow**: [.agents/skills/prolog-declarative-workflow/SKILL.md](.agents/skills/prolog-declarative-workflow/SKILL.md)
   - Use declarative reasoning based on unification, constraints, and backtracking (never imperative thinking).
   - Specify mode (`+`/`-`), determinism (`det`, `semidet`, `nondet`), and choice-point expectations.
-  - Use test-first scaffolding (`testing.pl` / `plunit`) and DCG structure generation.
+  - Use test-first scaffolding (`testing.pl` / `plunit` / configured test framework) and DCG structure generation.
 
 ## Multi-Engine Dialect Selection & Rules
 
