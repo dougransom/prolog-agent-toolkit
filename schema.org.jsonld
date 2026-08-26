@@ -3,7 +3,7 @@
   "@type": "SoftwareSourceCode",
   "name": "Prolog Agent Toolkit",
   "version": "0.0.1.dev2",
-  "description": "Multi-engine, cross-platform Prolog execution sandboxing, AI agent standards, and skills toolkit for Scryer Prolog, SWI-Prolog, and Trealla Prolog. Supporting Google Antigravity, Claude Code, GitHub Copilot, and Cursor.",
+  "description": "Multi-engine, cross-platform Prolog execution sandboxing, AI agent standards, and skills toolkit for Scryer Prolog, SWI-Prolog, Trealla Prolog, and Tau Prolog. Supporting Google Antigravity, Claude Code, GitHub Copilot, and Cursor.",
   "programmingLanguage": "Prolog",
   "targetProduct": [
     {
@@ -28,6 +28,7 @@
     "scryer-prolog",
     "swi-prolog",
     "trealla-prolog",
+    "tau-prolog",
     "agent-toolkit",
     "antigravity",
     "claude-code",

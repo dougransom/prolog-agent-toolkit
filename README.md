@@ -1,7 +1,7 @@
 <!-- OpenGraph Metadata -->
 <meta property="og:title" content="Prolog Agent Toolkit" />
 <meta property="og:type" content="website" />
-<meta property="og:description" content="Multi-engine, cross-platform Prolog execution sandboxing, AI agent standards, and skills toolkit for Scryer Prolog, SWI-Prolog, and Trealla Prolog. Supporting Google Antigravity, Claude Code, GitHub Copilot, and Cursor." />
+<meta property="og:description" content="Multi-engine, cross-platform Prolog execution sandboxing, AI agent standards, and skills toolkit for Scryer Prolog, SWI-Prolog, Trealla Prolog, and Tau Prolog. Supporting Google Antigravity, Claude Code, GitHub Copilot, and Cursor." />
 <meta property="og:category" content="Developer Tools, Prolog, AI Agents" />
 
 <!-- Schema.org JSON-LD Metadata -->
@@ -11,7 +11,7 @@
   "@type": "SoftwareSourceCode",
   "name": "Prolog Agent Toolkit",
   "version": "0.0.1.dev2",
-  "description": "Multi-engine, cross-platform Prolog execution sandboxing, AI agent standards, and skills toolkit for Scryer Prolog, SWI-Prolog, and Trealla Prolog. Supporting Google Antigravity, Claude Code, GitHub Copilot, and Cursor.",
+  "description": "Multi-engine, cross-platform Prolog execution sandboxing, AI agent standards, and skills toolkit for Scryer Prolog, SWI-Prolog, Trealla Prolog, and Tau Prolog. Supporting Google Antigravity, Claude Code, GitHub Copilot, and Cursor.",
   "programmingLanguage": "Prolog",
   "targetProduct": [
     { "@type": "SoftwareApplication", "name": "Google Antigravity" },
@@ -19,7 +19,7 @@
     { "@type": "SoftwareApplication", "name": "GitHub Copilot" },
     { "@type": "SoftwareApplication", "name": "Cursor" }
   ],
-  "keywords": ["prolog", "scryer-prolog", "swi-prolog", "trealla-prolog", "agent-toolkit", "antigravity", "claude-code", "copilot", "cursor", "dcg", "clpz", "sandboxing"]
+  "keywords": ["prolog", "scryer-prolog", "swi-prolog", "trealla-prolog", "tau-prolog", "agent-toolkit", "antigravity", "claude-code", "copilot", "cursor", "dcg", "clpz", "sandboxing"]
 }
 </script>
 
@@ -59,11 +59,16 @@ Multi-engine, cross-platform (Linux, macOS, BSD, Windows) Prolog execution sandb
   - **Logic Paradigms**: `prolog-clp-constraints` (CLP(Z)/CLP(FD)), `prolog-dcg-mastery` (pure DCGs & parsing), `prolog-tabling` (SLG memoization).
   - **Quality & Profiling**: `prolog-linter-static-analysis` (syntax & warning audits), `prolog-performance-profiling` (choicepoint elimination & TCO), `prolog-debugging-workflow` (4-port model debugging).
   - **Integration & Systems**: `prolog-ffi-wasm-embedding` (C, Rust, Python, WASM, JS), `prolog-web-services` (REST & WebSockets), `prolog-neurosymbolic-agent` (LLM + Prolog verifiers).
+  - **Code Review**: `prolog-code-review` (Automated PR reviews, purity, portability & safety audits).
 - **Autonomous Subagents**: Specialized AI subagent definitions in `.agents/agents/`:
   - `prolog-refactor-agent` (Imperative to pure ISO Prolog refactoring).
   - `prolog-test-generator-agent` (Automated unit test generation).
   - `prolog-benchmark-runner-agent` (Multi-engine benchmark comparisons).
   - `prolog-doc-generator-agent` (Covington comment & API documentation extraction).
+  - `prolog-pr-reviewer-agent` (Automated PR auditing, static analysis & test runner).
+  - `prolog-purity-reviewer-agent` (Purity & Covington style review).
+  - `prolog-portability-reviewer-agent` (Multi-engine dialect & portability review).
+  - `prolog-security-reviewer-agent` (Dynamic term injection & safety limits audit).
 
 ## Installation & Setup
 

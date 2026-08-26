@@ -49,3 +49,27 @@ download('https://github.com/user/my_swi_lib/releases/*.zip').
 ```bash
 swi-safe -g "pack_install(my_swi_lib),halt"
 ```
+
+---
+
+## Tau Prolog Packaging (`npm`)
+
+For Tau Prolog projects (Node.js and Web/DOM), use `npm` package manager with `package.json`:
+
+```json
+{
+  "name": "my-tau-prolog-app",
+  "version": "1.0.0",
+  "description": "Tau Prolog embedded application",
+  "main": "index.js",
+  "dependencies": {
+    "tau-prolog": "^0.3.4"
+  }
+}
+```
+
+### Installing Dependencies
+```bash
+npm install tau-prolog
+```
+

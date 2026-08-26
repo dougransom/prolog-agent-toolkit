@@ -56,6 +56,8 @@ AI assistants MUST select and follow the specific dialect standards correspondin
   - Microservices, REST APIs, JSON endpoints, and WebSockets in Prolog.
 - **Neurosymbolic AI**: [.agents/skills/prolog-neurosymbolic-agent/SKILL.md](.agents/skills/prolog-neurosymbolic-agent/SKILL.md)
   - LLM + Prolog integration architecture: LLM for translation & heuristics, Prolog for ground-truth logic verification.
+- **Code Review**: [.agents/skills/prolog-code-review/SKILL.md](.agents/skills/prolog-code-review/SKILL.md)
+  - Guidelines and checklists for auditing Prolog PRs, checking logical purity, determinism, portability, and safety.
 
 ## Autonomous Agent Subagents (`.agents/agents/`)
 
@@ -64,6 +66,10 @@ The toolkit provides dedicated subagents for automated agentic workflows:
 - **Test Generator Agent**: [.agents/agents/prolog-test-generator-agent.md](.agents/agents/prolog-test-generator-agent.md) — Automates unit test suite creation across `testing.pl` and `plunit`.
 - **Benchmark Runner Agent**: [.agents/agents/prolog-benchmark-runner-agent.md](.agents/agents/prolog-benchmark-runner-agent.md) — Multi-engine performance and determinism comparisons.
 - **Doc Generator Agent**: [.agents/agents/prolog-doc-generator-agent.md](.agents/agents/prolog-doc-generator-agent.md) — Extracts Covington comments and generates Markdown API references.
+- **PR Reviewer Agent**: [.agents/agents/prolog-pr-reviewer-agent.md](.agents/agents/prolog-pr-reviewer-agent.md) — Automated Pull Request auditor, static analysis & test runner.
+- **Purity Reviewer Agent**: [.agents/agents/prolog-purity-reviewer-agent.md](.agents/agents/prolog-purity-reviewer-agent.md) — Logical purity, reification, and Covington style auditor.
+- **Portability Reviewer Agent**: [.agents/agents/prolog-portability-reviewer-agent.md](.agents/agents/prolog-portability-reviewer-agent.md) — Multi-engine compatibility auditor across Scryer, SWI, Trealla, Tau, and ISO.
+- **Security Reviewer Agent**: [.agents/agents/prolog-security-reviewer-agent.md](.agents/agents/prolog-security-reviewer-agent.md) — Code injection, search bounds, and dynamic database safety auditor.
 
 ## Project Bootstrapping & Setup Workflow
 
@@ -94,3 +100,21 @@ AI assistants MUST adhere to the following release workflow:
      1. Is a new dev branch warranted?
      2. What is the current release number?
      3. What is the next release to work on (and update version with `.dev1`)?
+
+## Future Engine Expansion & Metadata Protocol
+
+Whenever a new Prolog engine or system is added or supported in this toolkit, all AI assistants MUST systematically update:
+1. **Metadata & Web Annotations**:
+   - `README.md`: Update OpenGraph description (`<meta property="og:description">`), Schema.org snippet (`<script type="application/ld+json">`), keywords, features list, and engine support tables.
+   - `schema.org.jsonld`: Update `description` and `keywords` array.
+   - `pyproject.toml`: Add engine tag to `keywords` and CLI entry point script.
+2. **Coding Standards & Dialects**:
+   - Create `.agents/skills/<engine>-prolog-standards/SKILL.md` detailing ISO/engine compliance rules.
+   - Register dialect skill under **Multi-Engine Dialect Selection & Rules** in `.agents/AGENTS.md`.
+3. **Packaging & Dependencies**:
+   - Update `.agents/skills/prolog-packaging/SKILL.md` to cover package management for the engine (e.g. `bakage`, `pack`, `npm`).
+4. **Testing Frameworks**:
+   - Update `.agents/skills/prolog-testing/SKILL.md` to cover test assertions, runners, and CLI invocation commands.
+5. **Safety Runners & CLI**:
+   - Update `prolog_agent_toolkit/runner.py` and `prolog_agent_toolkit/cli.py` to support binary resolution and safety wrapper entry point `<engine>-safe`.
+

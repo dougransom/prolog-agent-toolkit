@@ -21,5 +21,6 @@ def test_resolve_engine_binary():
     assert resolve_engine_binary("scryer") == "scryer-prolog"
     assert resolve_engine_binary("swi") == "swipl"
     assert resolve_engine_binary("trealla") == "tpl"
+    assert resolve_engine_binary("tau") == "tau-prolog"
     assert resolve_engine_binary("gnu") == "gprolog"
     assert resolve_engine_binary("custom-bin") == "custom-bin"
