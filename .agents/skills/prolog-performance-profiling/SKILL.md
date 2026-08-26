@@ -19,15 +19,26 @@ process_list([], 0).
 process_list([X|Xs], Sum) :- ...
 ```
 
-- **Reification over Cuts**: Instead of using cuts (`!`) to enforce determinism (which destroys logical purity and bidirectionality), use `if_/3` and reified truth tests from `library(reif)`:
+- **Clean Data Representations for Indexing**: Ensure terms are **clean** ([metalevel.at/prolog/data#clean](https://www.metalevel.at/prolog/data#clean)) by wrapping every data element kind in a distinct principal functor (e.g. `leaf(L)` vs `node(L, R)`). Defaulty representations prevent indexing and create open choicepoints.
+
+- **Reification over Cuts (`zcompare/3` & `if_/3`)**: Use `zcompare(Order, X, Y)` (from `library(clpz)`) for integer comparisons. It reifies the comparison into an atom (`<`, `=`, `>`) that matches directly in the first argument, avoiding choice points and cuts:
 
 ```prolog
+:- use_module(library(clpz)).
 :- use_module(library(reif)).
 
-% Pure, deterministic choice without choice points or cuts
+% GOOD: Reified comparison produces an atom amenable to argument indexing
 max_pure(X, Y, Max) :-
-    if_(X #>= Y, Max = X, Max = Y).
+    zcompare(Order, X, Y),
+    max_order(Order, X, Y, Max).
+
+max_order(<, _, Y, Y).
+max_order(=, X, _, X).
+max_order(>, X, _, X).
 ```
+
+- **Early Pruning**: Place deterministic, non-suspending goals (`dif/2`, CLP(Z) constraints) before general search goals to prune search trees as early as possible.
+
 
 ---
 

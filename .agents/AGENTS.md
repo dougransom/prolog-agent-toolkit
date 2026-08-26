@@ -10,6 +10,9 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
   - Write for humans first; keep clauses simple and readable; use explicit goal ordering and clean predicate naming.
 - **Purity Guidelines**: [.agents/references/prolog_guidelines.md](.agents/references/prolog_guidelines.md)
   - Prefer logical purity (`if_/3`, `dif/2`, pure DCGs); avoid unnecessary cuts (`!`) and side effects.
+  - Prefer **clean vs. defaulty data representations** where element kinds are distinguished by principal functors (e.g. `leaf(L)` vs `node(L, R)`).
+  - Prefer higher-order constructs (`call/N`, `call//N`, `maplist/N`, `foldl/N`) and `library(lambda)` (`\X^...`, `\X^Y^Goal`) to avoid duplicating predicate structures or DCG traversals.
+  - Prefer pure efficiency: first-argument indexing, reified `zcompare/3` arithmetic comparison, and early constraint pruning (`dif/2`, CLP(Z)).
   - When relating conditions to values, isolate the test-value relation (e.g. `if_(G, A="A", A="B"), write(A)`).
 - **Declarative AI Workflow**: [.agents/skills/prolog-declarative-workflow/SKILL.md](.agents/skills/prolog-declarative-workflow/SKILL.md)
   - Use declarative reasoning based on unification, constraints, and backtracking (never imperative thinking).
@@ -17,6 +20,8 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
   - Use test-first scaffolding (`testing.pl` / `plunit` / configured test framework) and DCG structure generation.
 - **Programmer Steering Guidelines**: [.agents/references/programmer_guidelines.md](.agents/references/programmer_guidelines.md)
   - Best practices for human programmers when prompting, constraining, and steering AI coding assistants.
+- **Human Editing Syntax Error Diagnostics**:
+  - Whenever Prolog compilation or consult fails after human editing, AI assistants MUST scan target source files for common punctuation typos (`:` instead of `:-`, `->` instead of `-->`, `#` or `//` line comments, `!=`, `<=`, `=>`, `<>`), and report exact file, line number, column, and fix recommendations to the programmer.
 
 ## Multi-Engine Dialect Selection & Rules
 

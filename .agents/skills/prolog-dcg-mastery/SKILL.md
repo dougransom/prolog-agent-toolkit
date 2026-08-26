@@ -84,7 +84,24 @@ For complex programming languages or DSLs, split parsing into two pure DCG passe
 
 ---
 
-## 6. Execution Safety & Testing
+## 6. Higher-Order DCGs (`call//N`)
+
+Avoid duplicating DCG rules just to vary an element non-terminal or predicate. Use `call//N` to parameterize grammar rules:
+
+```prolog
+% Generic DCG rule to match a list of elements using a parameter non-terminal nonterm//1
+seq_of([], _) --> [].
+seq_of([X|Xs], NonTerm) -->
+    call(NonTerm, X),
+    seq_of(Xs, NonTerm).
+
+% Example usage with lambda or defined non-terminal
+% phrase(seq_of(Xs, \C^([C], { char_type(C, digit) })), "123")
+```
+
+---
+
+## 7. Execution Safety & Testing
 
 Test DCG grammars with `testing.pl` or `plunit`:
 

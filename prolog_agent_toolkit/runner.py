@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import time
 import shutil
@@ -109,6 +110,22 @@ def kill_process_tree(pid: int) -> None:
         pass
 
 
+def extract_prolog_files_from_args(args: List[str]) -> List[str]:
+    """Extract candidate Prolog file paths from CLI arguments and consult goals."""
+    files = []
+    for arg in args:
+        if arg.endswith(".pl") or arg.endswith(".prolog"):
+            if os.path.exists(arg):
+                files.append(arg)
+        elif "consult(" in arg:
+            # Extract paths inside consult('path.pl') or consult("path.pl")
+            matches = re.findall(r"consult\(['\"]([^'\"]+)['\"]\)", arg)
+            for m in matches:
+                if os.path.exists(m):
+                    files.append(m)
+    return list(dict.fromkeys(files))
+
+
 def run_prolog_safe(
     args: List[str],
     default_engine: str = "scryer",
@@ -116,7 +133,26 @@ def run_prolog_safe(
     default_memory: str = "50M",
     default_cpu_quota: str = "65%",
 ) -> int:
-    """Run Prolog binary safely with cross-platform timeout, priority, and memory safeguards."""
+    """Run Prolog binary safely with cross-platform timeout, priority, memory safeguards, and syntax error diagnostics."""
+    from prolog_agent_toolkit.syntax_checker import check_human_syntax_errors, format_syntax_diagnostics
+
+    # Support standalone syntax check flag --check <file.pl>
+    if "--check" in args:
+        idx = args.index("--check")
+        check_files = args[idx + 1:] if idx + 1 < len(args) else []
+        if not check_files:
+            check_files = extract_prolog_files_from_args(args)
+        all_issues = []
+        for f in check_files:
+            if os.path.exists(f):
+                all_issues.extend(check_human_syntax_errors(f))
+        if all_issues:
+            sys.stderr.write(format_syntax_diagnostics(all_issues))
+            return 1
+        else:
+            sys.stdout.write("[prolog-safe] No obvious human syntax editing errors found.\n")
+            return 0
+
     engine_name = os.environ.get("PROLOG_ENGINE", default_engine)
     timeout_str = os.environ.get("PROLOG_TIMEOUT", default_timeout)
     memory_str = os.environ.get("PROLOG_MEMORY_MAX", default_memory)
@@ -132,6 +168,8 @@ def run_prolog_safe(
     timeout_sec = parse_timeout_seconds(timeout_str)
     memory_bytes = parse_memory_bytes(memory_str)
     system_name = platform.system()
+
+    returncode = 0
 
     # On Linux, try systemd-run if available and cgroups active
     if system_name == "Linux" and shutil.which("systemd-run") and os.path.exists("/sys/fs/cgroup"):
@@ -152,41 +190,53 @@ def run_prolog_safe(
         ] + args
         try:
             res = subprocess.run(cmd)
-            return res.returncode
+            returncode = res.returncode
         except Exception:
             # Fall through to Python native execution on failure
             pass
 
-    # Native Python execution with process tree supervision
-    full_cmd = [bin_path] + args
+    if returncode == 0 and 'res' not in locals():
+        # Native Python execution with process tree supervision
+        full_cmd = [bin_path] + args
 
-    preexec_fn = None
-    if system_name != "Windows":
-        preexec_fn = lambda: set_process_limits_posix(memory_bytes)
-
-    try:
-        proc = psutil.Popen(
-            full_cmd,
-            preexec_fn=preexec_fn,
-        )
-
-        if system_name == "Windows":
-            try:
-                proc.nice(psutil.BELOW_NORMAL_PRIORITY_CLASS)
-            except Exception:
-                pass
+        preexec_fn = None
+        if system_name != "Windows":
+            preexec_fn = lambda: set_process_limits_posix(memory_bytes)
 
         try:
-            returncode = proc.wait(timeout=timeout_sec)
-            return returncode
-        except psutil.TimeoutExpired:
-            sys.stderr.write(f"\n[prolog-safe] ERROR: Execution timed out after {timeout_sec}s. Terminating process tree.\n")
-            kill_process_tree(proc.pid)
-            return 124
-    except KeyboardInterrupt:
-        if 'proc' in locals():
-            kill_process_tree(proc.pid)
-        return 130
-    except Exception as e:
-        sys.stderr.write(f"[prolog-safe] Execution failed: {e}\n")
-        return 1
+            proc = psutil.Popen(
+                full_cmd,
+                preexec_fn=preexec_fn,
+            )
+
+            if system_name == "Windows":
+                try:
+                    proc.nice(psutil.BELOW_NORMAL_PRIORITY_CLASS)
+                except Exception:
+                    pass
+
+            try:
+                returncode = proc.wait(timeout=timeout_sec)
+            except psutil.TimeoutExpired:
+                sys.stderr.write(f"\n[prolog-safe] ERROR: Execution timed out after {timeout_sec}s. Terminating process tree.\n")
+                kill_process_tree(proc.pid)
+                returncode = 124
+        except KeyboardInterrupt:
+            if 'proc' in locals():
+                kill_process_tree(proc.pid)
+            returncode = 130
+        except Exception as e:
+            sys.stderr.write(f"[prolog-safe] Execution failed: {e}\n")
+            returncode = 1
+
+    # On compilation or execution failure, run diagnostic check on target Prolog files
+    if returncode != 0:
+        target_files = extract_prolog_files_from_args(args)
+        all_issues = []
+        for file_path in target_files:
+            all_issues.extend(check_human_syntax_errors(file_path))
+        if all_issues:
+            sys.stderr.write(format_syntax_diagnostics(all_issues))
+
+    return returncode
+

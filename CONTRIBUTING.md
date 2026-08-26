@@ -12,7 +12,7 @@ The toolkit consists of two primary layers:
    - Cross-platform resource sandboxing, execution timeout monitoring, low-CPU scheduling, and RAM limits.
    - Entry points: `prolog-safe`, `scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`.
 2. **AI Agent Customizations** (`.agents/`):
-   - Rules (`.agents/AGENTS.md`, `.agents/references/`) defining ISO Prolog coding standards. `.agents/AGENTS.md` is the **single source of truth**; `CLAUDE.md` and `.cursorrules` are Git symlinks pointing to it.
+   - Rules (`.agents/AGENTS.md`, `.agents/references/`) defining ISO Prolog coding standards. `.agents/AGENTS.md` (symlinked as `AGENTS.md` at root) is the **vendor-agnostic single source of truth** across all AI tools.
    - Skills (`.agents/skills/`) for dialect standards, unit testing (`testing.pl`), package management (`bakage`), and version releases.
 
 ---

@@ -57,3 +57,21 @@ debug_vars(Vars) :-
     copy_term(Vars, Vars, Goals),
     format("Residual constraints: ~w~n", [Goals]).
 ```
+
+---
+
+## 5. Compilation Failure & Human Editing Syntax Diagnostics
+
+If a Prolog module fails to compile or consult after human editing:
+
+1. **Automatic Diagnostics**: Run standard safety wrapper (`prolog-safe` / `scryer-safe`). Upon non-zero compilation status, `prolog-safe` automatically outputs line, column, and fix recommendations for human syntax typos.
+2. **Manual Check Command**:
+   ```bash
+   prolog-safe --check target_file.pl
+   ```
+3. **Common Human Operator & Comment Typos**:
+   - **`:` instead of `:-`**: Dropped hyphen causes Prolog to parse `head : body` as module qualification `Module:Goal` (creating a fact with head `Module:Goal`).
+   - **`#` or `//` instead of `%`**: Using Python or C comment symbols triggers syntax errors at line start.
+   - **`->` instead of `-->`**: Using single-arrow if-then in place of DCG rule operator.
+   - **`!=`, `<=`, `=>`, `<>`**: Using non-Prolog comparison symbols instead of `=\=`, `\=`, `=<`, `>=`.
+
