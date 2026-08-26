@@ -1,7 +1,7 @@
 <!-- OpenGraph Metadata -->
 <meta property="og:title" content="Prolog Agent Toolkit" />
 <meta property="og:type" content="website" />
-<meta property="og:description" content="Multi-engine, cross-platform Prolog execution sandboxing, AI agent standards, and skills toolkit for Scryer Prolog, SWI-Prolog, Trealla Prolog, and Tau Prolog. Supporting Google Antigravity, Claude Code, GitHub Copilot, and Cursor." />
+<meta property="og:description" content="Multi-engine, cross-platform Prolog execution sandboxing, AI agent standards, and skills toolkit for Scryer Prolog, SWI-Prolog, Trealla Prolog, and Tau Prolog. Supporting Google Antigravity, Claude Code, GitHub Copilot, Cursor, aidermacs, agent-shell, and gptel." />
 <meta property="og:category" content="Developer Tools, Prolog, AI Agents" />
 
 <!-- Schema.org JSON-LD Metadata -->
@@ -11,15 +11,18 @@
   "@type": "SoftwareSourceCode",
   "name": "Prolog Agent Toolkit",
   "version": "0.0.1.dev2",
-  "description": "Multi-engine, cross-platform Prolog execution sandboxing, AI agent standards, and skills toolkit for Scryer Prolog, SWI-Prolog, Trealla Prolog, and Tau Prolog. Supporting Google Antigravity, Claude Code, GitHub Copilot, and Cursor.",
+  "description": "Multi-engine, cross-platform Prolog execution sandboxing, AI agent standards, and skills toolkit for Scryer Prolog, SWI-Prolog, Trealla Prolog, and Tau Prolog. Supporting Google Antigravity, Claude Code, GitHub Copilot, Cursor, aidermacs, agent-shell, and gptel.",
   "programmingLanguage": "Prolog",
   "targetProduct": [
     { "@type": "SoftwareApplication", "name": "Google Antigravity" },
     { "@type": "SoftwareApplication", "name": "Claude Code" },
     { "@type": "SoftwareApplication", "name": "GitHub Copilot" },
-    { "@type": "SoftwareApplication", "name": "Cursor" }
+    { "@type": "SoftwareApplication", "name": "Cursor" },
+    { "@type": "SoftwareApplication", "name": "aidermacs" },
+    { "@type": "SoftwareApplication", "name": "agent-shell" },
+    { "@type": "SoftwareApplication", "name": "gptel" }
   ],
-  "keywords": ["prolog", "scryer-prolog", "swi-prolog", "trealla-prolog", "tau-prolog", "agent-toolkit", "antigravity", "claude-code", "copilot", "cursor", "dcg", "clpz", "sandboxing"]
+  "keywords": ["prolog", "scryer-prolog", "swi-prolog", "trealla-prolog", "tau-prolog", "agent-toolkit", "antigravity", "claude-code", "copilot", "cursor", "aidermacs", "agent-shell", "gptel", "emacs", "dcg", "clpz", "sandboxing"]
 }
 </script>
 
@@ -35,12 +38,12 @@ Multi-engine, cross-platform (Linux, macOS, BSD, Windows) Prolog execution sandb
 
 | Category | Supported Technologies / Systems |
 |---|---|
-| **AI Assistants & IDEs** | Google Antigravity (AGY), Claude Code (Anthropic), GitHub Copilot, Cursor, Windsurf |
+| **AI Assistants & IDEs** | Google Antigravity (AGY), Claude Code (Anthropic), GitHub Copilot, Cursor, Windsurf, Emacs AI (`aidermacs`, `agent-shell`, `gptel`) |
 | **Prolog Engines** | Scryer Prolog (ISO Default), SWI-Prolog, Trealla Prolog, Tau Prolog, GNU Prolog, Ciao Prolog |
 | **Language Standards** | ISO Prolog, Definite Clause Grammars (DCG), CLP(Z) Constraints, Reification (`reif`) |
 | **Agent Capabilities** | Execution Sandboxing, `testing.pl` Unit Testing, `bakage` Manifests, Multi-file Release Versioning |
 
-**Keywords**: `prolog`, `agent-toolkit`, `scryer-prolog`, `swi-prolog`, `trealla-prolog`, `tau-prolog`, `antigravity`, `claude-code`, `copilot`, `cursor`, `dcg`, `clpz`, `sandboxing`, `testing.pl`, `bakage`
+**Keywords**: `prolog`, `agent-toolkit`, `scryer-prolog`, `swi-prolog`, `trealla-prolog`, `tau-prolog`, `antigravity`, `claude-code`, `copilot`, `cursor`, `aidermacs`, `agent-shell`, `gptel`, `emacs`, `dcg`, `clpz`, `sandboxing`, `testing.pl`, `bakage`
 
 ## Features
 
@@ -132,7 +135,7 @@ Install rules and skills into your global AI configuration folder so **every** p
 To prevent instruction drift across different AI tools and assistants:
 
 - **Vendor-Agnostic Single Source of Truth**: [.agents/AGENTS.md](.agents/AGENTS.md) (symlinked as `AGENTS.md` at root) is the single source of truth for all Prolog rules, dialect choices, and safety constraints.
-- **Universal Tool Support**: All modern AI tools (Gemini CLI, Antigravity, Claude Code, Cursor, Windsurf, Codex) read `AGENTS.md` natively, eliminating the need for vendor-specific files like `CLAUDE.md` or `.cursorrules`.
+- **Universal Tool Support**: All modern AI tools (Gemini CLI, Antigravity, Claude Code, Cursor, Windsurf, Codex, Emacs `aidermacs`/`agent-shell`/`gptel`) read `AGENTS.md` natively, eliminating the need for vendor-specific files like `CLAUDE.md` or `.cursorrules`.
 - **Zero Maintenance Overhead**: Editing `.agents/AGENTS.md` updates all tools instantly without copy-pasting or file duplication.
 
 #### Option C: Custom Search Paths via `skills.json` (Multi-Directory Search Path)
@@ -196,7 +199,7 @@ The toolkit includes automated agent skills located in `.agents/skills/`:
 
 For complete details, see [.agents/references/programmer_guidelines.md](.agents/references/programmer_guidelines.md).
 
-When working with AI coding assistants (Google Antigravity, Claude Code, Cursor, Copilot) on Prolog software:
+When working with AI coding assistants (Google Antigravity, Claude Code, Cursor, Copilot, Emacs `aidermacs`/`gptel`) on Prolog software:
 
 1. **Provide Semantics & AST Shapes, Not Logic Invention**: Give the AI module skeletons, AST constructors, and type invariants instead of asking it to invent relations from scratch.
 2. **Specify Mode & Determinism Contracts Explicitly**: State input/output modes (`+`/`-`) and determinism requirements (`det`, `semidet` fail cleanly, `nondet` backtracking).

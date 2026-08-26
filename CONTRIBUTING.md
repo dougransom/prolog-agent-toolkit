@@ -31,20 +31,22 @@ The toolkit consists of two primary layers:
 
    Detailed instructions for the AI assistant...
    ```
-3. Test skill discovery in Google Antigravity or Claude Code.
+3. Test skill discovery in Google Antigravity, Claude Code, or Emacs AI (`aidermacs`/`gptel`).
 
 ---
 
-## 3. Running Tests Locally
+## 3. Running Tests Locally & Python Execution Rules
 
-Use `uv` to run pytest suite for CLI wrappers:
+Python tools and tests MUST NOT leave intermediate bytecode (`__pycache__`, `.pyc`) or test cache artifacts inside the source or test directories.
+
+Always run pytest and Python tools with `PYTHONDONTWRITEBYTECODE=1` (or `PYTHONPYCACHEPREFIX=.cache/pycache`):
 
 ```bash
-# Run pytest suite
-uv run pytest
+# Run pytest suite without generating __pycache__ in source tree
+PYTHONDONTWRITEBYTECODE=1 uv run pytest
 
 # Test CLI commands manually
-uv run scryer-safe -g "write('Test OK'), nl, halt."
+PYTHONDONTWRITEBYTECODE=1 uv run scryer-safe -g "write('Test OK'), nl, halt."
 ```
 
 ---

@@ -88,6 +88,10 @@ When initializing, bootstrapping, or creating a new Prolog project/repository, a
 - **CLI Entry Points**: ALL Prolog code executions MUST use the cross-platform CLI safety entry points (`prolog-safe`, `scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`).
 - **Forbidden Invocations**: AI assistants MUST NEVER execute raw interpreter binaries (`scryer-prolog`, `swipl`, `tpl`, `tau-prolog`, `gprolog`, `ciao`) directly.
 - **Specifying Engine**: Set `PROLOG_ENGINE` environment variable (e.g., `export PROLOG_ENGINE=scryer`, `export PROLOG_ENGINE=swi`, `export PROLOG_ENGINE=trealla`, `export PROLOG_ENGINE=tau`).
+- **Python Invocation & Clean Workspace**:
+  - Python tools, test runners, and CLI invocations MUST NOT leave intermediate bytecode or cache artifacts (`__pycache__`, `.pyc`, `.pytest_cache`) in source or test directories.
+  - Python MUST be invoked with bytecode generation disabled (`PYTHONDONTWRITEBYTECODE=1` or `python -B`), or redirected to a central cache directory (`PYTHONPYCACHEPREFIX=.cache/pycache`).
+  - Example command: `PYTHONDONTWRITEBYTECODE=1 uv run pytest` or `PYTHONDONTWRITEBYTECODE=1 uv run <script>`.
 
 
 ## Git Branching & Release Workflow
