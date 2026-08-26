@@ -67,16 +67,52 @@ swi-safe -g "run_tests,halt" tests/test_suite.pl
 
 ---
 
-## Trealla / Portable ISO Testing
+## Trealla & Tau Prolog / Portable ISO Testing
 
-For Trealla or generic ISO engines, write pure assertion runner predicates evaluated via `trealla-safe` or `prolog-safe`.
+For Trealla, Tau Prolog CLI, or generic ISO engines, write pure assertion runner predicates evaluated via `trealla-safe`, `tau-safe`, or `prolog-safe`.
+
 ```prolog
 run_all_tests :-
     (   test_clause1, test_clause2 ->
-        write('ALL TESTS PASSED'), nl
+        write('ALL TESTS PASSED'), nl, halt(0)
     ;   write('TEST FAILURE'), nl, halt(1)
     ).
 ```
+
+### Running CLI Tests Safely:
 ```bash
+# Trealla Prolog
 trealla-safe -g "run_all_tests,halt" tests/test_suite.pl
+
+# Tau Prolog CLI
+tau-safe -g "run_all_tests,halt" tests/test_suite.pl
+```
+
+---
+
+## Tau Prolog JavaScript / Node.js Embedded Testing
+
+For Tau Prolog embedded in JavaScript applications or Node.js test runners (Jest, Mocha, Vitest, Node test runner):
+
+```javascript
+const pl = require("tau-prolog");
+
+describe("Tau Prolog Test Suite", () => {
+    let session;
+
+    beforeEach(() => {
+        session = pl.create(1000);
+    });
+
+    test("addition query", (done) => {
+        session.query("X is 2 + 2.", {
+            success: () => {
+                session.answer((answer) => {
+                    expect(session.format_answer(answer)).toBe("X = 4.");
+                    done();
+                });
+            }
+        });
+    });
+});
 ```
