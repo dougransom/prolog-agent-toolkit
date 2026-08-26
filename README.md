@@ -56,6 +56,14 @@ Multi-engine, cross-platform (Linux, macOS, BSD, Windows) Prolog execution sandb
   - **Testing**: `prolog-testing` (Scryer [`testing.pl`](https://github.com/bakaq/testing.pl), SWI `plunit`, portable ISO assertions).
   - **Packaging**: `prolog-packaging` (Scryer [`bakage`](https://github.com/bakaq/bakage) manifests, SWI `pack`).
   - **Release & Versioning**: `prolog-release` (Multi-file version synchronization, Git tagging, post-release workflows).
+  - **Logic Paradigms**: `prolog-clp-constraints` (CLP(Z)/CLP(FD)), `prolog-dcg-mastery` (pure DCGs & parsing), `prolog-tabling` (SLG memoization).
+  - **Quality & Profiling**: `prolog-linter-static-analysis` (syntax & warning audits), `prolog-performance-profiling` (choicepoint elimination & TCO), `prolog-debugging-workflow` (4-port model debugging).
+  - **Integration & Systems**: `prolog-ffi-wasm-embedding` (C, Rust, Python, WASM, JS), `prolog-web-services` (REST & WebSockets), `prolog-neurosymbolic-agent` (LLM + Prolog verifiers).
+- **Autonomous Subagents**: Specialized AI subagent definitions in `.agents/agents/`:
+  - `prolog-refactor-agent` (Imperative to pure ISO Prolog refactoring).
+  - `prolog-test-generator-agent` (Automated unit test generation).
+  - `prolog-benchmark-runner-agent` (Multi-engine benchmark comparisons).
+  - `prolog-doc-generator-agent` (Covington comment & API documentation extraction).
 
 ## Installation & Setup
 

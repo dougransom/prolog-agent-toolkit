@@ -38,6 +38,32 @@ AI assistants MUST select and follow the specific dialect standards correspondin
   - Scryer `bakage` manifests (default) and SWI `pack` manager.
 - **Prolog Release & Versioning**: [.agents/skills/prolog-release/SKILL.md](.agents/skills/prolog-release/SKILL.md)
   - Multi-file version synchronization (`pack.pl`, `pyproject.toml`, `README.md`), Git tagging, and post-release prompts.
+- **CLP Constraints**: [.agents/skills/prolog-clp-constraints/SKILL.md](.agents/skills/prolog-clp-constraints/SKILL.md)
+  - Combinatorial optimization, scheduling, integer constraints (`library(clpz)`, `library(clpfd)`), labeling strategies, and reification.
+- **DCG Mastery**: [.agents/skills/prolog-dcg-mastery/SKILL.md](.agents/skills/prolog-dcg-mastery/SKILL.md)
+  - Definite Clause Grammars, AST constructors, tokenizer passes, pushback lookahead without cuts, and sequence serializers.
+- **Prolog Tabling**: [.agents/skills/prolog-tabling/SKILL.md](.agents/skills/prolog-tabling/SKILL.md)
+  - Memoization, SLG resolution, cyclic graph reachability, Datalog queries, and mode-directed tabling.
+- **Linter & Static Analysis**: [.agents/skills/prolog-linter-static-analysis/SKILL.md](.agents/skills/prolog-linter-static-analysis/SKILL.md)
+  - Detection of singleton variables, discontiguous clauses, non-terminating recursion, and non-logical cuts via safety runners.
+- **Performance & Profiling**: [.agents/skills/prolog-performance-profiling/SKILL.md](.agents/skills/prolog-performance-profiling/SKILL.md)
+  - Choicepoint audits, first-argument indexing optimization, tail-recursion accumulators, and pure reified logic (`library(reif)`).
+- **Debugging Workflow**: [.agents/skills/prolog-debugging-workflow/SKILL.md](.agents/skills/prolog-debugging-workflow/SKILL.md)
+  - 4-port model debugging (`trace`, `spy`, `gtrace`), step-by-step goal execution, and residual constraint inspection.
+- **FFI & WASM Embedding**: [.agents/skills/prolog-ffi-wasm-embedding/SKILL.md](.agents/skills/prolog-ffi-wasm-embedding/SKILL.md)
+  - Interfacing Prolog with C, Rust, Python (`janus-swi`), JavaScript, and WebAssembly targets.
+- **Web Services & HTTP**: [.agents/skills/prolog-web-services/SKILL.md](.agents/skills/prolog-web-services/SKILL.md)
+  - Microservices, REST APIs, JSON endpoints, and WebSockets in Prolog.
+- **Neurosymbolic AI**: [.agents/skills/prolog-neurosymbolic-agent/SKILL.md](.agents/skills/prolog-neurosymbolic-agent/SKILL.md)
+  - LLM + Prolog integration architecture: LLM for translation & heuristics, Prolog for ground-truth logic verification.
+
+## Autonomous Agent Subagents (`.agents/agents/`)
+
+The toolkit provides dedicated subagents for automated agentic workflows:
+- **Refactoring Agent**: [.agents/agents/prolog-refactor-agent.md](.agents/agents/prolog-refactor-agent.md) — Converts imperative Prolog to pure ISO Prolog (`if_/3`, `dif/2`, pure DCGs).
+- **Test Generator Agent**: [.agents/agents/prolog-test-generator-agent.md](.agents/agents/prolog-test-generator-agent.md) — Automates unit test suite creation across `testing.pl` and `plunit`.
+- **Benchmark Runner Agent**: [.agents/agents/prolog-benchmark-runner-agent.md](.agents/agents/prolog-benchmark-runner-agent.md) — Multi-engine performance and determinism comparisons.
+- **Doc Generator Agent**: [.agents/agents/prolog-doc-generator-agent.md](.agents/agents/prolog-doc-generator-agent.md) — Extracts Covington comments and generates Markdown API references.
 
 ## Project Bootstrapping & Setup Workflow
 
