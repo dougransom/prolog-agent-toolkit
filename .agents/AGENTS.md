@@ -1,5 +1,7 @@
 # Prolog Agent Toolkit Guidelines & Standards
 
+See [.agents/AGENTS.md](.agents/AGENTS.md) for full toolkit guidelines, dialect rules, project initialization (`prolog-agent init`), release workflow (`prolog-agent release`), and safety runner standards.
+
 When writing, refactoring, reviewing, or running Prolog code across any project or Prolog engine, all AI assistants MUST adhere to the standards defined below.
 
 ## Universal Prolog Style & Purity Guidelines
@@ -76,16 +78,24 @@ The toolkit provides dedicated subagents for automated agentic workflows:
 - **Portability Reviewer Agent**: [.agents/agents/prolog-portability-reviewer-agent.md](.agents/agents/prolog-portability-reviewer-agent.md) — Multi-engine compatibility auditor across Scryer, SWI, Trealla, Tau, and ISO.
 - **Security Reviewer Agent**: [.agents/agents/prolog-security-reviewer-agent.md](.agents/agents/prolog-security-reviewer-agent.md) — Code injection, search bounds, and dynamic database safety auditor.
 
-## Project Bootstrapping & Setup Workflow
+## Project Bootstrapping & Initializer Workflow (`prolog-agent init`)
 
+AI assistants provide the virtual and CLI command: `prolog-agent init <project-name> [--engine scryer|swi|trealla|tau|iso]`.
 
-When initializing, bootstrapping, or creating a new Prolog project/repository, all AI assistants MUST prompt the user:
-1. **Testing Setup**: *"Would you like to set up unit testing (`testing.pl` for Scryer, `plunit` for SWI)?"*
-2. **Packaging Setup**: *"Would you like to set up package metadata (`bakage` manifest `pack.pl` for Scryer, `pack.pl` for SWI)?"*
+When a user requests a new project or starts a new Prolog repository, AI assistants MUST execute or guide the initializer workflow:
+1. **Directory Structure**: Create `<project-name>/`, containing `src/`, `tests/`, `README.md`, and `.agents/` (symlink or copy instructions).
+2. **Package Manifest**:
+   - **Scryer / ISO**: Create `bakage.toml` (`name`, `version = "0.1.0"`, `modules = ["src/<project-name>.pl"]`, `requires`) and `pack.pl`.
+   - **SWI-Prolog**: Create `pack.pl` manifest (`name('<project-name>')`, `version('0.1.0')`, `title`, `author`).
+   - **Tau Prolog**: Create `package.json` (`name`, `version`, `tau-prolog` dependency).
+3. **Starter Module**: Create `src/<project-name>.pl` with module declaration, Covington comment block, and sample pure predicate.
+4. **Testing Scaffolding**: Create `tests/testing.pl` (Scryer/ISO) or `tests/test_<project-name>.pl` (`plunit` for SWI).
+5. **Dialect Standards**: Include relevant dialect skills (`scryer-prolog-standards`, `swi-prolog-standards`, `prolog-conventions`).
+6. **README.md**: Include instructions for running tests, using safe runners (`prolog-safe`, `scryer-safe`, `swi-safe`), linking agent skills, and dialect notes.
 
 ## Safety & Cross-Platform Execution
 
-- **CLI Entry Points**: ALL Prolog code executions MUST use the cross-platform CLI safety entry points (`prolog-safe`, `scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`).
+- **CLI Entry Points**: ALL Prolog code executions MUST use the cross-platform CLI safety entry points (`prolog-agent`, `prolog-safe`, `scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`).
 - **Forbidden Invocations**: AI assistants MUST NEVER execute raw interpreter binaries (`scryer-prolog`, `swipl`, `tpl`, `tau-prolog`, `gprolog`, `ciao`) directly.
 - **Specifying Engine**: Set `PROLOG_ENGINE` environment variable (e.g., `export PROLOG_ENGINE=scryer`, `export PROLOG_ENGINE=swi`, `export PROLOG_ENGINE=trealla`, `export PROLOG_ENGINE=tau`).
 - **Python Invocation & Clean Workspace**:
@@ -93,22 +103,18 @@ When initializing, bootstrapping, or creating a new Prolog project/repository, a
   - Python MUST be invoked with bytecode generation disabled (`PYTHONDONTWRITEBYTECODE=1` or `python -B`), or redirected to a central cache directory (`PYTHONPYCACHEPREFIX=.cache/pycache`).
   - Example command: `PYTHONDONTWRITEBYTECODE=1 uv run pytest` or `PYTHONDONTWRITEBYTECODE=1 uv run <script>`.
 
+## Release & Versioning Workflow (`prolog-agent release`)
 
-## Git Branching & Release Workflow
+AI assistants provide the virtual and CLI command: `prolog-agent release [--version X.Y.Z]`.
 
-AI assistants MUST adhere to the following release workflow:
-
-1. **Development Branching**: Development commits for current work take place on branch `DEV202608` (or active development branch).
-2. **Dev Version Format**: Working version numbers follow the `X.Y.Z.devN` convention (e.g. `0.0.1.dev1`) across `README.md`, `pyproject.toml`, and `prolog_agent_toolkit/__init__.py`.
-3. **Release Execution**:
-   - Update version in `README.md`, `pyproject.toml`, and `prolog_agent_toolkit/__init__.py` to release version (e.g. `0.0.1`).
-   - Create annotated Git tag (e.g. `git tag -a v0.0.1 -m "Release v0.0.1"`).
-   - Commit and push.
-4. **Post-Release Prompting**:
-   - Immediately after a release, ask the user:
-     1. Is a new dev branch warranted?
-     2. What is the current release number?
-     3. What is the next release to work on (and update version with `.dev1`)?
+When cutting a release or bumping versions, AI assistants MUST execute the release workflow:
+1. **Synchronize Versions**: Update version strings across package manifests (`bakage.toml`, `pack.pl`, `package.json`), `pyproject.toml`, `__init__.py`, and `README.md`.
+2. **Generate CHANGELOG.md**: Create or update `CHANGELOG.md` with release version header (`## [X.Y.Z] - YYYY-MM-DD`), summary of changes, added/modified predicates, and breaking changes.
+3. **Tag Release**: Instruct the user or execute git commands (`git commit -am "Release vX.Y.Z"`, `git tag -a vX.Y.Z -m "Release vX.Y.Z"`).
+4. **Post-Release Prompting**: Immediately after a release, ask the user:
+   1. Is a new dev branch warranted?
+   2. What is the current release number?
+   3. What is the next release version to work on (with `.dev1`)?
 
 ## Future Engine Expansion & Metadata Protocol
 

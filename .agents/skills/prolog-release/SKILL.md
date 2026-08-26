@@ -32,12 +32,21 @@ When bumping or releasing a version, the AI assistant MUST inspect and synchroni
 
 ---
 
-## Release Execution Workflow
+## Release Execution Workflow (`prolog-agent release`)
 
-When the user asks to prepare or cut a release:
+When preparing or cutting a release, execute or run:
 
-1. **Audit Files**: Search the workspace for all version references using code search.
-2. **Update to Release Version**: Change working `.devN` versions to clean release format `X.Y.Z` across all audited files.
+```bash
+prolog-agent release [--version X.Y.Z]
+```
+
+### Workflow Steps:
+1. **Audit & Synchronize Versions**: Change working `.devN` versions to clean release format `X.Y.Z` across `bakage.toml`, `pack.pl`, `package.json`, `pyproject.toml`, `__init__.py`, and `README.md`.
+2. **Generate CHANGELOG.md**: Create or update `CHANGELOG.md` with:
+   - Version header (`## [X.Y.Z] - YYYY-MM-DD`)
+   - Summary of changes
+   - Added/modified predicates
+   - Breaking changes
 3. **Commit & Tag**:
    ```bash
    git commit -am "Release vX.Y.Z"
@@ -47,3 +56,4 @@ When the user asks to prepare or cut a release:
    Prompt the user:
    - *Is a new dev branch warranted for future development?*
    - *What is the target version for the next release (e.g. update files to `0.0.2.dev1` or `0.1.0.dev1`)?*
+

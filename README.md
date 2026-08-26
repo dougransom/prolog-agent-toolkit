@@ -49,11 +49,15 @@ Multi-engine, cross-platform (Linux, macOS, BSD, Windows) Prolog execution sandb
 
 - **Cross-Platform Safety Wrappers**: Runs Prolog engines (`scryer-prolog`, `swipl`, `tpl`, `tau-prolog`, `gprolog`, `ciao`) safely with execution timeout limits, low CPU priority, and memory quota monitoring across Linux, macOS, BSD, and Windows.
 - **CLI Entry Points**: Built-in CLI commands:
+  - `prolog-agent` — Project initializer (`init`), release version manager (`release`), subagent listing, and skill validation.
   - `prolog-safe` — Multi-engine generic safety runner (controlled via `PROLOG_ENGINE`).
   - `scryer-safe` — Scryer Prolog safety runner shortcut.
   - `swi-safe` — SWI-Prolog safety runner shortcut.
   - `trealla-safe` — Trealla Prolog safety runner shortcut.
   - `tau-safe` — Tau Prolog safety runner shortcut.
+- **Project Initializer & Release Workflows**:
+  - `prolog-agent init <project-name> [--engine scryer|swi|trealla|tau|iso]` — Scaffolds `src/`, `tests/`, `README.md`, `.agents` link instructions, engine-specific manifest (`bakage.toml`, `pack.pl`, `package.json`), starter module, and test harness (`testing.pl` / `plunit`).
+  - `prolog-agent release [--version X.Y.Z]` — Version synchronization across manifest files, `CHANGELOG.md` generation, and Git release tagging instructions.
 - **Agent Rules & Skills**: Pre-configured standards and workflows for:
   - **Engine Dialects**: `scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, `tau-prolog-standards`, `prolog-conventions`.
   - **Testing**: `prolog-testing` (Scryer [`testing.pl`](https://github.com/bakaq/testing.pl), SWI `plunit`, portable ISO assertions).

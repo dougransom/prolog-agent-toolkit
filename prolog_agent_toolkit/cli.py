@@ -6,6 +6,8 @@ os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
 
 from prolog_agent_toolkit.runner import run_prolog_safe
 from prolog_agent_toolkit.skill_validator import validate_skills_cli
+from prolog_agent_toolkit.project import init_project
+from prolog_agent_toolkit.release import run_release
 
 
 def list_subagents(agents_dir: str = ".agents/agents") -> None:
@@ -32,6 +34,55 @@ def list_subagents(agents_dir: str = ".agents/agents") -> None:
                     break
         print(f"• {name:<35} | {first_line or 'Prolog Subagent'}")
         print(f"  File: {path}\n")
+
+
+def prolog_agent_main() -> None:
+    """CLI entry point for prolog-agent."""
+    args = sys.argv[1:]
+    if not args or args[0] in ("-h", "--help", "help"):
+        print("Prolog Agent Toolkit CLI")
+        print("Usage:")
+        print("  prolog-agent init <project-name> [--engine scryer|swi|trealla|tau|iso]")
+        print("  prolog-agent release [--version X.Y.Z]")
+        print("  prolog-agent list-subagents")
+        print("  prolog-agent validate-skills")
+        sys.exit(0)
+
+    cmd = args[0]
+    if cmd == "init":
+        if len(args) < 2:
+            sys.stderr.write("Error: Missing project name for prolog-agent init.\n")
+            sys.stderr.write("Usage: prolog-agent init <project-name> [--engine scryer|swi|trealla|tau|iso]\n")
+            sys.exit(1)
+        project_name = args[1]
+        engine = "scryer"
+        if "--engine" in args:
+            idx = args.index("--engine")
+            if idx + 1 < len(args):
+                engine = args[idx + 1]
+        exit_code = init_project(project_name, engine=engine)
+        sys.exit(exit_code)
+
+    elif cmd == "release":
+        version = None
+        if "--version" in args:
+            idx = args.index("--version")
+            if idx + 1 < len(args):
+                version = args[idx + 1]
+        exit_code = run_release(new_version=version)
+        sys.exit(exit_code)
+
+    elif cmd == "list-subagents":
+        list_subagents()
+        sys.exit(0)
+
+    elif cmd == "validate-skills":
+        exit_code = validate_skills_cli()
+        sys.exit(exit_code)
+
+    else:
+        sys.stderr.write(f"Unknown command: {cmd}\n")
+        sys.exit(1)
 
 
 def prolog_safe_main() -> None:
@@ -78,5 +129,6 @@ def tau_safe_main() -> None:
 
 
 if __name__ == "__main__":
-    prolog_safe_main()
+    prolog_agent_main()
+
 
