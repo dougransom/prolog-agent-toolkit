@@ -26,6 +26,8 @@ AI assistants MUST select and follow the specific dialect standards correspondin
   - SWI dicts, SWI string types, module declarations, pack manager.
 - **Trealla Prolog**: [.agents/skills/trealla-prolog-standards/SKILL.md](.agents/skills/trealla-prolog-standards/SKILL.md)
   - ISO compliance, WASM embedding, fast standard library parsing.
+- **Tau Prolog**: [.agents/skills/tau-prolog-standards/SKILL.md](.agents/skills/tau-prolog-standards/SKILL.md)
+  - ISO compliance, JavaScript/Browser DOM integration, `library(dom)`, `library(js)`.
 - **Portable ISO Prolog Conventions**: [.agents/skills/prolog-conventions/SKILL.md](.agents/skills/prolog-conventions/SKILL.md)
   - Engine-agnostic ISO standard code compatible across all conforming implementations.
 - **Prolog Testing**: [.agents/skills/prolog-testing/SKILL.md](.agents/skills/prolog-testing/SKILL.md)
@@ -44,9 +46,9 @@ When initializing, bootstrapping, or creating a new Prolog project/repository, a
 
 ## Safety & Cross-Platform Execution
 
-- **CLI Entry Points**: ALL Prolog code executions MUST use the cross-platform CLI safety entry points (`prolog-safe`, `scryer-safe`, `swi-safe`, `trealla-safe`).
-- **Forbidden Invocations**: AI assistants MUST NEVER execute raw interpreter binaries (`scryer-prolog`, `swipl`, `tpl`, `gprolog`, `ciao`) directly.
-- **Specifying Engine**: Set `PROLOG_ENGINE` environment variable (e.g., `export PROLOG_ENGINE=scryer`, `export PROLOG_ENGINE=swi`, `export PROLOG_ENGINE=trealla`).
+- **CLI Entry Points**: ALL Prolog code executions MUST use the cross-platform CLI safety entry points (`prolog-safe`, `scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`).
+- **Forbidden Invocations**: AI assistants MUST NEVER execute raw interpreter binaries (`scryer-prolog`, `swipl`, `tpl`, `tau-prolog`, `gprolog`, `ciao`) directly.
+- **Specifying Engine**: Set `PROLOG_ENGINE` environment variable (e.g., `export PROLOG_ENGINE=scryer`, `export PROLOG_ENGINE=swi`, `export PROLOG_ENGINE=trealla`, `export PROLOG_ENGINE=tau`).
 
 
 ## Git Branching & Release Workflow

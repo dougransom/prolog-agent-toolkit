@@ -61,6 +61,8 @@ def resolve_engine_binary(engine_name: str) -> str:
         "tpl": "tpl",
         "gnu": "gprolog",
         "gprolog": "gprolog",
+        "tau": "tau-prolog",
+        "tau-prolog": "tau-prolog",
         "ciao": "ciao",
         "sicstus": "sicstus",
     }

@@ -35,5 +35,12 @@ def trealla_safe_main() -> None:
     sys.exit(exit_code)
 
 
+def tau_safe_main() -> None:
+    """CLI entry point for tau-safe."""
+    os.environ["PROLOG_ENGINE"] = "tau"
+    exit_code = run_prolog_safe(sys.argv[1:], default_engine="tau")
+    sys.exit(exit_code)
+
+
 if __name__ == "__main__":
     prolog_safe_main()

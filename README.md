@@ -36,22 +36,23 @@ Multi-engine, cross-platform (Linux, macOS, BSD, Windows) Prolog execution sandb
 | Category | Supported Technologies / Systems |
 |---|---|
 | **AI Assistants & IDEs** | Google Antigravity (AGY), Claude Code (Anthropic), GitHub Copilot, Cursor, Windsurf |
-| **Prolog Engines** | Scryer Prolog (ISO Default), SWI-Prolog, Trealla Prolog, GNU Prolog, Ciao Prolog |
+| **Prolog Engines** | Scryer Prolog (ISO Default), SWI-Prolog, Trealla Prolog, Tau Prolog, GNU Prolog, Ciao Prolog |
 | **Language Standards** | ISO Prolog, Definite Clause Grammars (DCG), CLP(Z) Constraints, Reification (`reif`) |
 | **Agent Capabilities** | Execution Sandboxing, `testing.pl` Unit Testing, `bakage` Manifests, Multi-file Release Versioning |
 
-**Keywords**: `prolog`, `agent-toolkit`, `scryer-prolog`, `swi-prolog`, `trealla-prolog`, `antigravity`, `claude-code`, `copilot`, `cursor`, `dcg`, `clpz`, `sandboxing`, `testing.pl`, `bakage`
+**Keywords**: `prolog`, `agent-toolkit`, `scryer-prolog`, `swi-prolog`, `trealla-prolog`, `tau-prolog`, `antigravity`, `claude-code`, `copilot`, `cursor`, `dcg`, `clpz`, `sandboxing`, `testing.pl`, `bakage`
 
 ## Features
 
-- **Cross-Platform Safety Wrappers**: Runs Prolog engines (`scryer-prolog`, `swipl`, `tpl`, `gprolog`, `ciao`) safely with execution timeout limits, low CPU priority, and memory quota monitoring across Linux, macOS, BSD, and Windows.
+- **Cross-Platform Safety Wrappers**: Runs Prolog engines (`scryer-prolog`, `swipl`, `tpl`, `tau-prolog`, `gprolog`, `ciao`) safely with execution timeout limits, low CPU priority, and memory quota monitoring across Linux, macOS, BSD, and Windows.
 - **CLI Entry Points**: Built-in CLI commands:
   - `prolog-safe` — Multi-engine generic safety runner (controlled via `PROLOG_ENGINE`).
   - `scryer-safe` — Scryer Prolog safety runner shortcut.
   - `swi-safe` — SWI-Prolog safety runner shortcut.
   - `trealla-safe` — Trealla Prolog safety runner shortcut.
+  - `tau-safe` — Tau Prolog safety runner shortcut.
 - **Agent Rules & Skills**: Pre-configured standards and workflows for:
-  - **Engine Dialects**: `scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, `prolog-conventions`.
+  - **Engine Dialects**: `scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, `tau-prolog-standards`, `prolog-conventions`.
   - **Testing**: `prolog-testing` (Scryer [`testing.pl`](https://github.com/bakaq/testing.pl), SWI `plunit`, portable ISO assertions).
   - **Packaging**: `prolog-packaging` (Scryer [`bakage`](https://github.com/bakaq/bakage) manifests, SWI `pack`).
   - **Release & Versioning**: `prolog-release` (Multi-file version synchronization, Git tagging, post-release workflows).
