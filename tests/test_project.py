@@ -3,8 +3,9 @@ import shutil
 import tempfile
 import pytest
 
-from prolog_agent_toolkit.project import init_project
+from prolog_agent_toolkit.project import init_project, generate_module, generate_template, print_init_script
 from prolog_agent_toolkit.release import run_release
+
 
 
 @pytest.fixture
@@ -57,6 +58,36 @@ def test_init_project_tau(temp_project_dir):
     assert '"tau-prolog"' in content
 
 
+def test_generate_module(temp_project_dir):
+    res = generate_module("parser_mod", engine="scryer", output_dir=temp_project_dir)
+    assert res == 0
+    mod_path = os.path.join(temp_project_dir, "parser_mod.pl")
+    assert os.path.exists(mod_path)
+    with open(mod_path, "r") as f:
+        content = f.read()
+    assert ":- module(parser_mod" in content
+    assert "parse_item(" in content
+    assert "solve_range(" in content
+
+
+def test_generate_template(temp_project_dir):
+    res = generate_template("tpl_app", engine="scryer", base_dir=temp_project_dir)
+    assert res == 0
+    proj_dir = os.path.join(temp_project_dir, "tpl_app")
+    assert os.path.exists(os.path.join(proj_dir, "src", "tpl_app.pl"))
+    assert os.path.exists(os.path.join(proj_dir, "tests", "testing.pl"))
+    assert os.path.exists(os.path.join(proj_dir, "bakage.toml"))
+    assert os.path.exists(os.path.join(proj_dir, "CHANGELOG.md"))
+
+
+def test_print_init_script(capsys):
+    res = print_init_script()
+    assert res == 0
+    captured = capsys.readouterr()
+    assert "#!/usr/bin/env bash" in captured.out
+    assert "PROJECT_NAME=" in captured.out
+
+
 def test_run_release(temp_project_dir):
     init_project("release_app", engine="scryer", base_dir=temp_project_dir)
     proj_dir = os.path.join(temp_project_dir, "release_app")
@@ -73,3 +104,4 @@ def test_run_release(temp_project_dir):
     with open(changelog_path, "r") as f:
         cl_text = f.read()
     assert "## [0.2.0]" in cl_text
+

@@ -78,20 +78,26 @@ The toolkit provides dedicated subagents for automated agentic workflows:
 - **Portability Reviewer Agent**: [.agents/agents/prolog-portability-reviewer-agent.md](.agents/agents/prolog-portability-reviewer-agent.md) — Multi-engine compatibility auditor across Scryer, SWI, Trealla, Tau, and ISO.
 - **Security Reviewer Agent**: [.agents/agents/prolog-security-reviewer-agent.md](.agents/agents/prolog-security-reviewer-agent.md) — Code injection, search bounds, and dynamic database safety auditor.
 
-## Project Bootstrapping & Initializer Workflow (`prolog-agent init`)
+## Project Bootstrapping & Initializer Workflow
 
-AI assistants provide the virtual and CLI command: `prolog-agent init <project-name> [--engine scryer|swi|trealla|tau|iso]`.
+AI assistants provide the virtual and CLI commands:
+- `prolog-agent init <project-name> [--dialect scryer|swi|trealla]`
+- `prolog-agent template <project-name> [--dialect scryer|swi|trealla]`
+- `prolog-agent module <module-name> [--dialect scryer|swi|trealla]`
+- `prolog-agent init-script`
 
 When a user requests a new project or starts a new Prolog repository, AI assistants MUST execute or guide the initializer workflow:
-1. **Directory Structure**: Create `<project-name>/`, containing `src/`, `tests/`, `README.md`, and `.agents/` (symlink or copy instructions).
+1. **Directory Structure**: Create `<project-name>/`, containing `src/`, `tests/`, `README.md`, `CHANGELOG.md`, and `.agents/` (symlink or copy instructions).
 2. **Package Manifest**:
    - **Scryer / ISO**: Create `bakage.toml` (`name`, `version = "0.1.0"`, `modules = ["src/<project-name>.pl"]`, `requires`) and `pack.pl`.
    - **SWI-Prolog**: Create `pack.pl` manifest (`name('<project-name>')`, `version('0.1.0')`, `title`, `author`).
+   - **Trealla Prolog**: No manifest created (no package manager).
    - **Tau Prolog**: Create `package.json` (`name`, `version`, `tau-prolog` dependency).
-3. **Starter Module**: Create `src/<project-name>.pl` with module declaration, Covington comment block, and sample pure predicate.
-4. **Testing Scaffolding**: Create `tests/testing.pl` (Scryer/ISO) or `tests/test_<project-name>.pl` (`plunit` for SWI).
-5. **Dialect Standards**: Include relevant dialect skills (`scryer-prolog-standards`, `swi-prolog-standards`, `prolog-conventions`).
+3. **Starter Module**: Create `src/<project-name>.pl` with module declaration, Covington comment block, sample pure predicate, DCG stub, and CLP(Z) stub.
+4. **Testing Scaffolding**: Create `tests/testing.pl` (Scryer/ISO/Trealla) or `tests/test_<project-name>.pl` (`plunit` for SWI).
+5. **Dialect Standards**: Include relevant dialect skills (`scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, `prolog-conventions`, `prolog-initializer`).
 6. **README.md**: Include instructions for running tests, using safe runners (`prolog-safe`, `scryer-safe`, `swi-safe`), linking agent skills, and dialect notes.
+
 
 ## Safety & Cross-Platform Execution
 

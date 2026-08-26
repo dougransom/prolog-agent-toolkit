@@ -158,10 +158,12 @@ def format_skill_issues(issues: List[SkillIssue]) -> str:
 def validate_skills_cli(target_dir: Optional[str] = None) -> int:
     """CLI handler for prolog-validate-skills command."""
     if target_dir is None:
-        target_dir = sys.argv[1] if len(sys.argv) > 1 else ".agents/skills"
+        args = [a for a in sys.argv[1:] if not a.startswith("-") and a != "validate-skills"]
+        target_dir = args[0] if args else ".agents/skills"
 
     issues = validate_skills_dir(target_dir)
     report = format_skill_issues(issues)
+
 
     if issues:
         sys.stderr.write(report)

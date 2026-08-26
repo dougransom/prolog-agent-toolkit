@@ -6,8 +6,14 @@ os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
 
 from prolog_agent_toolkit.runner import run_prolog_safe
 from prolog_agent_toolkit.skill_validator import validate_skills_cli
-from prolog_agent_toolkit.project import init_project
+from prolog_agent_toolkit.project import (
+    init_project,
+    generate_module,
+    generate_template,
+    print_init_script,
+)
 from prolog_agent_toolkit.release import run_release
+
 
 
 def list_subagents(agents_dir: str = ".agents/agents") -> None:
@@ -42,25 +48,61 @@ def prolog_agent_main() -> None:
     if not args or args[0] in ("-h", "--help", "help"):
         print("Prolog Agent Toolkit CLI")
         print("Usage:")
-        print("  prolog-agent init <project-name> [--engine scryer|swi|trealla|tau|iso]")
+        print("  prolog-agent init <project-name> [--dialect|--engine scryer|swi|trealla|tau|iso]")
+        print("  prolog-agent template <project-name> [--dialect|--engine scryer|swi|trealla|tau|iso]")
+        print("  prolog-agent module <module-name> [--dialect|--engine scryer|swi|trealla|tau|iso]")
+        print("  prolog-agent init-script")
         print("  prolog-agent release [--version X.Y.Z]")
         print("  prolog-agent list-subagents")
         print("  prolog-agent validate-skills")
         sys.exit(0)
 
     cmd = args[0]
-    if cmd == "init":
-        if len(args) < 2:
-            sys.stderr.write("Error: Missing project name for prolog-agent init.\n")
-            sys.stderr.write("Usage: prolog-agent init <project-name> [--engine scryer|swi|trealla|tau|iso]\n")
-            sys.exit(1)
-        project_name = args[1]
+
+    def get_dialect() -> str:
         engine = "scryer"
-        if "--engine" in args:
+        if "--dialect" in args:
+            idx = args.index("--dialect")
+            if idx + 1 < len(args):
+                engine = args[idx + 1]
+        elif "--engine" in args:
             idx = args.index("--engine")
             if idx + 1 < len(args):
                 engine = args[idx + 1]
+        return engine
+
+    if cmd == "init":
+        if len(args) < 2:
+            sys.stderr.write("Error: Missing project name for prolog-agent init.\n")
+            sys.stderr.write("Usage: prolog-agent init <project-name> [--dialect scryer|swi|trealla]\n")
+            sys.exit(1)
+        project_name = args[1]
+        engine = get_dialect()
         exit_code = init_project(project_name, engine=engine)
+        sys.exit(exit_code)
+
+    elif cmd == "template":
+        if len(args) < 2:
+            sys.stderr.write("Error: Missing project name for prolog-agent template.\n")
+            sys.stderr.write("Usage: prolog-agent template <project-name> [--dialect scryer|swi|trealla]\n")
+            sys.exit(1)
+        project_name = args[1]
+        engine = get_dialect()
+        exit_code = generate_template(project_name, engine=engine)
+        sys.exit(exit_code)
+
+    elif cmd == "module":
+        if len(args) < 2:
+            sys.stderr.write("Error: Missing module name for prolog-agent module.\n")
+            sys.stderr.write("Usage: prolog-agent module <module-name> [--dialect scryer|swi|trealla]\n")
+            sys.exit(1)
+        module_name = args[1]
+        engine = get_dialect()
+        exit_code = generate_module(module_name, engine=engine)
+        sys.exit(exit_code)
+
+    elif cmd == "init-script":
+        exit_code = print_init_script()
         sys.exit(exit_code)
 
     elif cmd == "release":
@@ -83,6 +125,7 @@ def prolog_agent_main() -> None:
     else:
         sys.stderr.write(f"Unknown command: {cmd}\n")
         sys.exit(1)
+
 
 
 def prolog_safe_main() -> None:

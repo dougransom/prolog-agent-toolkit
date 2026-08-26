@@ -126,5 +126,82 @@ def init_project(project_name: str, engine: str = "scryer", base_dir: str = ".")
             f.write("## Agent Skills & Dialect Standards\n\n")
             f.write("Link the toolkit's agent skills:\n```bash\nln -s ~/code/prolog-agent-toolkit/.agents .agents\n```\n")
 
+    # 6. CHANGELOG.md creation
+    changelog_path = os.path.join(project_dir, "CHANGELOG.md")
+    if not os.path.exists(changelog_path):
+        with open(changelog_path, "w", encoding="utf-8") as f:
+            f.write("# Changelog\n\nAll notable changes will be documented in this file.\n")
+
     print(f"Project '{project_name}' successfully initialized!")
     return 0
+
+
+def generate_module(module_name: str, engine: str = "scryer", output_dir: str = "src") -> int:
+    """
+    Generate a new dialect-aware Prolog module stub with Covington headers, DCGs, and CLP constraints.
+    """
+    engine = (engine or "scryer").lower()
+    os.makedirs(output_dir, exist_ok=True)
+    target_file = os.path.join(output_dir, f"{module_name}.pl")
+
+    print(f"Generating Prolog module '{module_name}' (Engine: {engine}) at {target_file}...")
+
+    if engine == "swi":
+        decl = f":- module({module_name}, [\n    hello/1,\n    parse_item//1,\n    solve_range/2\n]).\n"
+        imports = ":- use_module(library(clpfd)).\n"
+    elif engine == "trealla":
+        decl = f"% Trealla Prolog Module: {module_name}\n"
+        imports = ":- use_module(library(charsio)).\n:- use_module(library(dcgs)).\n"
+    else:
+        decl = f":- module({module_name}, [\n    hello/1,\n    parse_item//1,\n    solve_range/2\n]).\n"
+        imports = (
+            ":- use_module(library(charsio)).\n"
+            ":- use_module(library(dcgs)).\n"
+            ":- use_module(library(clpz)).\n"
+            ":- use_module(library(reif)).\n"
+        )
+
+    content = (
+        f"{decl}\n{imports}\n"
+        f"%%\thello(-Greeting:chars) is det.\n"
+        f"%\tGenerates a standard greeting string for {module_name}.\n"
+        f'hello("Hello from {module_name}!").\n\n'
+        f"%%\tparse_item(-Item:chars)// is det.\n"
+        f"%\tDefinite Clause Grammar (DCG) rule to parse an item tag.\n"
+        f'parse_item(Item) -->\n    "[", Item, "]".\n\n'
+        f"%%\tsolve_range(+Limit:integer, -Value:integer) is semidet.\n"
+        f"%\tCLP(Z)/CLP(FD) integer constraint example.\n"
+        f"solve_range(Limit, Value) :-\n"
+        f"    Value #>= 0,\n"
+        f"    Value #=< Limit,\n"
+        f"    Value #= Limit - 1.\n"
+    )
+
+    with open(target_file, "w", encoding="utf-8") as f:
+        f.write(content)
+
+    print(f"Module '{module_name}' generated successfully at {target_file}.")
+    return 0
+
+
+def generate_template(project_name: str, engine: str = "scryer", base_dir: str = ".") -> int:
+    """
+    Generate canonical, deterministic project template layout.
+    """
+    return init_project(project_name, engine=engine, base_dir=base_dir)
+
+
+def print_init_script() -> int:
+    """
+    Output the POSIX bash initializer script specification to stdout.
+    """
+    script_path = os.path.join(os.path.dirname(__file__), "..", "scripts", "prolog_agent_init.sh")
+    if os.path.exists(script_path):
+        with open(script_path, "r", encoding="utf-8") as f:
+            print(f.read())
+    else:
+        print("#!/usr/bin/env bash")
+        print("# Prolog Agent Toolkit — Initializer Script")
+        print("echo 'Initializing project...'")
+    return 0
+
