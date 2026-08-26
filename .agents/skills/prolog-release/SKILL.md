@@ -14,21 +14,12 @@ Use this skill when cutting a release, bumping project versions, tagging Git rel
 
 ---
 
-## Multi-File Version Synchronization Checklist
+## Canonical Version Source of Truth & Rules
 
-When bumping or releasing a version, the AI assistant MUST inspect and synchronize version strings across all applicable files:
-
-1. **Prolog Package Manifests**:
-   - `pack.pl` (`version('X.Y.Z').` or `version("X.Y.Z").`).
-   - Prolog entry module `version/1` predicate (if defined).
-2. **Project Metadata (if Python toolkit / CLI wrapper is present)**:
-   - `pyproject.toml` (`version = "X.Y.Z"`).
-   - Package `__init__.py` (`__version__ = "X.Y.Z"`).
-3. **Documentation**:
-   - `README.md` version badges, installation code snippets, or release headers.
-4. **Git Branching & Tags**:
-   - Ensure working on active development branch (e.g., `DEV202608`).
-   - Create annotated tag: `git tag -a vX.Y.Z -m "Release vX.Y.Z"`.
+1. **Canonical Version**: `pyproject.toml` (`version = "X.Y.Z"`) is the single canonical source of truth for project versioning (including development versions like `0.0.1.dev3`).
+2. **Runtime Resolution**: Python modules resolve version at runtime via `importlib.metadata.version(...)`.
+3. **Synchronization**: Non-Python manifests (`bakage.toml`, `pack.pl`, `package.json`) and documentation (`README.md`, `CHANGELOG.md`) are synchronized to match `pyproject.toml`.
+4. **Git Tag Matching**: Git release tags MUST use the exact version string from `pyproject.toml` (e.g., `git tag -a v0.0.1 -m "Release v0.0.1"` or `git tag -a v0.0.1.dev3 -m "Release v0.0.1.dev3"`).
 
 ---
 

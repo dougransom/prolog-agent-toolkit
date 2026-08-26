@@ -7,6 +7,18 @@ sys.dont_write_bytecode = True
 os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
 
 
+def get_pyproject_version(target_dir: str) -> str:
+    """Read canonical release version from pyproject.toml."""
+    pyproject_path = os.path.join(target_dir, "pyproject.toml")
+    if os.path.exists(pyproject_path):
+        with open(pyproject_path, "r", encoding="utf-8") as f:
+            content = f.read()
+        m = re.search(r'version\s*=\s*["\']([^"\']+)["\']', content)
+        if m:
+            return m.group(1)
+    return "0.0.1"
+
+
 def sync_file_version(filepath: str, old_ver_pattern: str, new_ver_str: str) -> bool:
     """Replace version string matching regex pattern in a file."""
     if not os.path.exists(filepath):
@@ -24,35 +36,22 @@ def sync_file_version(filepath: str, old_ver_pattern: str, new_ver_str: str) -> 
 
 def run_release(new_version: str = None, target_dir: str = ".") -> int:
     """
-    Synchronize version numbers across project files, generate or update CHANGELOG.md,
-    and output Git tag and publishing steps.
+    Synchronize version numbers across project files using pyproject.toml as the canonical source,
+    generate or update CHANGELOG.md, and output Git tag and publishing steps.
     """
     target_dir = os.path.abspath(target_dir)
 
-    # Detect current version if new_version not specified
-    if not new_version:
-        # Check bakage.toml, pyproject.toml, or pack.pl
-        for filename in ("bakage.toml", "pyproject.toml", "pack.pl", "package.json"):
-            path = os.path.join(target_dir, filename)
-            if os.path.exists(path):
-                with open(path, "r", encoding="utf-8") as f:
-                    text = f.read()
-                m = re.search(r'version\s*=\s*["\']([^"\']+)["\']', text) or re.search(r"version\(['\"]([^'\"]+)['\"]\)", text)
-                if m:
-                    current_ver = m.group(1)
-                    if ".dev" in current_ver:
-                        new_version = current_ver.split(".dev")[0]
-                    else:
-                        parts = current_ver.split(".")
-                        if len(parts) == 3 and parts[-1].isdigit():
-                            parts[-1] = str(int(parts[-1]) + 1)
-                            new_version = ".".join(parts)
-                        else:
-                            new_version = current_ver
-                    break
-
-    if not new_version:
-        new_version = "0.1.0"
+    pyproject_path = os.path.join(target_dir, "pyproject.toml")
+    if new_version:
+        # Update canonical version in pyproject.toml
+        sync_file_version(
+            pyproject_path,
+            r'version\s*=\s*["\'][^"\']+["\']',
+            f'version = "{new_version}"'
+        )
+    else:
+        # Use existing canonical version from pyproject.toml
+        new_version = get_pyproject_version(target_dir)
 
     print(f"Preparing release v{new_version} in {target_dir}...")
 
@@ -77,23 +76,7 @@ def run_release(new_version: str = None, target_dir: str = ".") -> int:
         f'"version": "{new_version}"'
     )
 
-    # 4. Update pyproject.toml
-    sync_file_version(
-        os.path.join(target_dir, "pyproject.toml"),
-        r'version\s*=\s*["\'][^"\']+["\']',
-        f'version = "{new_version}"'
-    )
-
-    # 5. Update __init__.py if present
-    init_py = os.path.join(target_dir, "prolog_agent_toolkit", "__init__.py")
-    if os.path.exists(init_py):
-        sync_file_version(
-            init_py,
-            r'__version__\s*=\s*["\'][^"\']+["\']',
-            f'__version__ = "{new_version}"'
-        )
-
-    # 6. Generate / update CHANGELOG.md
+    # 4. Generate / update CHANGELOG.md
     changelog_path = os.path.join(target_dir, "CHANGELOG.md")
     today = datetime.date.today().isoformat()
     changelog_entry = (

@@ -107,14 +107,17 @@ When a user requests a new project or starts a new Prolog repository, AI assista
 
 AI assistants provide the virtual and CLI command: `prolog-agent release [--version X.Y.Z]`.
 
-When cutting a release or bumping versions, AI assistants MUST execute the release workflow:
-1. **Synchronize Versions**: Update version strings across package manifests (`bakage.toml`, `pack.pl`, `package.json`), `pyproject.toml`, `__init__.py`, and `README.md`.
-2. **Generate CHANGELOG.md**: Create or update `CHANGELOG.md` with release version header (`## [X.Y.Z] - YYYY-MM-DD`), summary of changes, added/modified predicates, and breaking changes.
-3. **Tag Release**: Instruct the user or execute git commands (`git commit -am "Release vX.Y.Z"`, `git tag -a vX.Y.Z -m "Release vX.Y.Z"`).
-4. **Post-Release Prompting**: Immediately after a release, ask the user:
-   1. Is a new dev branch warranted?
-   2. What is the current release number?
-   3. What is the next release version to work on (with `.dev1`)?
+### Canonical Version Source of Truth & Rules:
+1. **Canonical Version**: `pyproject.toml` is the single canonical source of truth for the release version (which may include development tags such as `X.Y.Z.devN` or `vX.Y.Z`).
+2. **Runtime Python Resolution**: Python files MUST resolve the package version dynamically at runtime via `importlib.metadata.version("prolog-agent-toolkit")`.
+3. **Multi-File Synchronization**: Non-Python manifest/doc files (`bakage.toml`, `pack.pl`, `package.json`, `README.md`, `CHANGELOG.md`) MUST be updated by the agent whenever the `pyproject.toml` version changes or when running `prolog-agent release`.
+4. **Git Tag Matching**: The Git tag created during release MUST exactly match the version string in `pyproject.toml` (e.g. `v0.0.1` or `v0.0.1.dev3`).
+
+### Release Execution Steps:
+1. **Synchronize Versions**: Run `prolog-agent release [--version X.Y.Z]`.
+2. **Generate CHANGELOG.md**: Update `CHANGELOG.md` with release version header (`## [X.Y.Z] - YYYY-MM-DD`).
+3. **Commit & Tag**: Commit changes (`git commit -am "Release vX.Y.Z"`) and tag with exact `pyproject.toml` version (`git tag -a vX.Y.Z -m "Release vX.Y.Z"`).
+4. **Push**: Push commits and tags (`git push origin <branch> --tags`).
 
 ## Future Engine Expansion & Metadata Protocol
 
