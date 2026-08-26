@@ -180,6 +180,19 @@ The toolkit includes automated agent skills located in `.agents/skills/`:
 - **Clean Workspace**: Python bytecode creation is disabled (`PYTHONDONTWRITEBYTECODE=1`), and test caches are stored centrally in `.cache/pytest`.
 - **Release Synchronization**: `prolog-release` synchronizes version strings consistently across `pack.pl`, `pyproject.toml`, `README.md`, `__init__.py`, and annotated Git tags.
 
+## Programmer Guidelines: Working with AI for Prolog
+
+For complete details, see [.agents/references/programmer_guidelines.md](.agents/references/programmer_guidelines.md).
+
+When working with AI coding assistants (Google Antigravity, Claude Code, Cursor, Copilot) on Prolog software:
+
+1. **Provide Semantics & AST Shapes, Not Logic Invention**: Give the AI module skeletons, AST constructors, and type invariants instead of asking it to invent relations from scratch.
+2. **Specify Mode & Determinism Contracts Explicitly**: State input/output modes (`+`/`-`) and determinism requirements (`det`, `semidet` fail cleanly, `nondet` backtracking).
+3. **Use Test-First Prompting**: Provide expected test cases (`testing.pl`, `plunit`, or test runner) first, then request code satisfying those tests.
+4. **Enforce the Declarative Mindset**: Explicitly prompt: *"Do not use imperative reasoning. Use declarative reasoning based on unification, constraints, and backtracking."*
+5. **Delegate DCG & Structural Boilerplate**: Let AI handle grammar production rules, AST building, and string formatting.
+6. **Use AI for Refactoring & Choice-Point Audits**: Ask AI to identify choice points, make code tail-recursive, or transform cut-heavy logic into pure forms (`dif/2`, `if_/3`).
+
 ## Release & Versioning Workflow
 
 - Development versions follow `X.Y.Z.devN` (e.g. `0.0.1.dev1`).

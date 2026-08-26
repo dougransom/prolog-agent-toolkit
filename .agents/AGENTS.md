@@ -15,6 +15,8 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
   - Use declarative reasoning based on unification, constraints, and backtracking (never imperative thinking).
   - Specify mode (`+`/`-`), determinism (`det`, `semidet`, `nondet`), and choice-point expectations.
   - Use test-first scaffolding (`testing.pl` / `plunit` / configured test framework) and DCG structure generation.
+- **Programmer Steering Guidelines**: [.agents/references/programmer_guidelines.md](.agents/references/programmer_guidelines.md)
+  - Best practices for human programmers when prompting, constraining, and steering AI coding assistants.
 
 ## Multi-Engine Dialect Selection & Rules
 
