@@ -1,15 +1,18 @@
 ## [0.0.1.dev7] - 2026-08-26
 
 ### Summary of Changes
-- Integrated complete canonical 6-section `README.md` generator into Python project initializer (`project.py`) and bash initializer script (`prolog_agent_init.sh`).
+- Integrated complete canonical `README.md` generator into Python project initializer (`project.py`) and bash initializer script (`prolog_agent_init.sh`).
+- Enhanced main `README.md` with explicit `uv tool` installation workflows, CLI reference summary table, and quickstart guides for new and existing Prolog projects.
 
 ### Added / Modified
 - Updated `prolog_agent_toolkit/project.py` with `generate_readme_content` supporting dynamic dialect descriptions, manifest names, safe runner commands, and test suites.
 - Updated `scripts/prolog_agent_init.sh` to generate the matching structured 6-section README layout.
+- Updated main `README.md` with step-by-step onboarding for bootstrapping new projects and adopting rules/subagents in existing Prolog codebases.
 - Updated `.agents/skills/prolog-initializer/SKILL.md` documentation.
 
 ### Breaking Changes
 - None.
+
 
 
 ## [0.0.1.dev6] - 2026-08-26

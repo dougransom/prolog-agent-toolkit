@@ -43,78 +43,78 @@ Multi-engine, cross-platform (Linux, macOS, BSD, Windows) Prolog execution sandb
 | **Language Standards** | ISO Prolog, Definite Clause Grammars (DCG), CLP(Z) Constraints, Reification (`reif`) |
 | **Agent Capabilities** | Execution Sandboxing, `testing.pl` Unit Testing, `bakage` Manifests, Multi-file Release Versioning |
 
-**Keywords**: `prolog`, `agent-toolkit`, `scryer-prolog`, `swi-prolog`, `trealla-prolog`, `tau-prolog`, `antigravity`, `claude-code`, `copilot`, `cursor`, `aidermacs`, `agent-shell`, `gptel`, `emacs`, `dcg`, `clpz`, `sandboxing`, `testing.pl`, `bakage`
+---
 
 ## Features
 
-- **Cross-Platform Safety Wrappers**: Runs Prolog engines (`scryer-prolog`, `swipl`, `tpl`, `tau-prolog`, `gprolog`, `ciao`) safely with execution timeout limits, low CPU priority, and memory quota monitoring across Linux, macOS, BSD, and Windows.
-- **CLI Entry Points**: Built-in CLI commands:
-  - `prolog-agent` — Project initializer (`init`), release version manager (`release`), subagent listing, and skill validation.
-  - `prolog-safe` — Multi-engine generic safety runner (controlled via `PROLOG_ENGINE`).
-  - `scryer-safe` — Scryer Prolog safety runner shortcut.
-  - `swi-safe` — SWI-Prolog safety runner shortcut.
-  - `trealla-safe` — Trealla Prolog safety runner shortcut.
-  - `tau-safe` — Tau Prolog safety runner shortcut.
-- **Project Initializer & Release Workflows**:
-  - `prolog-agent init <project-name> [--engine scryer|swi|trealla|tau|iso]` — Scaffolds `src/`, `tests/`, `README.md`, `.agents` link instructions, engine-specific manifest (`bakage.toml`, `pack.pl`, `package.json`), starter module, and test harness (`testing.pl` / `plunit`).
-  - `prolog-agent release [--version X.Y.Z]` — Version synchronization across manifest files, `CHANGELOG.md` generation, and Git release tagging instructions.
-- **Agent Rules & Skills**: Pre-configured standards and workflows for:
-  - **Engine Dialects**: `scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, `tau-prolog-standards`, `prolog-conventions`.
-  - **Testing**: `prolog-testing` (Scryer [`testing.pl`](https://github.com/bakaq/testing.pl), SWI `plunit`, portable ISO assertions).
-  - **Packaging**: `prolog-packaging` (Scryer [`bakage`](https://github.com/bakaq/bakage) manifests, SWI `pack`).
-  - **Release & Versioning**: `prolog-release` (Multi-file version synchronization, Git tagging, post-release workflows).
-  - **Logic Paradigms**: `prolog-clp-constraints` (CLP(Z)/CLP(FD)), `prolog-dcg-mastery` (pure DCGs & parsing), `prolog-tabling` (SLG memoization).
-  - **Quality & Profiling**: `prolog-linter-static-analysis` (syntax & warning audits), `prolog-performance-profiling` (choicepoint elimination & TCO), `prolog-debugging-workflow` (4-port model debugging).
-  - **Integration & Systems**: `prolog-ffi-wasm-embedding` (C, Rust, Python, WASM, JS), `prolog-web-services` (REST & WebSockets), `prolog-neurosymbolic-agent` (LLM + Prolog verifiers).
-  - **Code Review**: `prolog-code-review` (Automated PR reviews, purity, portability & safety audits).
-- **Autonomous Subagents**: Specialized AI subagent definitions in `.agents/agents/`:
-  - `prolog-refactor-agent` (Imperative to pure ISO Prolog refactoring).
-  - `prolog-test-generator-agent` (Automated unit test generation).
-  - `prolog-benchmark-runner-agent` (Multi-engine benchmark comparisons).
-  - `prolog-doc-generator-agent` (Covington comment & API documentation extraction).
-  - `prolog-pr-reviewer-agent` (Automated PR auditing, static analysis & test runner).
-  - `prolog-purity-reviewer-agent` (Purity & Covington style review).
-  - `prolog-portability-reviewer-agent` (Multi-engine dialect & portability review).
-  - `prolog-security-reviewer-agent` (Dynamic term injection & safety limits audit).
+- **Cross-Platform Safety Wrappers**: Runs Prolog engines safely with execution timeouts, low CPU priority, and memory limits across Linux, macOS, BSD, and Windows.
+- **CLI Management Suite**: Project bootstrapping, module generator, dialect switcher, release manager, and skill validator via `prolog-agent`.
+- **Dialect-Aware Standards**: Enforces ISO Scryer, SWI, Trealla, Tau, and portable Prolog conventions automatically.
+- **Autonomous AI Subagents**: Pre-configured subagents for purity auditing, automated refactoring, unit test generation, benchmark running, and security scanning.
+
+---
+
+## CLI Reference Summary
+
+| Command | Purpose |
+|---|---|
+| `prolog-agent init <name> [--dialect scryer\|swi\|trealla\|tau\|iso]` | Scaffolds a new project with `src/`, `tests/`, manifests (`bakage.toml`/`pack.pl`), and starter module. |
+| `prolog-agent template <name> [--dialect ...]` | Generates a project template for specified dialect. |
+| `prolog-agent module <name> [--dialect ...]` | Scaffolds a single pure Prolog module with Covington doc headers. |
+| `prolog-agent init-script` | Generates shell environment configuration script. |
+| `prolog-agent release [--version X.Y.Z]` | Synchronizes versions across project manifests and creates release tags. |
+| `prolog-agent list-subagents` | Lists available autonomous subagents in `.agents/agents/`. |
+| `prolog-agent validate-skills` | Validates `.agents/skills` integrity and frontmatter structure. |
+| `scryer-safe [args...]` | Runs Scryer Prolog under safety timeout and memory limits. |
+| `swi-safe [args...]` | Runs SWI-Prolog under safety limits. |
+| `trealla-safe [args...]` | Runs Trealla Prolog under safety limits. |
+| `tau-safe [args...]` | Runs Tau Prolog under safety limits. |
+| `prolog-safe [args...]` | Multi-engine generic safety runner (selected via `PROLOG_ENGINE`). |
+
+---
 
 ## Installation & Setup
 
-### 1. Install CLI Safety Tools (`scryer-safe`, `swi-safe`, etc.)
+### 1. Prerequisites
+- **Python Package Manager**: [`uv`](https://github.com/astral-sh/uv) (recommended for tool isolation and high performance).
+- **Target Prolog Engines**: At least one supported Prolog interpreter installed on system `PATH`:
+  - **Scryer Prolog**: `scryer-prolog`
+  - **SWI-Prolog**: `swipl`
+  - **Trealla Prolog**: `tpl`
+  - **Tau Prolog**: `tau-prolog` or Node.js runtime
 
-First, install the Python CLI package so safety runners (`scryer-safe`, `swi-safe`, `trealla-safe`, `prolog-safe`) are accessible globally on your system PATH:
+### 2. Install CLI Tools with `uv`
 
-Using [`uv`](https://github.com/astral-sh/uv) (recommended):
+Install `prolog-agent-toolkit` using `uv tool` to make `prolog-agent`, `scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`, and `prolog-safe` globally available on your system `PATH`:
 
 ```bash
-# Install directly from local repository directory
+# Install directly from local source directory
 uv tool install . --force
 
-# Or install in editable mode for development
-uv pip install -e .
+# Or run directly without permanent installation
+uv tool run prolog-agent --help
 ```
 
 Verify installation:
 ```bash
 scryer-safe --help
+prolog-agent --help
 ```
 
 ---
 
-### 2. Integrating Agent Rules & Skills with AI Assistants
+### 3. Integrating Agent Rules & Skills with AI Assistants
 
-To ensure your rules and skills **never get clobbered or overwritten** when updating or working inside target repositories, use one of the following recommended methods:
-
----
+To ensure rules and skills **never get clobbered or overwritten** when updating or working inside target repositories, choose one of the following methods:
 
 #### Option A: Symlink into Target Project (Recommended for Team & Project Scope)
-Symlinking links your target project to `prolog-agent-toolkit` directly. When you update `prolog-agent-toolkit`, all linked projects get the updates automatically without clobbering local repo files!
+Symlinking connects your project root directly to `prolog-agent-toolkit`. Updating the toolkit automatically updates all linked projects without file conflicts:
 
 ```bash
 # Inside your target Prolog project root:
-ln -s /home/doug/code/prolog-agent-toolkit/.agents .agents
+ln -s /path/to/prolog-agent-toolkit/.agents .agents
+ln -s .agents/AGENTS.md AGENTS.md
 ```
-
----
 
 #### Option B: Global Machine Installation (Recommended for Personal Setup)
 Install rules and skills into your global AI configuration folder so **every** project automatically inherits them across your system:
@@ -122,86 +122,140 @@ Install rules and skills into your global AI configuration folder so **every** p
 * **Google Antigravity**:
   ```bash
   mkdir -p ~/.gemini/config/skills
-  cp -r /home/doug/code/prolog-agent-toolkit/.agents/skills/* ~/.gemini/config/skills/
-  cat /home/doug/code/prolog-agent-toolkit/.agents/AGENTS.md >> ~/.gemini/config/AGENTS.md
+  cp -r /path/to/prolog-agent-toolkit/.agents/skills/* ~/.gemini/config/skills/
+  cat /path/to/prolog-agent-toolkit/.agents/AGENTS.md >> ~/.gemini/config/AGENTS.md
   ```
-
-* **Vendor-Agnostic AI Rules (`AGENTS.md`)**:
-  ```bash
-  # Root AGENTS.md symlinked directly to .agents/AGENTS.md:
-  ln -s .agents/AGENTS.md AGENTS.md
-  ```
-
----
-
-### Single Source of Truth Architecture
-
-To prevent instruction drift across different AI tools and assistants:
-
-- **Vendor-Agnostic Single Source of Truth**: [.agents/AGENTS.md](.agents/AGENTS.md) (symlinked as `AGENTS.md` at root) is the single source of truth for all Prolog rules, dialect choices, and safety constraints.
-- **Universal Tool Support**: All modern AI tools (Gemini CLI, Antigravity, Claude Code, Cursor, Windsurf, Codex, Emacs `aidermacs`/`agent-shell`/`gptel`) read `AGENTS.md` natively, eliminating the need for vendor-specific files like `CLAUDE.md` or `.cursorrules`.
-- **Zero Maintenance Overhead**: Editing `.agents/AGENTS.md` updates all tools instantly without copy-pasting or file duplication.
 
 #### Option C: Custom Search Paths via `skills.json` (Multi-Directory Search Path)
-Google Antigravity automatically loads rules and skills from **both**:
-1. **Global Root**: `~/.gemini/config` (active across all your workspaces)
-2. **Workspace Root**: `.agents` (active in the specific project)
+Google Antigravity automatically loads rules and skills from both **Global Root** (`~/.gemini/config`) and **Workspace Root** (`.agents`).
 
-If you have skills scattered across multiple repositories or team folders (e.g., `prolog-agent-toolkit`, `data-science-skills`, `team-shared-skills`), you can create a `skills.json` file in your `.agents/` or `~/.gemini/config/` directory to act as a **search path**:
-
-Create `.agents/skills.json` (or `~/.gemini/config/skills.json`):
+To load skills from multiple locations, create `.agents/skills.json` (or `~/.gemini/config/skills.json`):
 ```json
 {
   "entries": [
-    { "path": "/home/doug/code/prolog-agent-toolkit/.agents/skills" },
-    { "path": "/home/doug/code/another-repo/.agents/skills" }
+    { "path": "/path/to/prolog-agent-toolkit/.agents/skills" }
   ],
-  "inherits": [
-    { "path": "/path/to/shared/team_skills.json" }
-  ],
-  "exclude": [
-    "optional_skill_to_ignore"
-  ]
+  "inherits": [],
+  "exclude": []
 }
 ```
 
 ---
 
-> [!TIP]
-> **Why Symlinks / Global Configs / `skills.json` prevent clobbering:**
-> 1. **Search Path (`skills.json`)**: Lets you keep skills in their native repos while referencing them dynamically in any project.
-> 2. **Symlinking (`ln -s`)**: Keeps rules in `prolog-agent-toolkit` as the single source of truth without `git` merge conflicts in target projects.
-> 3. **Global Config (`~/.gemini/config`)**: Automatically applies across all projects without modifying target repo files.
+## Quickstart: Starting a New Prolog Project
+
+Follow this guide to create and develop a brand new Prolog project with AI assistance:
+
+### Step 1: Scaffold the Project
+Run `prolog-agent init` specifying your project name and target Prolog engine (default is `scryer`):
+
+```bash
+prolog-agent init my_parser --dialect scryer
+cd my_parser
+```
+
+### Step 2: Project Layout Overview
+The project is bootstrapped with a clean structure, standard testing framework, package manifests, and AI rules:
+
+```text
+my_parser/
+├── bakage.toml          # Scryer Prolog manifest
+├── pack.pl              # ISO / SWI manifest fallback
+├── AGENTS.md -> .agents/AGENTS.md
+├── .agents/             # Agent rules & dialect skills
+├── src/
+│   └── my_parser.pl     # Starter module with Covington doc block & DCG/CLP(Z) stubs
+└── tests/
+    └── testing.pl       # Scryer testing.pl unit test harness
+```
+
+### Step 3: Run Immediate Smoke Tests
+Execute tests safely using the engine's safety runner:
+
+```bash
+scryer-safe -g "use_module(tests/testing), run_tests, halt."
+```
+
+### Step 4: Develop with your AI Assistant
+Open the project directory in Google Antigravity, Claude Code, Cursor, Copilot, or Emacs (`aidermacs`/`agent-shell`). The AI assistant automatically detects `.agents/AGENTS.md` and applies pure ISO Prolog guidelines.
+
+**Example Starter Prompts**:
+- *"Implement a pure DCG parser in `src/my_parser.pl` to parse JSON tokens using `library(charsio)` and `library(reif)`."*
+- *"Add unit tests in `tests/testing.pl` for `parse_json/2`."*
 
 ---
 
-## Usage
+## Quickstart: Working with an Existing Prolog Project
+
+Follow this guide to bring safety sandboxing, linting, and autonomous subagents to an existing Prolog codebase:
+
+### Step 1: Adopt Agent Rules into Existing Repository
+In your existing project root, link or copy `.agents`:
 
 ```bash
-# Run Scryer Prolog safely
-scryer-safe -g "use_module(library(format)), format(\"Hello~n\", []), halt."
+cd /path/to/my-existing-prolog-repo
 
-# Run SWI-Prolog safely
-swi-safe -g "writeln('Hello SWI'), halt."
-
-# Select engine using environment variable
-PROLOG_ENGINE=trealla prolog-safe -g "write('Hello Trealla'), nl, halt."
-
-# Configure safety limits via environment variables
-PROLOG_TIMEOUT=10s PROLOG_MEMORY_MAX=100M prolog-safe -g "my_pred, halt."
+# Link .agents and AGENTS.md
+ln -s /path/to/prolog-agent-toolkit/.agents .agents
+ln -s .agents/AGENTS.md AGENTS.md
 ```
 
-## Agent Skills & Project Bootstrapping
+### Step 2: Select the Target Engine Dialect
+Set the target engine environment variable for your terminal and safety runners:
 
-The toolkit includes automated agent skills located in `.agents/skills/`:
+```bash
+# For SWI-Prolog base project:
+export PROLOG_ENGINE=swi
 
-- **Project Setup**: When initializing a project, the agent prompts to set up testing (`testing.pl` / `plunit`) and packaging manifests (`bakage` / `pack.pl`).
-- **Clean Workspace**: Python bytecode creation is disabled (`PYTHONDONTWRITEBYTECODE=1`), and test caches are stored centrally in `.cache/pytest`.
-- **Release Synchronization**: `prolog-release` synchronizes version strings consistently across `pack.pl`, `pyproject.toml`, `README.md`, `__init__.py`, and annotated Git tags.
+# For Scryer Prolog base project:
+export PROLOG_ENGINE=scryer
+```
+
+### Step 3: Use Autonomous Subagents on Existing Code
+Ask your AI assistant to audit, refactor, or test existing modules using the built-in subagents in `.agents/agents/`:
+
+* **Code Purity & Covington Style Audit**:
+  > *"Audit `src/legacy_module.pl` using `prolog-purity-reviewer-agent` and report non-logical cuts or defaulty representations."*
+* **Imperative to Pure ISO Refactoring**:
+  > *"Refactor `cut_heavy_predicate/3` in `src/legacy_module.pl` to pure `if_/3` and `dif/2` using `prolog-refactor-agent`."*
+* **Generate Unit Test Suite**:
+  > *"Generate a unit test suite for `src/parser.pl` using `prolog-test-generator-agent`."*
+* **Multi-Engine Portability Check**:
+  > *"Check if `src/utils.pl` runs across both Scryer and SWI using `prolog-portability-reviewer-agent`."*
+
+### Step 4: Run Tests & CI/CD Integration
+Run your existing tests safely under memory and timeout guards:
+
+```bash
+# For SWI-Prolog test suite:
+swi-safe -g "run_tests, halt."
+
+# For custom command under generic runner:
+PROLOG_TIMEOUT=15s PROLOG_MEMORY_MAX=200M prolog-safe -g "main, halt."
+```
+
+---
+
+## Safety Sandboxing & Runtime Flags
+
+Control safety thresholds dynamically using environment variables:
+
+```bash
+# Set custom execution timeout and memory cap
+PROLOG_TIMEOUT=10s PROLOG_MEMORY_MAX=128M scryer-safe -g "my_pred, halt."
+
+# Run SWI-Prolog under safe wrapper
+swi-safe -g "writeln('SWI Safe Mode'), halt."
+
+# Switch engine dynamically
+PROLOG_ENGINE=trealla prolog-safe -g "write('Hello Trealla'), nl, halt."
+```
+
+---
 
 ## Programmer Guidelines: Working with AI for Prolog
 
-For complete details, see [.agents/references/programmer_guidelines.md](.agents/references/programmer_guidelines.md).
+For full guidelines, see [.agents/references/programmer_guidelines.md](.agents/references/programmer_guidelines.md).
 
 When working with AI coding assistants (Google Antigravity, Claude Code, Cursor, Copilot, Emacs `aidermacs`/`gptel`) on Prolog software:
 
@@ -212,8 +266,10 @@ When working with AI coding assistants (Google Antigravity, Claude Code, Cursor,
 5. **Delegate DCG & Structural Boilerplate**: Let AI handle grammar production rules, AST building, and string formatting.
 6. **Use AI for Refactoring & Choice-Point Audits**: Ask AI to identify choice points, make code tail-recursive, or transform cut-heavy logic into pure forms (`dif/2`, `if_/3`).
 
+---
+
 ## Release & Versioning Workflow
 
-- Development versions follow `X.Y.Z.devN` (e.g. `0.0.1.dev1`).
-- Official releases match Git annotated tags (e.g. `0.0.1` matches Git tag `v0.0.1`).
-
+- **Canonical Version Source**: `pyproject.toml` is the canonical version source of truth.
+- **Synchronize Releases**: Run `prolog-agent release [--version X.Y.Z]` to synchronize `pyproject.toml`, `bakage.toml`, `pack.pl`, `README.md`, and `CHANGELOG.md`.
+- **Git Tagging**: Official releases match Git annotated tags (e.g., `v0.0.1`).
