@@ -1,6 +1,6 @@
 # Prolog Agent Toolkit
 
-**Version**: `0.0.1.dev10`  
+**Version**: `0.0.1.dev11`  
 **Category**: AI Assistant Developer Tools / Prolog Language Tooling  
 **Metadata**: [schema.org.jsonld](schema.org.jsonld)
 
