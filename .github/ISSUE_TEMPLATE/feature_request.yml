@@ -1,0 +1,46 @@
+name: Feature Request
+description: Propose a new feature, CLI command, or infrastructure enhancement for prolog-agent-toolkit.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a feature! Please fill out the sections below to describe your proposed enhancement.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your feature request related to a problem?
+      description: A clear description of what the problem or limitation is (e.g., "I'm frustrated when...").
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: A clear and concise description of what you want to happen or how the feature should work.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives & Workarounds
+      description: Describe any alternative solutions or features you've considered.
+
+  - type: textarea
+    id: ai_prompt
+    attributes:
+      label: Suggested AI Prompt (Optional)
+      description: |
+        If you would like an AI coding agent to implement this feature, provide a prompt to be used to create it. Skip if you plan to submit a PR yourself.
+      placeholder: "e.g., Add a new CLI subcommand `prolog-agent benchmark` that compares execution times across Scryer, SWI, and Trealla..."
+
+  - type: checkboxes
+    id: pr_intention
+    attributes:
+      label: Pull Request
+      options:
+        - label: I plan to submit a Pull Request to implement this feature myself.

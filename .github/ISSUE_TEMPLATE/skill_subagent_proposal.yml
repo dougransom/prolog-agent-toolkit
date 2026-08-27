@@ -1,0 +1,71 @@
+name: New Skill or Subagent Proposal
+description: Propose a new agent skill (.agents/skills/*) or autonomous subagent (.agents/agents/*) for the toolkit.
+title: "[Skill Proposal]: "
+labels: ["skill-proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to propose a new Prolog skill or autonomous subagent for the toolkit.
+
+  - type: input
+    id: name
+    attributes:
+      label: Skill / Subagent Name
+      description: Proposed directory name under `.agents/skills/` or `.agents/agents/` (e.g. `prolog-graphql-api` or `prolog-bench-agent`).
+      placeholder: e.g. prolog-graphql-api
+    validations:
+      required: true
+
+  - type: dropdown
+    id: artifact_type
+    attributes:
+      label: Type
+      options:
+        - "Agent Skill (.agents/skills/<name>/SKILL.md)"
+        - "Autonomous Subagent (.agents/agents/<name>.md)"
+        - "Both (Skill + Subagent workflow)"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: dialect_scope
+    attributes:
+      label: Target Dialect Scope
+      options:
+        - "All Dialects (Portable ISO Prolog)"
+        - "ISO Scryer Prolog"
+        - "SWI-Prolog"
+        - "Trealla Prolog"
+        - "Tau Prolog"
+    validations:
+      required: true
+
+  - type: textarea
+    id: use_cases
+    attributes:
+      label: Purpose & Use Cases
+      description: What specific tasks, libraries, or developer workflows will this skill/subagent cover?
+    validations:
+      required: true
+
+  - type: textarea
+    id: rules_purity
+    attributes:
+      label: Key Rules & Purity Guidelines
+      description: Highlight relevant standards (e.g., pure DCGs, CLP(Z), library(reif), reification, tabling).
+
+  - type: textarea
+    id: ai_prompt
+    attributes:
+      label: Suggested AI Prompt (Optional)
+      description: |
+        If you would like an AI agent to generate this skill or subagent, provide a prompt to be used to create it. Skip if you plan to submit a PR yourself.
+      placeholder: "e.g., Create a new skill .agents/skills/prolog-graphql-api/SKILL.md with rules for..."
+
+  - type: checkboxes
+    id: pr_intention
+    attributes:
+      label: Pull Request
+      options:
+        - label: I plan to submit a Pull Request to author this skill/subagent myself.

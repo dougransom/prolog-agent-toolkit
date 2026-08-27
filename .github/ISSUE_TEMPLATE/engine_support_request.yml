@@ -1,0 +1,49 @@
+name: Prolog Engine Support Request
+description: Request support or integration for a new Prolog engine in prolog-agent-toolkit.
+title: "[Engine Support]: "
+labels: ["engine-support"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to request support for integrating a new Prolog engine (e.g. Ciao, GNU Prolog, ECLiPSe, XSB) into the toolkit.
+
+  - type: input
+    id: engine_name
+    attributes:
+      label: Engine Name & Project URL
+      description: Name of the Prolog engine and link to its website or repository.
+      placeholder: e.g. Ciao Prolog - https://ciao-lang.org
+    validations:
+      required: true
+
+  - type: textarea
+    id: iso_compliance
+    attributes:
+      label: ISO Compliance & Key Features
+      description: Details on ISO compliance, standard library modules, string representation (`chars` vs `atom` vs `string`), and library support.
+    validations:
+      required: true
+
+  - type: textarea
+    id: runner_design
+    attributes:
+      label: Executable & Safety Runner Considerations
+      description: What is the binary entry point (e.g., `ciao`), environment variable convention, and recommended safety wrapper name (e.g., `ciao-safe`)?
+    validations:
+      required: true
+
+  - type: textarea
+    id: ai_prompt
+    attributes:
+      label: Suggested AI Prompt (Optional)
+      description: |
+        If you would like an AI agent to build support for this engine, provide a prompt to be used to create it. Skip if you plan to submit a PR yourself.
+      placeholder: "e.g., Add ciao-safe safety runner support to prolog_agent_toolkit/runner.py and update dialect skills..."
+
+  - type: checkboxes
+    id: pr_intention
+    attributes:
+      label: Pull Request
+      options:
+        - label: I plan to submit a Pull Request to add support for this Prolog engine myself.

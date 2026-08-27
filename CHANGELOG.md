@@ -1,3 +1,17 @@
+## [0.0.1.dev8] - 2026-08-26
+
+### Summary of Changes
+- Fixed GitHub Markdown rendering issue in `README.md` by removing raw HTML `<meta>` and `<script type="application/ld+json">` tags.
+- Added release announcement checklist and channel target plan in `TODO.md`.
+
+### Added / Modified
+- Cleaned up top header of `README.md` to start directly with title and version badge.
+- Synchronized version `0.0.1.dev8` across `pyproject.toml`, `README.md`, and `schema.org.jsonld`.
+
+### Breaking Changes
+- None.
+
+
 ## [0.0.1.dev7] - 2026-08-26
 
 ### Summary of Changes

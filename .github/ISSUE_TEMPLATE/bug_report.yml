@@ -1,0 +1,97 @@
+name: Bug Report
+description: Create a report to help us fix a bug or unexpected behavior in prolog-agent-toolkit.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting an issue! Please fill out the fields below so we can investigate and resolve the bug promptly.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: Describe what happened...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: dialect
+    attributes:
+      label: Target Prolog Engine / Dialect
+      description: Select the Prolog engine or dialect involved in this issue.
+      options:
+        - "ISO Scryer Prolog (scryer-safe)"
+        - "SWI-Prolog (swi-safe)"
+        - "Trealla Prolog (trealla-safe)"
+        - "Tau Prolog (tau-safe)"
+        - "Portable ISO Prolog / Engine-agnostic"
+        - "Multiple / Not Applicable"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component Affected
+      description: Which part of the toolkit is affected?
+      options:
+        - "CLI Infrastructure (prolog-agent CLI)"
+        - "Safety Runners (prolog-safe, scryer-safe, swi-safe, etc.)"
+        - "Agent Skills (.agents/skills/*)"
+        - "Autonomous Subagents (.agents/agents/*)"
+        - "Project Initializer (prolog-agent init / template)"
+        - "Other"
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps To Reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. Run command '...'
+        2. Execute query '...'
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error Logs & Output
+      description: Please copy-paste any relevant error messages, stack trace logs, or terminal output here.
+      render: shell
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment & OS Details
+      description: OS version, Python version, and Prolog engine version (e.g. Linux x86_64, Python 3.12, Scryer 0.9.4).
+      placeholder: Linux / macOS / Windows - Python 3.11 - Scryer 0.9.4
+
+  - type: textarea
+    id: ai_prompt
+    attributes:
+      label: Suggested AI Prompt (Optional)
+      description: |
+        If you would like an AI coding agent to reproduce or fix this bug, provide a suggested prompt or instruction here. (Skip if you plan to submit a PR yourself).
+      placeholder: "e.g., Fix the singleton variable warning in scryer-safe runner when..."
+
+  - type: checkboxes
+    id: pr_intention
+    attributes:
+      label: Pull Request
+      options:
+        - label: I plan to submit a Pull Request to fix this issue myself.

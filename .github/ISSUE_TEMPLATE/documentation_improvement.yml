@@ -1,0 +1,47 @@
+name: Documentation Improvement
+description: Propose updates, missing guides, or improvements to documentation or agent guidelines.
+title: "[Docs]: "
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to suggest improvements to README.md, AGENTS.md, skill guides, or metadata docs.
+
+  - type: input
+    id: target_doc
+    attributes:
+      label: Target Document / Section
+      description: Link or file path to the target document (e.g., `README.md`, `.agents/AGENTS.md`, `.agents/skills/prolog-dcg-mastery/SKILL.md`).
+      placeholder: e.g. README.md - Quick Start Section
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed_change
+    attributes:
+      label: Proposed Changes & Content
+      description: Describe the changes, missing instructions, or new sections to add.
+    validations:
+      required: true
+
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale & Benefit
+      description: How will this change improve developer onboarding or AI agent execution quality?
+
+  - type: textarea
+    id: ai_prompt
+    attributes:
+      label: Suggested AI Prompt (Optional)
+      description: |
+        If you would like an AI agent to update this documentation, provide a prompt to be used to generate/update it. Skip if you plan to submit a PR yourself.
+      placeholder: "e.g., Expand the Quick Start section in README.md to include a step-by-step example for..."
+
+  - type: checkboxes
+    id: pr_intention
+    attributes:
+      label: Pull Request
+      options:
+        - label: I plan to submit a Pull Request to update the documentation myself.

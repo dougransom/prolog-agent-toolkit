@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Prolog Agent Toolkit Documentation
+    url: https://github.com/dougransom/prolog-agent-toolkit#readme
+    about: Read the official documentation, dialect setup guides, and safety runner usage.
+  - name: Community Discussions & Questions
+    url: https://github.com/dougransom/prolog-agent-toolkit/discussions
+    about: Ask general usage questions, discuss ideas, or share community feedback.
