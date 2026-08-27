@@ -99,15 +99,12 @@ def init_project(project_name: str, engine: str = "scryer", base_dir: str = ".")
                 f.write("    hello(Msg),\n")
                 f.write('    format("Test hello/1 passed: ~s~n", [Msg]).\n')
 
-    # 4. Agent skills directory setup / symlink instructions
-    agents_dir = os.path.join(project_dir, ".agents")
-    global_agents = os.path.expanduser("~/code/prolog-agent-toolkit/.agents")
-    if not os.path.exists(agents_dir):
-        if os.path.exists(global_agents):
-            try:
-                os.symlink(global_agents, agents_dir)
-            except OSError:
-                pass
+    # 4. AGENTS.md creation (clean, self-contained rules file without broken symlinks)
+    agents_md_path = os.path.join(project_dir, "AGENTS.md")
+    if not os.path.exists(agents_md_path):
+        agents_content = generate_agents_md_content(project_name, engine=engine)
+        with open(agents_md_path, "w", encoding="utf-8") as f:
+            f.write(agents_content)
 
     # 5. README.md creation
     readme_path = os.path.join(project_dir, "README.md")
@@ -126,6 +123,33 @@ def init_project(project_name: str, engine: str = "scryer", base_dir: str = ".")
 
     print(f"Project '{project_name}' successfully initialized!")
     return 0
+
+
+def generate_agents_md_content(project_name: str, engine: str = "scryer") -> str:
+    """
+    Generate clean, self-contained AGENTS.md rules for initialized project.
+    """
+    engine = (engine or "scryer").lower()
+    safe_runner = f"{engine}-safe" if engine in ("scryer", "swi", "trealla", "tau") else "prolog-safe"
+
+    return f"""# {project_name} — AI Agent Guidelines & Standards
+
+When writing, refactoring, or reviewing Prolog code in this project, all AI assistants MUST adhere to the standards defined below.
+
+## Dialect & Safety Standards ({engine.upper()})
+
+- **Target Engine**: {engine.capitalize()} Prolog
+- **Safety Runner**: Always execute code using `{safe_runner}` CLI entry point rather than raw interpreter binaries.
+- **Purity & Logic**: Prefer logical purity (`if_/3`, `dif/2`, pure DCGs); avoid non-logical cuts (`!`) and side effects.
+- **Covington Style**: Keep clauses readable, use explicit goal ordering, and clean predicate naming.
+- **Strings**: Use standard double-quoted `chars` character lists (for Scryer/ISO) or dialect-native string primitives.
+
+## Verification
+```bash
+# Run unit tests safely
+{safe_runner} tests/testing.pl
+```
+"""
 
 
 def generate_readme_content(project_name: str, engine: str = "scryer", version: str = "0.0.1.dev6") -> str:
@@ -252,19 +276,19 @@ Recommended project structure:
 │   └── {project_name}.pl      # Main module source file
 ├── tests/
 │   └── {test_file_name}         # Unit test suite
-├── .agents -> /path/to/prolog-agent-toolkit/.agents # Symlink to shared agent skills & rules
+├── AGENTS.md                  # AI assistant rules & dialect guidelines
 ├── {manifest_file}              # Packaging manifest
 ├── CHANGELOG.md               # Version release history
-└── README.md                  # Developer & AI agent onboarding guide
+└── README.md                  # Human-facing project overview & documentation
 ```
 
 ### Directory Roles
 
 - **`src/`**: Houses application and library Prolog source files. Modules explicitly declare exports and follow pure ISO standards.
 - **`tests/`**: Contains unit test harnesses and test cases.
-- **`.agents/`**: Workspace symlink pointing to the shared `prolog-agent-toolkit/.agents` directory. Gives AI coding agents immediate access to project guidelines, dialect rules, refactoring subagents, and linter specifications.
+- **`AGENTS.md`**: AI assistant guidelines, dialect rules, and safe execution constraints.
 - **`{manifest_file}`**: {manifest_desc}
-- **`README.md`**: Canonical onboarding document for developers and AI agents.
+- **`README.md`**: Human-facing developer documentation, architectural overview, and setup guide.
 
 ---
 

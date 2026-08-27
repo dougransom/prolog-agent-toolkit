@@ -59,14 +59,19 @@ Multi-engine, cross-platform (Linux, macOS, BSD, Windows) Prolog execution sandb
 
 ### 2. Install CLI Tools with `uv`
 
-Install `prolog-agent-toolkit` using `uv tool` to make `prolog-agent`, `scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`, and `prolog-safe` globally available on your system `PATH`:
+Install `prolog-agent-toolkit` using `uv tool` to make `prolog-agent`, `scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`, and `prolog-safe` globally available on your system `PATH`.
+
+> [!IMPORTANT]
+> You **must** run the `uv tool install` command from the **root directory** of the cloned `prolog-agent-toolkit` repository:
 
 ```bash
-# Install directly from local source directory
-uv tool install . --force
+# Must be executed inside the prolog-agent-toolkit repository root directory:
+harry@hogwarts:~/code/prolog-agent-toolkit$ uv tool install . --force
+Resolved 2 packages in 3ms
+Installed 6 executables: prolog-agent, prolog-safe, scryer-safe, swi-safe, tau-safe, trealla-safe
 
-# Or run directly without permanent installation
-uv tool run prolog-agent --help
+# Or run directly without permanent installation:
+harry@hogwarts:~/code/prolog-agent-toolkit$ uv tool run prolog-agent --help
 ```
 
 Verify installation:

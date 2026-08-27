@@ -1,16 +1,21 @@
 # starter_project
 
-Canonical Prolog starter project skeleton for `prolog-agent-toolkit`.
+[Project Summary & Goals - Write a brief human-facing overview of your Prolog library or application here]
 
-## Features
-- Pure Scryer / ISO / SWI / Trealla Prolog layout (`src/`, `tests/`)
-- Pure DCGs (`library(dcgs)`), CLP(Z) integer constraints (`library(clpz)`), and reification (`library(reif)`)
-- Multi-engine test harness support (`testing.pl` and `plunit`)
-- Safe execution entry points (`scryer-safe`, `swi-safe`, `prolog-safe`)
+## Documentation & AI Agent Rules
+
+- **`README.md`**: Human-facing project overview, architecture, and setup instructions.
+- **`AGENTS.md`**: AI assistant rules, dialect standards, and safe runner constraints.
+
+## Project Structure
+
+- **`src/`**: Prolog module source code.
+- **`tests/`**: Unit test harness (`testing.pl` / `plunit`).
 
 ## Running Tests
+
 ```bash
-# Scryer Prolog
+# Scryer Prolog / ISO
 scryer-safe tests/testing.pl
 
 # SWI-Prolog

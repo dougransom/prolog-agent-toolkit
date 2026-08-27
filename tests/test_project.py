@@ -24,6 +24,7 @@ def test_init_project_scryer(temp_project_dir):
     assert os.path.exists(os.path.join(proj_dir, "tests", "testing.pl"))
     assert os.path.exists(os.path.join(proj_dir, "bakage.toml"))
     assert os.path.exists(os.path.join(proj_dir, "README.md"))
+    assert os.path.exists(os.path.join(proj_dir, "AGENTS.md"))
 
     with open(os.path.join(proj_dir, "bakage.toml"), "r") as f:
         content = f.read()
