@@ -15,6 +15,7 @@ Use this skill to audit, lint, and analyze Prolog code for common errors, single
 | **Discontiguous predicate** | Clauses of the same predicate are separated by other predicates. | Group clauses together or add `:- discontiguous Name/Arity.` directive. |
 | **Unknown predicate** | Calling a predicate that has not been defined or imported. | Add `:- use_module(...)` or correct predicate name/arity. |
 | **Non-logical cut (`!`)** | Impure control flow masking logic bugs or disabling backtracking. | Replace with `if_/3` from `library(reif)` or pure `dif/2`. |
+| **Negation-as-failure (`\+/1`) for inequality** | Using `\+ (X = Y)` or `\+ Goal` to express inequality on potentially uninstantiated terms (unsound). | Replace with pure `dif(X, Y)` constraint. |
 | **Defaulty Representation** | Data element kinds cannot be distinguished by principal functor (forcing `var/1` or catch-all default clauses). | Wrap elements in distinct principal functors (e.g. `leaf(X)`, `node(L, R)`). Convert external defaulty data early at boundaries. |
 | **Mis-typed Neck Operator (`:`)** | Dropped `-` from neck operator `:-` (or directive `: module(...)`). Prolog parses `head : body` as module qualification `Module:Goal` (fact with head `Module:Goal`). | Replace `:` with `:-`. |
 | **Wrong Comment Symbol (`#` / `//`)** | Using `#` (Python/Bash) or `//` (C/C++/JS) for comments instead of `%`. | Replace `#` or `//` line comment symbols with `%`. |

@@ -1,12 +1,18 @@
-## [0.0.1.dev8] - 2026-08-26
+## [0.0.1.dev8] - 2026-08-27
 
 ### Summary of Changes
-- Fixed GitHub Markdown rendering issue in `README.md` by removing raw HTML `<meta>` and `<script type="application/ld+json">` tags.
-- Added release announcement checklist and channel target plan in `TODO.md`.
+- Added Standard Library Cheat Sheets across all dialect skills (`scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, `tau-prolog-standards`).
+- Added Standard Library Steering rules to `.agents/AGENTS.md` and `.agents/skills/prolog-conventions/SKILL.md` to enforce explicit `:- use_module(library(...)).` headers while prohibiting raw OS stdlib file inspection.
+- Created `prolog-engine-onboarding` interactive skill (`.agents/skills/prolog-engine-onboarding/SKILL.md`) for onboarding new Prolog engines iteratively.
+- Added "Onboarding an Additional Prolog System" section to `README.md`.
 
 ### Added / Modified
-- Cleaned up top header of `README.md` to start directly with title and version badge.
-- Synchronized version `0.0.1.dev8` across `pyproject.toml`, `README.md`, and `schema.org.jsonld`.
+- `.agents/skills/scryer-prolog-standards/SKILL.md`: Added stdlib cheat sheet table for `dcgs`, `charsio`, `reif`, `clpz`, `si`, `lambda`, `lists`, `format`, `assoc`, `between`, `time`, `random`.
+- `.agents/skills/swi-prolog-standards/SKILL.md`: Added stdlib cheat sheet table for `clpfd`, `yall`, `apply`, `dcg/basics`, `ordsets`, `plunit`, and dicts.
+- `.agents/skills/trealla-prolog-standards/SKILL.md`: Added stdlib cheat sheet table for `dcgs`, `charsio`, `clpz`, `reif`, `when`, `format`, `random`.
+- `.agents/skills/tau-prolog-standards/SKILL.md`: Added stdlib cheat sheet table for `dom`, `js`, `lists`, `format`, `random`.
+- `.agents/skills/prolog-engine-onboarding/SKILL.md`: 6-phase interactive workflow for adding new Prolog engine targets.
+- `.agents/AGENTS.md` & `README.md`: Documented onboarding skill and standard library cheat sheet steering rules.
 
 ### Breaking Changes
 - None.

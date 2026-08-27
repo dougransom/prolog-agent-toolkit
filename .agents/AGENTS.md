@@ -11,10 +11,11 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
 - **Covington Prolog Style Guide**: [.agents/references/covington_style.md](.agents/references/covington_style.md)
   - Write for humans first; keep clauses simple and readable; use explicit goal ordering and clean predicate naming.
 - **Purity Guidelines**: [.agents/references/prolog_guidelines.md](.agents/references/prolog_guidelines.md)
-  - Prefer logical purity (`if_/3`, `dif/2`, pure DCGs); avoid unnecessary cuts (`!`) and side effects.
+  - Prefer logical purity (`if_/3`, `dif/2`, pure DCGs); prefer `dif/2` over negation-as-failure `\+/1` for sound term inequality; avoid unnecessary cuts (`!`) and side effects.
   - Prefer **clean vs. defaulty data representations** where element kinds are distinguished by principal functors (e.g. `leaf(L)` vs `node(L, R)`).
   - Prefer higher-order constructs (`call/N`, `call//N`, `maplist/N`, `foldl/N`) and `library(lambda)` (`\X^...`, `\X^Y^Goal`) to avoid duplicating predicate structures or DCG traversals.
   - Prefer pure efficiency: first-argument indexing, reified `zcompare/3` arithmetic comparison, and early constraint pruning (`dif/2`, CLP(Z)).
+  - Prefer coroutining (`freeze/2`, `when/2`) to suspend goals until variables are instantiated, preferring CLP(Z)/`dif/2` over manual coroutining where specialized constraints apply.
   - When relating conditions to values, isolate the test-value relation (e.g. `if_(G, A="A", A="B"), write(A)`).
 - **Declarative AI Workflow**: [.agents/skills/prolog-declarative-workflow/SKILL.md](.agents/skills/prolog-declarative-workflow/SKILL.md)
   - Use declarative reasoning based on unification, constraints, and backtracking (never imperative thinking).
@@ -22,6 +23,9 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
   - Use test-first scaffolding (`testing.pl` / `plunit` / configured test framework) and DCG structure generation.
 - **Programmer Steering Guidelines**: [.agents/references/programmer_guidelines.md](.agents/references/programmer_guidelines.md)
   - Best practices for human programmers when prompting, constraining, and steering AI coding assistants.
+- **Standard Library Cheat-Sheet Steering**:
+  - AI assistants MUST use dialect skill cheat sheets for `:- use_module(library(...)).` declarations and predicate signatures instead of assuming SWI-style autoloading.
+  - AI assistants MUST NOT read raw standard library implementation source files, relying on concise cheat sheets and pre-trained semantics to conserve context window tokens.
 - **Human Editing Syntax Error Diagnostics**:
   - Whenever Prolog compilation or consult fails after human editing, AI assistants MUST scan target source files for common punctuation typos (`:` instead of `:-`, `->` instead of `-->`, `#` or `//` line comments, `!=`, `<=`, `=>`, `<>`), and report exact file, line number, column, and fix recommendations to the programmer.
 
@@ -65,6 +69,8 @@ AI assistants MUST select and follow the specific dialect standards correspondin
   - LLM + Prolog integration architecture: LLM for translation & heuristics, Prolog for ground-truth logic verification.
 - **Code Review**: [.agents/skills/prolog-code-review/SKILL.md](.agents/skills/prolog-code-review/SKILL.md)
   - Guidelines and checklists for auditing Prolog PRs, checking logical purity, determinism, portability, and safety.
+- **Engine Onboarding**: [.agents/skills/prolog-engine-onboarding/SKILL.md](.agents/skills/prolog-engine-onboarding/SKILL.md)
+  - Interactive, iterative workflow for onboarding new Prolog engines and dialect targets into the toolkit.
 
 ## Autonomous Agent Subagents (`.agents/agents/`)
 
@@ -127,13 +133,13 @@ AI assistants provide the virtual and CLI command: `prolog-agent release [--vers
 
 ## Future Engine Expansion & Metadata Protocol
 
-Whenever a new Prolog engine or system is added or supported in this toolkit, all AI assistants MUST systematically update:
+Whenever a new Prolog engine or system is added or supported in this toolkit, all AI assistants MUST follow the interactive workflow in [.agents/skills/prolog-engine-onboarding/SKILL.md](.agents/skills/prolog-engine-onboarding/SKILL.md) and systematically update:
 1. **Metadata & Web Annotations**:
    - `README.md`: Update OpenGraph description (`<meta property="og:description">`), Schema.org snippet (`<script type="application/ld+json">`), keywords, features list, and engine support tables.
    - `schema.org.jsonld`: Update `description` and `keywords` array.
    - `pyproject.toml`: Add engine tag to `keywords` and CLI entry point script.
-2. **Coding Standards & Dialects**:
-   - Create `.agents/skills/<engine>-prolog-standards/SKILL.md` detailing ISO/engine compliance rules.
+2. **Coding Standards & Dialect Cheat Sheets**:
+   - Create `.agents/skills/<engine>-prolog-standards/SKILL.md` detailing ISO/engine compliance rules AND including a comprehensive **Standard Library Cheat Sheet** (import headers, exported predicates, and dialect autoload differences).
    - Register dialect skill under **Multi-Engine Dialect Selection & Rules** in `.agents/AGENTS.md`.
 3. **Packaging & Dependencies**:
    - Update `.agents/skills/prolog-packaging/SKILL.md` to cover package management for the engine (e.g. `bakage`, `pack`, `npm`).

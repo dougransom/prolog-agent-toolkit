@@ -27,7 +27,9 @@ Purity can also be characterized by observable program properties from the outsi
 - **No Side Effects**: If a goal produces output on the terminal (`write/1`, `format/2`) or modifies global state (`assertz/1`, `retract/1`), it is **not** pure.
 - **Monotonicity**: Adding goals to a pure query can at most *reduce* the set of solutions, never increase it. If `(G, S=T)` succeeds unconditionally but `(S=T, G)` fails, `G` is non-monotonic and **not** pure.
 - **Steadfastness**: A predicate is steadfast if its answers are independent of whether output arguments are instantiated before or after the call.
-- **Purity Breakers**: Prominent constructs that break logical purity include cuts `!/0`, if-then-else `(->)/2`, `var/1`, `nonvar/1`, `==/2`, and database manipulation (`assertz/1`, `retract/1`).
+- **Purity Breakers**: Prominent constructs that break logical purity include cuts `!/0`, negation-as-failure `\+/1`, if-then-else `(->)/2`, `var/1`, `nonvar/1`, `==/2`, and database manipulation (`assertz/1`, `retract/1`).
+- **Sound Inequality (`dif/2` vs `\+/1`)**: Prefer `dif(X, Y)` over negation-as-failure `\+ (X = Y)` (or `\+ Goal` to express term inequality). `\+/1` is non-monotonic and unsound when terms contain uninstantiated variables, whereas `dif/2` is a pure declarative constraint that holds soundly across all instantiation states.
+
 
 ---
 

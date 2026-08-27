@@ -225,6 +225,31 @@ PROLOG_ENGINE=trealla prolog-safe -g "write('Hello Trealla'), nl, halt."
 
 ---
 
+## Onboarding an Additional Prolog System
+
+To add support for a new Prolog engine or dialect target (such as GNU Prolog, Ciao, ECLiPSe, B-Prolog, Ichiban, or YAP) to the toolkit, use the interactive **Engine Onboarding Workflow**:
+
+```
+.agents/skills/prolog-engine-onboarding/SKILL.md
+```
+
+Prompt your AI assistant to start the interactive onboarding process:
+
+> *"Use `prolog-engine-onboarding` skill to guide me through adding support for GNU Prolog (gprolog) to this toolkit."*
+
+### Onboarding Steps Summary
+
+The interactive workflow guides you through 6 iterative phases:
+
+1. **Information Gathering**: Collects CLI binary names (`gprolog`, `ciao`, `yap`), ISO compliance status, string representations (`chars`/`codes`/`string`), import syntax, and runner flags.
+2. **Dialect Standards & Cheat Sheet Creation**: Generates `.agents/skills/<engine>-prolog-standards/SKILL.md` containing explicit `:- use_module(library(...)).` headers, exported predicate tables, and dialect autoload rules.
+3. **Safety Runner & CLI Entry Point**: Updates `runner.py`, `cli.py`, and `pyproject.toml` to register `<engine>-safe`.
+4. **Project Initializer & Scaffolding**: Updates `prolog-agent init` and `prolog-agent template` options for `--dialect <engine>`.
+5. **Metadata & Agent Rules**: Updates `.agents/AGENTS.md`, `README.md`, `schema.org.jsonld`, and `pyproject.toml`.
+6. **Automated Verification & Review**: Runs unit tests (`pytest`) and skill validation (`prolog-agent validate-skills`), asking clarifying questions iteratively until you confirm onboarding is complete.
+
+---
+
 ## Programmer Guidelines: Working with AI for Prolog
 
 For full guidelines, see [.agents/references/programmer_guidelines.md](.agents/references/programmer_guidelines.md).

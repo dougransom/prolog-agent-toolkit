@@ -1,8 +1,10 @@
 Prefer prolog code with [logical purity properties](purity.md) ([Metalevel.at source](https://www.metalevel.at/prolog/purity)). Included in this are:
-- prefer if_ and the predicates from reif.
-- prefer clpz and clpb over impure built in predicates.
+- prefer `dif/2` over negation-as-failure `\+/1` (e.g. `dif(X, Y)` instead of `\+ (X = Y)`) for sound, pure term inequality.
+- prefer `if_/3` and the predicates from `library(reif)`.
+- prefer CLP(Z) and CLP(B) over impure built-in predicates.
 - prefer clean vs defaulty data representations ([Metalevel.at data#clean](https://www.metalevel.at/prolog/data#clean)).
 - prefer pure efficiency techniques like argument indexing, reified `zcompare/3`, and early constraint pruning ([Metalevel.at efficiency](https://www.metalevel.at/prolog/efficiency)).
+
 
 
 Use [Scryer Prolog](https://www.scryer.pl/) language and library documentation.
@@ -71,6 +73,17 @@ Follow core Prolog efficiency principles ([Metalevel.at reference](https://www.m
 - **Reified Arithmetic Comparisons (`zcompare/3`)**: When conditional branches depend on integer comparisons, use `zcompare(Order, X, Y)` (from `library(clpz)`) to reify the comparison into an atom (`<`, `=`, `>`). Matching on the reified atom enables first-argument indexing and eliminates choice points without cuts.
 - **Early Pruning**: Place deterministic, non-suspending, and always-terminating goals (such as `dif/2` and CLP(Z) constraints) before general search goals to prune the search space early.
 - **Engine Delegation**: Delegate searching, backtracking, and indexing tasks to the Prolog engine rather than building manual search/indexing loops in Prolog code.
+
+### Coroutining & Goal Suspension (`freeze/2`, `when/2`)
+
+Use goal suspension to delay execution until arguments are sufficiently instantiated while preserving logical purity:
+
+- **Constraint Primacy**: Always prefer dedicated declarative constraints (`CLP(Z)`, `dif/2`) over manual coroutining where applicable (e.g. `X #> 0` instead of `freeze(X, X > 0)`, or `dif(X, Y)` instead of `freeze(X, freeze(Y, X \== Y))`).
+- **`freeze(Var, Goal)`**: Use when delaying a goal until a single variable is bound to a non-variable term (`nonvar(Var)`). Ideal for single-variable guards to prevent premature instantiation errors.
+- **`when(Condition, Goal)`**: Use when activation depends on boolean conditions or multiple variables:
+  - Disjunction: `when((nonvar(X) ; nonvar(Y)), Goal)` (triggers when either `X` or `Y` is bound).
+  - Conjunction: `when((nonvar(X), nonvar(Y)), Goal)`.
+  - Groundness: `when(ground(Term), Goal)`.
 
 Use logging for diagnostics meant to be left in and activated at runtime.
 

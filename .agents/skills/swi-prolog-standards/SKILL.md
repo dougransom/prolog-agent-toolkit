@@ -12,7 +12,20 @@ Guidelines for writing idiomatic SWI-Prolog code:
 1. **Modules**: Define clear module headers with `:- module(name, [exports...]).`.
 2. **Data Structures**: Utilize SWI dicts (`_{key: Value}`) and SWI strings where appropriate for modern SWI applications.
 3. **Packs & Libraries**: Manage external packages using SWI-Prolog `pack_install/1`.
-4. **Safety**: Always execute code using `swi-safe` or `prolog-safe` with `PROLOG_ENGINE=swi`.
+4. **Library Cheat-Sheet Usage**: Use the Standard Library Cheat Sheet below for module imports; do NOT read raw system library files unless working with un-documented custom packages.
+5. **Safety**: Always execute code using `swi-safe` or `prolog-safe` with `PROLOG_ENGINE=swi`.
+
+## SWI-Prolog Standard Library Cheat Sheet
+
+| Feature / Topic | Import Header | Primary Exported Predicates | Notes / Dialect Rules |
+| :--- | :--- | :--- | :--- |
+| **CLP(FD) Constraints**| `:- use_module(library(clpfd)).` | `(#=)/2`, `in/2`, `label/1`, `labeling/2` | Integer constraints in SWI (SWI uses `clpfd`). |
+| **Higher-Order Lambdas**| `:- use_module(library(yall)).` | `[X]>>...`, `[X,Y]>>Goal` | SWI built-in lambda syntax (`yall`). |
+| **Higher-Order Apply**| `:- use_module(library(apply)).` | `maplist/2..5`, `include/3`, `exclude/3`, `foldl/4` | List mapping and filtering. |
+| **DCG Basics** | `:- use_module(library(dcg/basics)).` | `string//1`, `integer//1`, `whites//0` | Common parsing non-terminals. |
+| **Ordered Sets** | `:- use_module(library(ordsets)).` | `list_to_ord_set/2`, `ord_union/3` | Set operations on sorted lists. |
+| **Unit Testing** | `:- use_module(library(plunit)).` | `:- begin_tests(name).`, `:- end_tests(name).` | Native SWI test harness. |
+| **Dict Manipulation** | *Built-in* | `get_dict/3`, `put_dict/4`, `is_dict/1` | Native SWI dict support (`Dict.Key`). |
 
 ## Universal Guidelines & References
 

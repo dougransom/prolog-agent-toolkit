@@ -12,7 +12,7 @@ When invoked to refactor Prolog code:
 2. **Convert Control Flow & Reify Comparisons**:
    - Replace cuts with pure reified logic (`if_/3` from `library(reif)`).
    - Replace integer comparison conditionals with `zcompare/3` (from `library(clpz)`) for first-argument indexing.
-   - Replace standard unification conditionals with `if_/3` or `dif/2`.
+   - Replace standard unification conditionals or negation-as-failure `\+/1` with pure `if_/3` or `dif/2` (preferring `dif(X, Y)` over `\+ (X = Y)`).
 3. **Enforce Covington Style & Early Pruning**:
    - Re-order goals logically (place deterministic `dif/2` and CLP(Z) constraints early).
    - Use clear, descriptive predicate names.
