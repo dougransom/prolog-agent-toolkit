@@ -49,6 +49,17 @@ PYTHONDONTWRITEBYTECODE=1 uv run pytest
 PYTHONDONTWRITEBYTECODE=1 uv run scryer-safe -g "write('Test OK'), nl, halt."
 ```
 
+### Installing in Development / Editable Mode
+
+For contributors working on the Python source code (`prolog_agent_toolkit/`), install the CLI tools locally in **editable mode** so changes to Python files take effect immediately:
+
+```bash
+uv tool install --editable . --force
+```
+
+> [!TIP]
+> If you installed in non-editable mode (`uv tool install . --force`), re-run `uv tool install . --force` after modifying Python code to rebuild and update the system binaries on your `PATH`.
+
 ---
 
 ## 4. Submitting Pull Requests & Commits
