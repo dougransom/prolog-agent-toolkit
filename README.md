@@ -125,17 +125,21 @@ cd my_parser
 ```
 
 ### Step 2: Project Layout Overview
-The project is bootstrapped with a clean structure, standard testing framework, package manifests, and AI rules:
+The project is bootstrapped with a clean structure, multi-dialect adapter support, standard testing framework, package manifests, and AI rules:
 
 ```text
 my_parser/
 ├── bakage.toml          # Scryer Prolog manifest
 ├── pack.pl              # ISO / SWI manifest fallback
-├── AGENTS.md -> .agents/AGENTS.md
-├── .agents/             # Agent rules & dialect skills
+├── package.json         # Tau Prolog / npm manifest (optional)
+├── AGENTS.md            # AI assistant rules & dialect guidelines
 ├── src/
+│   ├── core/            # 100% Pure ISO Prolog core (dialect-agnostic)
+│   │   └── logic.pl
+│   ├── adapters/        # Dialect compatibility shims (scryer, swi, trealla, tau)
 │   └── my_parser.pl     # Starter module with Covington doc block & DCG/CLP(Z) stubs
 └── tests/
+    ├── portable/        # Engine-agnostic ISO unit tests
     └── testing.pl       # Scryer testing.pl unit test harness
 ```
 
@@ -203,6 +207,57 @@ swi-safe -g "run_tests, halt."
 # For custom command under generic runner:
 PROLOG_TIMEOUT=15s PROLOG_MEMORY_MAX=200M prolog-safe -g "main, halt."
 ```
+
+---
+
+## Standard Prolog Folder Architecture & Multi-Dialect Layout
+
+When organizing Prolog software—especially repositories supporting multiple package managers (`bakage`, `pack_install`, `npm`) or multiple dialects (Scryer, SWI, Trealla, Tau)—adhere to the following canonical layout:
+
+```text
+my_prolog_project/
+├── .agents/                        # AI Assistant rules & skill references (symlink or dir)
+│   ├── AGENTS.md                   # Project rules & dialect conventions
+│   └── skills/                     # Engine & tool skills
+├── src/                            # Source Code Directory
+│   ├── core/                       # 100% Pure ISO Prolog Core (dialect-agnostic)
+│   │   ├── logic.pl                # Pure DCGs, term relations, CLP constraints
+│   │   └── types.pl                # Functor data representations
+│   ├── adapters/                   # Dialect Shims & Library Normalization
+│   │   ├── scryer/compat.pl        # Imports library(charsio), library(reif), library(clpz)
+│   │   ├── swi/compat.pl           # Imports library(clpfd), plunit, SWI shims
+│   │   ├── trealla/compat.pl       # Trealla ISO imports & FFI
+│   │   └── tau/compat.pl           # Tau DOM & JS interoperability hooks
+│   └── my_prolog_project.pl        # Main module entry point
+├── tests/                          # Test Suites Directory
+│   ├── portable/                   # Engine-Agnostic ISO Test Assertions
+│   │   └── test_core.pl            # Pure goal assertions (must_succeed/1)
+│   ├── scryer/                     # Scryer Prolog Test Harness
+│   │   └── test_scryer.pl          # Uses library(testing) / testing.pl
+│   ├── swi/                        # SWI-Prolog Test Harness
+│   │   └── test_swi.pl             # Uses library(plunit)
+│   └── js/                         # Tau Prolog JS Integration Tests
+│       └── test_tau.test.js        # Jest / Vitest harness
+├── bakage.toml                     # Scryer Prolog bakage manifest
+├── pack.pl                         # SWI-Prolog pack manifest & Scryer fallback
+├── package.json                    # Tau Prolog / npm manifest (optional)
+├── AGENTS.md                       # Workspace root AI agent instructions
+├── README.md                       # Human-facing project documentation
+├── CHANGELOG.md                    # Release history
+└── LICENSE                         # Open-source license
+```
+
+### Key Architectural Principles
+
+1. **Multi-Manifest Co-existence**: Package manifests (`bakage.toml`, `pack.pl`, `package.json`, `pyproject.toml`) have distinct filenames and co-exist at the repository root without conflict. This allows publishing the project across multiple ecosystems simultaneously.
+2. **Core vs. Adapter Decoupling**:
+   - `src/core/`: Contains 100% pure ISO Prolog (pure DCGs, `dif/2`, reified `if_/3`). Free of engine-specific imports or extensions.
+   - `src/adapters/`: Contains thin engine-specific compatibility shims that normalize dialect variations (`library(clpz)` vs `library(clpfd)`).
+3. **Multi-Runner Test Hierarchy**:
+   - `tests/portable/`: Pure goal assertions executable on any ISO engine.
+   - `tests/scryer/`: Scryer unit tests using `library(testing)`.
+   - `tests/swi/`: SWI-Prolog unit tests using `library(plunit)`.
+   - `tests/js/`: JavaScript integration tests querying Tau Prolog via Node.js test runners.
 
 ---
 

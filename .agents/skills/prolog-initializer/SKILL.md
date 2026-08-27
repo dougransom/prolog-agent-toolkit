@@ -35,16 +35,23 @@ If dialect is omitted, default to **scryer**.
 prolog-agent template <project-name> [--dialect scryer|swi|trealla]
 ```
 Generates a deterministic canonical project layout:
-```
+```text
 <project-name>/
   src/
-    <project-name>.pl
+    core/                  # 100% Pure ISO Prolog core
+    adapters/              # Dialect shims (scryer, swi, trealla, tau)
+    <project-name>.pl      # Main module entry point
   tests/
-    test_<project-name>.pl or testing.pl
-  .agents -> symlink to toolkit
-  README.md
-  bakage.toml or pack.pl (depending on dialect)
-  CHANGELOG.md (empty, ready for release workflow)
+    portable/              # Pure ISO assertions
+    scryer/                # Scryer testing.pl harness
+    swi/                   # SWI plunit test suite
+    testing.pl or test_<project-name>.pl
+  AGENTS.md                # AI assistant guidelines
+  bakage.toml              # Scryer manifest
+  pack.pl                  # SWI pack manifest & fallback
+  package.json             # Tau Prolog / npm manifest
+  CHANGELOG.md             # Release history
+  README.md                # Human-facing documentation
 ```
 
 ---

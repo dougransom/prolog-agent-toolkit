@@ -268,26 +268,39 @@ The `prolog-agent-toolkit` provides a standardized development environment for w
 
 ## 2. Directory Layout
 
-Recommended project structure:
+Recommended canonical project structure supporting single or multi-dialect development:
 
 ```text
 {project_name}/
-├── src/
-│   └── {project_name}.pl      # Main module source file
-├── tests/
-│   └── {test_file_name}         # Unit test suite
-├── AGENTS.md                  # AI assistant rules & dialect guidelines
-├── {manifest_file}              # Packaging manifest
-├── CHANGELOG.md               # Version release history
-└── README.md                  # Human-facing project overview & documentation
+├── src/                            # Source code directory
+│   ├── core/                       # 100% Pure ISO Prolog core (dialect-agnostic)
+│   │   └── logic.pl
+│   ├── adapters/                   # Engine shims & compatibility layers
+│   │   ├── scryer/compat.pl        # Scryer imports (charsio, reif, clpz)
+│   │   ├── swi/compat.pl           # SWI imports (clpfd, plunit)
+│   │   ├── trealla/compat.pl       # Trealla ISO imports
+│   │   └── tau/compat.pl           # Tau JS/DOM shims
+│   └── {project_name}.pl           # Main module entry point
+├── tests/                          # Test suites directory
+│   ├── portable/                   # Engine-agnostic ISO test suite
+│   ├── scryer/                     # Scryer testing.pl harness
+│   ├── swi/                        # SWI plunit test suite
+│   └── {test_file_name}            # Default unit test file
+├── AGENTS.md                       # AI assistant rules & dialect guidelines
+├── bakage.toml                     # Scryer Prolog bakage manifest
+├── pack.pl                         # SWI-Prolog pack manifest & Scryer fallback
+├── package.json                    # Tau Prolog / npm manifest (optional for Node/DOM)
+├── CHANGELOG.md                    # Version release history
+└── README.md                       # Human-facing project documentation
 ```
 
-### Directory Roles
+### Directory Roles & Multi-Dialect Architecture
 
-- **`src/`**: Houses application and library Prolog source files. Modules explicitly declare exports and follow pure ISO standards.
-- **`tests/`**: Contains unit test harnesses and test cases.
+- **`src/core/`**: Houses 100% pure ISO-compliant Prolog logic (pure DCGs, `dif/2`, reified `if_/3`). Completely free of engine-specific extensions.
+- **`src/adapters/`**: Houses dialect compatibility shims normalizing module imports (`library(clpz)` vs `library(clpfd)`), strings, and FFI interfaces per engine.
+- **`tests/`**: Organizes unit tests by portability scope: `portable/` for pure ISO assertions, `scryer/` for Scryer `testing.pl`, `swi/` for SWI `plunit`.
+- **Root Manifests**: `bakage.toml`, `pack.pl`, and `package.json` co-exist at the root without conflict, allowing the codebase to be published to `bakage`, `pack_install`, and `npm` simultaneously.
 - **`AGENTS.md`**: AI assistant guidelines, dialect rules, and safe execution constraints.
-- **`{manifest_file}`**: {manifest_desc}
 - **`README.md`**: Human-facing developer documentation, architectural overview, and setup guide.
 
 ---

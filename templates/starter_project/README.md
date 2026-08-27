@@ -9,8 +9,31 @@
 
 ## Project Structure
 
-- **`src/`**: Prolog module source code.
-- **`tests/`**: Unit test harness (`testing.pl` / `plunit`).
+Recommended canonical project layout supporting single or multi-dialect development:
+
+```text
+starter_project/
+├── src/                            # Source code directory
+│   ├── core/                       # 100% Pure ISO Prolog core (dialect-agnostic)
+│   │   └── logic.pl
+│   ├── adapters/                   # Engine shims & compatibility layers
+│   │   ├── scryer/compat.pl        # Scryer imports (charsio, reif, clpz)
+│   │   ├── swi/compat.pl           # SWI imports (clpfd, plunit)
+│   │   ├── trealla/compat.pl       # Trealla ISO imports
+│   │   └── tau/compat.pl           # Tau JS/DOM shims
+│   └── starter_project.pl          # Main module entry point
+├── tests/                          # Test suites directory
+│   ├── portable/                   # Engine-agnostic ISO test suite
+│   ├── scryer/                     # Scryer testing.pl harness
+│   ├── swi/                        # SWI plunit test suite
+│   └── testing.pl                  # Default test harness
+├── AGENTS.md                       # AI assistant rules & dialect guidelines
+├── bakage.toml                     # Scryer Prolog bakage manifest
+├── pack.pl                         # SWI-Prolog pack manifest & Scryer fallback
+├── package.json                    # Tau Prolog / npm manifest (optional for Node/DOM)
+├── CHANGELOG.md                    # Version release history
+└── README.md                       # Human-facing project documentation
+```
 
 ## Running Tests
 
