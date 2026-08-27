@@ -61,6 +61,9 @@ PYTHONDONTWRITEBYTECODE=1 uv run scryer-safe -g "write('Test OK'), nl, halt."
 
 ## 5. Adding Support for New Prolog Engines (Mandatory Metadata & Skills Checklist)
 
+> [!TIP]
+> **Interactive Workflow Available**: You can automate and execute this onboarding process step-by-step with your AI assistant by using the [`prolog-engine-onboarding`](.agents/skills/prolog-engine-onboarding/SKILL.md) skill (e.g. *"Use `prolog-engine-onboarding` skill to guide me through adding support for GNU Prolog"*).
+
 Whenever adding or extending support for a new Prolog engine (e.g. GNU Prolog, Ciao Prolog, SICStus, B-Prolog, ECLiPSe, etc.), you **MUST** update all of the following:
 
 1. **Metadata & Web Annotations**:

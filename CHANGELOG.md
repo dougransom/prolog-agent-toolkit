@@ -1,3 +1,17 @@
+## [0.0.1.dev10] - 2026-08-27
+
+### Summary of Changes
+- Updated `README.md` to remove file-copying setup and promote `skills.json` multi-directory search path as Option B (Recommended for Personal Setup).
+- Added tip in `CONTRIBUTING.md` for automating engine onboarding with `prolog-engine-onboarding` skill.
+- Synchronized version `v0.0.1.dev10` across manifest files.
+
+### Added / Modified Predicates
+- Documentation and setup configuration updates.
+
+### Breaking Changes
+- None.
+
+
 ## [0.0.1.dev9] - 2026-08-27
 
 ### Summary of Changes

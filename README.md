@@ -1,6 +1,6 @@
 # Prolog Agent Toolkit
 
-**Version**: `0.0.1.dev9`  
+**Version**: `0.0.1.dev10`  
 **Category**: AI Assistant Developer Tools / Prolog Language Tooling  
 **Metadata**: [schema.org.jsonld](schema.org.jsonld)
 
@@ -90,20 +90,11 @@ ln -s /path/to/prolog-agent-toolkit/.agents .agents
 ln -s .agents/AGENTS.md AGENTS.md
 ```
 
-#### Option B: Global Machine Installation (Recommended for Personal Setup)
-Install rules and skills into your global AI configuration folder so **every** project automatically inherits them across your system:
-
-* **Google Antigravity**:
-  ```bash
-  mkdir -p ~/.gemini/config/skills
-  cp -r /path/to/prolog-agent-toolkit/.agents/skills/* ~/.gemini/config/skills/
-  cat /path/to/prolog-agent-toolkit/.agents/AGENTS.md >> ~/.gemini/config/AGENTS.md
-  ```
-
-#### Option C: Custom Search Paths via `skills.json` (Multi-Directory Search Path)
+#### Option B: Custom Search Paths via `skills.json` (Recommended for Personal Setup)
 Google Antigravity automatically loads rules and skills from both **Global Root** (`~/.gemini/config`) and **Workspace Root** (`.agents`).
 
-To load skills from multiple locations, create `.agents/skills.json` (or `~/.gemini/config/skills.json`):
+To load skills globally across all projects on your machine without copying files, create `~/.gemini/config/skills.json` (or `.agents/skills.json` for workspace-level search paths):
+
 ```json
 {
   "entries": [
@@ -272,3 +263,10 @@ When working with AI coding assistants (Google Antigravity, Claude Code, Cursor,
 - **Canonical Version Source**: `pyproject.toml` is the canonical version source of truth.
 - **Synchronize Releases**: Run `prolog-agent release [--version X.Y.Z]` to synchronize `pyproject.toml`, `bakage.toml`, `pack.pl`, `README.md`, and `CHANGELOG.md`.
 - **Git Tagging**: Official releases match Git annotated tags (e.g., `v0.0.1`).
+
+---
+
+## Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, testing guidelines, pull request workflows, and the checklist for onboarding new Prolog engines.
+
