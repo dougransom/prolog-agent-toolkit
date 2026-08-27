@@ -1,31 +1,3 @@
-<!-- OpenGraph Metadata -->
-<meta property="og:title" content="Prolog Agent Toolkit" />
-<meta property="og:type" content="website" />
-<meta property="og:description" content="Multi-engine, cross-platform Prolog execution sandboxing, AI agent standards, and skills toolkit for Scryer Prolog, SWI-Prolog, Trealla Prolog, and Tau Prolog. Supporting Google Antigravity, Claude Code, GitHub Copilot, Cursor, aidermacs, agent-shell, and gptel." />
-<meta property="og:category" content="Developer Tools, Prolog, AI Agents" />
-
-<!-- Schema.org JSON-LD Metadata -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareSourceCode",
-  "name": "Prolog Agent Toolkit",
-  "version": "0.0.1.dev7",
-  "description": "Multi-engine, cross-platform Prolog execution sandboxing, AI agent standards, and skills toolkit for Scryer Prolog, SWI-Prolog, Trealla Prolog, and Tau Prolog. Supporting Google Antigravity, Claude Code, GitHub Copilot, Cursor, aidermacs, agent-shell, and gptel.",
-  "programmingLanguage": "Prolog",
-  "targetProduct": [
-    { "@type": "SoftwareApplication", "name": "Google Antigravity" },
-    { "@type": "SoftwareApplication", "name": "Claude Code" },
-    { "@type": "SoftwareApplication", "name": "GitHub Copilot" },
-    { "@type": "SoftwareApplication", "name": "Cursor" },
-    { "@type": "SoftwareApplication", "name": "aidermacs" },
-    { "@type": "SoftwareApplication", "name": "agent-shell" },
-    { "@type": "SoftwareApplication", "name": "gptel" }
-  ],
-  "keywords": ["prolog", "scryer-prolog", "swi-prolog", "trealla-prolog", "tau-prolog", "agent-toolkit", "antigravity", "claude-code", "copilot", "cursor", "aidermacs", "agent-shell", "gptel", "emacs", "dcg", "clpz", "sandboxing"]
-}
-</script>
-
 # Prolog Agent Toolkit
 
 **Version**: `0.0.1.dev7`  
