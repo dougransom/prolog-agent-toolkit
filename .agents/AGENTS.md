@@ -127,9 +127,10 @@ AI assistants provide the virtual and CLI command: `prolog-agent release [--vers
 
 ### Release Execution Steps:
 1. **Synchronize Versions**: Run `prolog-agent release [--version X.Y.Z]`.
-2. **Generate CHANGELOG.md**: Update `CHANGELOG.md` with release version header (`## [X.Y.Z] - YYYY-MM-DD`).
-3. **Commit & Tag**: Commit changes (`git commit -am "Release vX.Y.Z"`) and tag with exact `pyproject.toml` version (`git tag -a vX.Y.Z -m "Release vX.Y.Z"`).
-4. **Push**: Push commits and tags (`git push origin <branch> --tags`).
+2. **Verify Version Parity**: Run `prolog-agent check-version` (or use `prolog-agent install-hooks` for pre-commit enforcement).
+3. **Generate CHANGELOG.md**: Update `CHANGELOG.md` with release version header (`## [X.Y.Z] - YYYY-MM-DD`).
+4. **Commit & Tag**: Commit changes (`git commit -am "Release vX.Y.Z"`) and tag with exact `pyproject.toml` version (`git tag -a vX.Y.Z -m "Release vX.Y.Z"`).
+5. **Push**: Push commits and tags (`git push origin <branch> --tags`).
 
 ## Future Engine Expansion & Metadata Protocol
 

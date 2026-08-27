@@ -40,6 +40,63 @@ def sync_file_version(filepath: str, old_ver_pattern: str, new_ver_str: str) -> 
     return False
 
 
+def check_versions(target_dir: str = ".") -> int:
+    """
+    Verify that all manifest and documentation version declarations match the canonical version in pyproject.toml.
+    Returns 0 if all present files are in sync, or 1 if any version is out of sync or missing.
+    """
+    target_dir = os.path.abspath(target_dir)
+    pyproject_path = os.path.join(target_dir, "pyproject.toml")
+    if not os.path.exists(pyproject_path):
+        sys.stderr.write(f"Error: pyproject.toml not found in {target_dir}\n")
+        return 1
+
+    canonical_version = get_pyproject_version(target_dir)
+    print(f"Canonical Version (pyproject.toml): {canonical_version}")
+    print("Checking version parity across project files...")
+
+    checks = [
+        ("bakage.toml", r'version\s*=\s*["\']([^"\']+)["\']'),
+        ("pack.pl", r"version\(['\"]([^'\"]+)['\"]\)" ),
+        ("package.json", r'"version"\s*:\s*"([^"]+)"'),
+        ("schema.org.jsonld", r'"version"\s*:\s*"([^"]+)"'),
+        ("README.md", r'\*\*Version\*\*\s*:\s*`([^`]+)`'),
+    ]
+
+    mismatches = []
+
+    for filename, pattern in checks:
+        filepath = os.path.join(target_dir, filename)
+        if not os.path.exists(filepath):
+            print(f"  [SKIPPED] {filename:<20} (File does not exist)")
+            continue
+
+        with open(filepath, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        match = re.search(pattern, content)
+        if not match:
+            print(f"  [FAIL]    {filename:<20} (Version pattern not found)")
+            mismatches.append(f"{filename}: Version pattern not found")
+        else:
+            found_version = match.group(1)
+            if found_version == canonical_version:
+                print(f"  [OK]      {filename:<20} ({found_version})")
+            else:
+                print(f"  [FAIL]    {filename:<20} (Expected '{canonical_version}', found '{found_version}')")
+                mismatches.append(f"{filename}: Expected '{canonical_version}', found '{found_version}'")
+
+    if mismatches:
+        sys.stderr.write("\nError: Version parity check failed!\n")
+        for m in mismatches:
+            sys.stderr.write(f"  - {m}\n")
+        sys.stderr.write("\nRun 'prolog-agent release' to synchronize version numbers.\n")
+        return 1
+
+    print("\nVersion parity check passed successfully!")
+    return 0
+
+
 def run_release(new_version: str = None, target_dir: str = ".") -> int:
     """
     Synchronize version numbers across project files using pyproject.toml as the canonical source,

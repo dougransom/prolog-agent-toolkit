@@ -35,6 +35,8 @@ Multi-engine, cross-platform (Linux, macOS, BSD, Windows) Prolog execution sandb
 | `prolog-agent module <name> [--dialect ...]` | Scaffolds a single pure Prolog module with Covington doc headers. |
 | `prolog-agent init-script` | Generates shell environment configuration script. |
 | `prolog-agent release [--version X.Y.Z]` | Synchronizes versions across project manifests and creates release tags. |
+| `prolog-agent check-version` | Audits version parity across manifest files (`pyproject.toml`, `bakage.toml`, `pack.pl`, `README.md`). |
+| `prolog-agent install-hooks [--hook-type ...]` | Installs executable Git pre-commit / pre-push hooks to enforce version parity and skill validation. |
 | `prolog-agent list-subagents` | Lists available autonomous subagents in `.agents/agents/`. |
 | `prolog-agent validate-skills` | Validates `.agents/skills` integrity and frontmatter structure. |
 | `scryer-safe [args...]` | Runs Scryer Prolog under safety timeout and memory limits. |

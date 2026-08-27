@@ -12,7 +12,8 @@ from prolog_agent_toolkit.project import (
     generate_template,
     print_init_script,
 )
-from prolog_agent_toolkit.release import run_release
+from prolog_agent_toolkit.release import run_release, check_versions
+from prolog_agent_toolkit.hooks import install_hooks
 
 
 
@@ -53,6 +54,8 @@ def prolog_agent_main() -> None:
         print("  prolog-agent module <module-name> [--dialect|--engine scryer|swi|trealla|tau|iso]")
         print("  prolog-agent init-script")
         print("  prolog-agent release [--version X.Y.Z]")
+        print("  prolog-agent check-version")
+        print("  prolog-agent install-hooks [--hook-type pre-commit|pre-push]")
         print("  prolog-agent list-subagents")
         print("  prolog-agent validate-skills")
         sys.exit(0)
@@ -112,6 +115,19 @@ def prolog_agent_main() -> None:
             if idx + 1 < len(args):
                 version = args[idx + 1]
         exit_code = run_release(new_version=version)
+        sys.exit(exit_code)
+
+    elif cmd == "check-version":
+        exit_code = check_versions()
+        sys.exit(exit_code)
+
+    elif cmd == "install-hooks":
+        hook_type = "pre-commit"
+        if "--hook-type" in args:
+            idx = args.index("--hook-type")
+            if idx + 1 < len(args):
+                hook_type = args[idx + 1]
+        exit_code = install_hooks(hook_type=hook_type)
         sys.exit(exit_code)
 
     elif cmd == "list-subagents":
