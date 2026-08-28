@@ -17,7 +17,7 @@ Checklist of communities and platforms to announce `prolog-agent-toolkit` once r
 
 ### 3. Package & GitHub Release
 - [ ] **PyPI**: Publish `prolog-agent-toolkit` package so `pip install prolog-agent-toolkit` / `uv add prolog-agent-toolkit` works out of the box.
-- [ ] **GitHub Release**: Tag release `v0.1.0` following `prolog-agent release` guidelines in [.agents/skills/prolog-release/SKILL.md](file:///.agents/skills/prolog-release/SKILL.md).
+- [ ] **GitHub Release**: Tag release `v0.1.0` following `prolog-agent release` guidelines in [.agents/skills/prolog-release/SKILL.md](.agents/skills/prolog-release/SKILL.md).
 
 ### 4. Content & Social Media
 - [ ] **Technical Blog Post**: Publish short intro article on Dev.to / Hashnode / Medium.

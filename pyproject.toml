@@ -47,6 +47,14 @@ dependencies = [
     "psutil>=5.9.0",
 ]
 
+[project.urls]
+Homepage = "https://github.com/dougransom/prolog-agent-toolkit"
+Documentation = "https://github.com/dougransom/prolog-agent-toolkit/blob/main/AGENT_GUIDE.md"
+Repository = "https://github.com/dougransom/prolog-agent-toolkit.git"
+"Issue Tracker" = "https://github.com/dougransom/prolog-agent-toolkit/issues"
+"Changelog" = "https://github.com/dougransom/prolog-agent-toolkit/blob/main/CHANGELOG.md"
+"Schema.org Metadata" = "https://github.com/dougransom/prolog-agent-toolkit/blob/main/schema.org.jsonld"
+
 [project.optional-dependencies]
 dev = [
     "pytest>=7.0.0",

@@ -1,10 +1,27 @@
 {
   "@context": "https://schema.org",
-  "@type": "SoftwareSourceCode",
+  "@type": ["SoftwareSourceCode", "SoftwareApplication"],
   "name": "Prolog Agent Toolkit",
   "version": "0.0.1.dev16",
-  "description": "Reusable AI agent skills, coding standards, and multi-engine execution sandboxing toolkit for Prolog (Scryer, SWI, Trealla, Tau). Compatible with Google Antigravity, Claude Code, GitHub Copilot, Cursor, and Emacs AI tools.",
-  "programmingLanguage": "Prolog",
+  "description": "Reusable AI agent skills, coding standards, and multi-engine (Scryer, SWI, Trealla, Tau) safety execution toolkit for Prolog. Compatible with Google Antigravity, Claude Code, GitHub Copilot, Cursor, and Emacs AI tools.",
+  "codeRepository": "https://github.com/dougransom/prolog-agent-toolkit",
+  "url": "https://github.com/dougransom/prolog-agent-toolkit",
+  "mainEntityOfPage": "https://github.com/dougransom/prolog-agent-toolkit",
+  "programmingLanguage": ["Prolog", "Python"],
+  "runtimePlatform": "Scryer Prolog, SWI-Prolog, Trealla Prolog, Tau Prolog, Python 3.9+",
+  "operatingSystem": "Linux, macOS, Windows, BSD",
+  "applicationCategory": "DeveloperApplication",
+  "documentation": "https://github.com/dougransom/prolog-agent-toolkit/blob/main/AGENT_GUIDE.md",
+  "discussionUrl": "https://github.com/dougransom/prolog-agent-toolkit/issues",
+  "license": "https://unlicense.org/",
+  "author": {
+    "@type": "Person",
+    "name": "Doug Ransom"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Doug Ransom"
+  },
   "targetProduct": [
     {
       "@type": "SoftwareApplication",
@@ -39,6 +56,38 @@
       "name": "gptel"
     }
   ],
+  "hasPart": [
+    {
+      "@type": "SoftwareComponent",
+      "name": "prolog-refactor-agent",
+      "description": "Autonomous subagent for converting imperative Prolog to pure ISO Prolog."
+    },
+    {
+      "@type": "SoftwareComponent",
+      "name": "prolog-purity-reviewer-agent",
+      "description": "Subagent for logical purity, reification (library(reif)), and Covington style auditing."
+    },
+    {
+      "@type": "SoftwareComponent",
+      "name": "prolog-security-reviewer-agent",
+      "description": "Subagent for dynamic database safety, search bounds, and query injection prevention."
+    },
+    {
+      "@type": "SoftwareComponent",
+      "name": "prolog-clp-constraints",
+      "description": "Agent skill for CLP(Z) and integer constraint programming."
+    },
+    {
+      "@type": "SoftwareComponent",
+      "name": "prolog-dcg-mastery",
+      "description": "Agent skill for Definite Clause Grammars (DCG) and parser construction."
+    },
+    {
+      "@type": "SoftwareComponent",
+      "name": "prolog-library-discovery",
+      "description": "Agent skill for discovering built-in and standard library predicates before generating code."
+    }
+  ],
   "keywords": [
     "prolog",
     "scryer-prolog",
@@ -60,11 +109,9 @@
     "logical-purity",
     "sandboxing",
     "unit-testing",
-    "bakage"
-  ],
-  "license": "https://unlicense.org/",
-  "author": {
-    "@type": "Person",
-    "name": "Doug Ransom"
-  }
+    "bakage",
+    "schema-org",
+    "open-graph",
+    "linkedin-ready"
+  ]
 }

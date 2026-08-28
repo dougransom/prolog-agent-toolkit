@@ -1,5 +1,12 @@
 # Prolog Agent Toolkit
 
+[![Version](https://img.shields.io/badge/version-0.0.1.dev16-informational.svg)](pyproject.toml)
+[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](https://unlicense.org/)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](pyproject.toml)
+[![Prolog Engines](https://img.shields.io/badge/prolog-Scryer%20%7C%20SWI%20%7C%20Trealla%20%7C%20Tau-purple.svg)](AGENT_GUIDE.md)
+[![Schema.org Metadata](https://img.shields.io/badge/schema.org-JSON--LD-brightgreen.svg)](schema.org.jsonld)
+[![Share on LinkedIn](https://img.shields.io/badge/Share_on-LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fgithub.com%2Fdougransom%2Fprolog-agent-toolkit)
+
 **Version**: `0.0.1.dev16`  
 **Category**: AI Assistant Developer Tools / Prolog Language Tooling  
 **Metadata**: [schema.org.jsonld](schema.org.jsonld)
@@ -342,7 +349,7 @@ PROLOG_ENGINE=trealla prolog-safe -g "write('Hello Trealla'), nl, halt."
 
 To add support for a new Prolog engine or dialect target (such as GNU Prolog, Ciao, ECLiPSe, B-Prolog, Ichiban, or YAP) to the toolkit, use the interactive **Engine Onboarding Workflow**:
 
-```
+```text
 .agents/skills/prolog-engine-onboarding/SKILL.md
 ```
 

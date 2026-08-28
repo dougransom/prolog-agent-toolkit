@@ -67,7 +67,7 @@ No. Scaffolding creates `tests/` and manifests (`bakage.toml`/`pack.pl`) as a be
 
 ## 2. Information Architecture & Key Files Map
 
-```
+```text
 prolog-agent-toolkit/
 ├── AGENT_GUIDE.md                   # Primary Onboarding Blueprint (This File)
 ├── AGENT_INDEX.json                 # Machine-Readable File Index & Directory Map
