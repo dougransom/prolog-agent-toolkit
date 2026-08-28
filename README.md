@@ -222,6 +222,43 @@ PROLOG_TIMEOUT=15s PROLOG_MEMORY_MAX=200M prolog-safe -g "main, halt."
 
 ---
 
+## Developer Workflow Flexibility: Packaged/Tested Projects vs. Lightweight REPL & Scratch Use Cases
+
+`prolog-agent-toolkit` provides scaffolding for structured, package-based projects with unit test suites (`src/`, `tests/`, `bakage.toml`/`pack.pl`), but **you are not forced to write tests or package manifests**.
+
+### Why the Toolkit Defaults to Tests & Package Manifests
+1. **Automated AI Verification**: AI coding assistants (Google Antigravity, Claude Code, Cursor, Copilot) perform best when an automated test runner (`testing.pl`, `plunit`) is available to empirically verify that generated logic works cleanly without choice-point leaks or syntax errors.
+2. **Reproducible Distribution**: Manifest files (`bakage.toml`, `pack.pl`, `package.json`) explicitly record module dependencies so projects can be published, installed, and shared across Prolog package managers.
+
+### Workarounds for Lightweight, Non-Packaged, or Test-Free Use Cases
+
+If you do not want a formal package structure or test suite (e.g. playing in the top-level REPL, writing quick logic puzzles, single-file scripts, or classroom learning), use one of these lightweight alternatives:
+
+#### 1. Interactive REPL / Top-Level Exploration (No project, no tests, no manifest)
+Launch an interactive top-level REPL safely from any terminal directory without creating any files, folders, manifests, or test suites:
+```bash
+scryer-safe    # Interactive Scryer Prolog top-level REPL with resource caps
+swi-safe       # Interactive SWI-Prolog top-level REPL
+trealla-safe   # Interactive Trealla Prolog top-level REPL
+```
+Use the top-level to query goals, test unification, and experiment interactively with CPU/RAM safety limits protecting your OS from infinite loops.
+
+#### 2. Standalone Single-File & Scratch Scripting
+Create single `.pl` files anywhere without scaffolding a full directory layout:
+```bash
+# Generate a single standalone module with Covington doc headers:
+prolog-agent module scratch
+
+# Run any standalone file safely:
+scryer-safe scratch.pl
+scryer-safe -g "hello(M), write(M), nl, halt." scratch.pl
+```
+
+#### 3. Stripped / Minimal Repositories
+If you scaffold a project using `prolog-agent init my_app`, you can safely delete the `tests/` directory or `bakage.toml`/`pack.pl` manifest files if your project does not need automated testing or package distribution. The safety runners (`scryer-safe`, `swi-safe`, `prolog-safe`) execute code independently of any project layout or test harness.
+
+---
+
 ## Standard Prolog Folder Architecture & Multi-Dialect Layout
 
 When organizing Prolog software—especially repositories supporting multiple package managers (`bakage`, `pack_install`, `npm`) or multiple dialects (Scryer, SWI, Trealla, Tau)—adhere to the following canonical layout:

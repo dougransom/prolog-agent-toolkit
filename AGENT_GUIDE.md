@@ -57,6 +57,12 @@ Review [`docs/ANTI_PATTERNS.md`](file:///home/doug/code/prolog-agent-toolkit/doc
 ### Q10: How should changes be proposed?
 Follow the **AI Agent Contribution Protocol** in [`CONTRIBUTING.md`](file:///home/doug/code/prolog-agent-toolkit/CONTRIBUTING.md): run `pytest`, validate skills (`prolog-agent validate-skills`), check version synchronization (`prolog-agent check-version`), and submit PRs with verification trace logs.
 
+### Q11: Are unit tests or package manifests required for simple/toplevel use cases?
+No. Scaffolding creates `tests/` and manifests (`bakage.toml`/`pack.pl`) as a best practice so AI agents can perform automated test verification. However, safety runners (`scryer-safe`, `swi-safe`, `trealla-safe`, `prolog-safe`) work standalone:
+- **Interactive REPL**: Run `scryer-safe` or `swi-safe` directly to launch a sandboxed top-level REPL without any project or tests.
+- **Scratch Scripts**: Run `scryer-safe scratch.pl` to execute standalone scripts without a test suite or manifest.
+- **Minimal Codebases**: Users are free to remove `tests/` or manifest files from scaffolded projects.
+
 ---
 
 ## 2. Information Architecture & Key Files Map
