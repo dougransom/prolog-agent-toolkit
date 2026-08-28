@@ -8,7 +8,7 @@
     {
       "name": "scryer-prolog-standards",
       "path": "skills/scryer-prolog-standards/SKILL.md",
-      "description": "Coding standards and standard library cheat sheet for pure ISO Scryer Prolog",
+      "description": "Coding standards and standard library cheat sheet for pure Scryer Prolog",
       "engines": ["scryer"]
     },
     {
@@ -20,19 +20,19 @@
     {
       "name": "trealla-prolog-standards",
       "path": "skills/trealla-prolog-standards/SKILL.md",
-      "description": "ISO standards and WASM embedding guidelines for Trealla Prolog",
+      "description": "Coding standards and WASM embedding guidelines for Trealla Prolog",
       "engines": ["trealla"]
     },
     {
       "name": "tau-prolog-standards",
       "path": "skills/tau-prolog-standards/SKILL.md",
-      "description": "ISO standards and Browser DOM/JavaScript integration guidelines for Tau Prolog",
+      "description": "Browser DOM and JavaScript integration guidelines for Tau Prolog",
       "engines": ["tau"]
     },
     {
       "name": "prolog-conventions",
       "path": "skills/prolog-conventions/SKILL.md",
-      "description": "Portable ISO Prolog conventions compatible across all conforming engines",
+      "description": "Portable ISO Prolog conventions and target rules across Prolog engines",
       "engines": ["scryer", "swi", "trealla", "tau", "iso"]
     },
     {

@@ -12,7 +12,7 @@ Use this skill when integrating Prolog knowledge bases or solver engines into hy
 | Engine | Primary FFI / Interfacing Language | WASM Support | Common Use Cases |
 | :--- | :--- | :--- | :--- |
 | **SWI-Prolog** | Python (`janus-swi`), C/C++ FFI | SWI WASM | Enterprise Python/Prolog AI pipelines, web apps |
-| **Scryer Prolog** | Rust (`scryer-prolog` crate) | WASM Target | High-performance pure ISO Prolog in Rust binaries & WASM |
+| **Scryer Prolog** | Rust (`scryer-prolog` crate) | WASM Target | High-performance pure Prolog in Rust binaries & WASM |
 | **Trealla Prolog** | C FFI, WASM (`tpl.wasm`) | First-class WASM | Fast edge compute, microservices, containerized WASM |
 | **Tau Prolog** | JavaScript / Node.js native | Native JS | Web browser DOM manipulation & client-side logic |
 

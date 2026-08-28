@@ -171,22 +171,23 @@ def generate_readme_content(project_name: str, engine: str = "scryer", version: 
     Generate a complete, opinionated README.md for a new Prolog project.
     """
     engine = (engine or "scryer").lower()
+    test_file_name = f"test_{project_name}.pl" if engine == "swi" else "testing.pl"
 
     dialect_names = {
-        "scryer": "Scryer Prolog (ISO-compliant)",
+        "scryer": "Scryer Prolog",
         "swi": "SWI-Prolog",
         "trealla": "Trealla Prolog",
         "tau": "Tau Prolog",
-        "iso": "ISO Standard Prolog",
+        "iso": "ISO Standard Prolog (Portable Target)",
     }
     dialect_name = dialect_names.get(engine, f"{engine.capitalize()} Prolog")
 
     dialect_descriptions = {
-        "scryer": "Adheres strictly to ISO/IEC 13211-1 standard purity. Enforces `chars` double-quoted strings, pure reified logic (`library(reif)`), pure DCGs (`library(dcgs)`), integer constraints (`library(clpz)`), and side-effect-free type inspection (`library(si)`).",
+        "scryer": "Emphasizes pure Prolog logic, `chars` double-quoted strings, pure reified logic (`library(reif)`), pure DCGs (`library(dcgs)`), integer constraints (`library(clpz)`), and side-effect-free type inspection (`library(si)`).",
         "swi": "Features extensive developer tooling, module system, SWI dicts and string types, unit testing via `plunit`, and integer constraints (`library(clpfd)`).",
-        "trealla": "High-performance ISO-compliant Prolog engine designed for fast parsing, modularity, dynamic foreign function interfaces, and WebAssembly (WASM) embedding.",
-        "tau": "ISO-compliant Prolog engine written in JavaScript for seamless browser DOM integration (`library(dom)`), Node.js scripting, and web application embedding.",
-        "iso": "Engine-agnostic ISO standard Prolog baseline compatible across all conforming implementations.",
+        "trealla": "High-performance Prolog engine designed for fast parsing, modularity, dynamic foreign function interfaces, and WebAssembly (WASM) embedding.",
+        "tau": "Prolog engine written in JavaScript for seamless browser DOM integration (`library(dom)`), Node.js scripting, and web application embedding.",
+        "iso": "Engine-agnostic standard ISO Prolog baseline target, aiming for ISO-compliant code across Prolog systems subject to engine limitations.",
     }
     dialect_desc = dialect_descriptions.get(engine, "Standard Prolog dialect.")
 
@@ -204,22 +205,18 @@ def generate_readme_content(project_name: str, engine: str = "scryer", version: 
         "swi": f"swi-safe -g \"use_module('src/{project_name}.pl'), hello(M), writeln(M), halt.\"",
         "trealla": f"trealla-safe -g \"use_module('src/{project_name}.pl'), hello(M), write(M), nl, halt.\"",
         "tau": f"tau-safe -g \"use_module('src/{project_name}.pl'), hello(M), write(M), nl, halt.\"",
-    }.get(engine, f"prolog-safe -g \"use_module('src/{project_name}.pl'), hello(M), write(M), nl, halt.\"")
+        "iso": f"prolog-safe -g \"use_module('src/{project_name}.pl'), hello(M), write(M), nl, halt.\"",
+    }
+    safe_runner_cmd = safe_runner_cmd.get(engine, safe_runner_cmd["iso"])
 
-    test_cmd = {
-        "swi": f"swi-safe -g \"run_tests,halt\" tests/test_{project_name}.pl",
-    }.get(engine, "scryer-safe tests/testing.pl")
-
-    manifest_file = "pack.pl" if engine == "swi" else ("package.json" if engine == "tau" else "bakage.toml")
-
-    manifest_desc = {
-        "scryer": "`bakage.toml`: Scryer Prolog `bakage` manifest defining module exports and dependencies (alongside `pack.pl`).",
-        "swi": "`pack.pl`: SWI-Prolog package manager manifest for dependency installation via `pack_install`.",
-        "trealla": "`pack.pl`: Manifest metadata file (or standalone ISO files).",
-        "tau": "`package.json`: Node.js / npm package manifest declaring `tau-prolog` dependencies.",
-    }.get(engine, f"`{manifest_file}`: Packaging manifest file.")
-
-    test_file_name = f"test_{project_name}.pl" if engine == "swi" else "testing.pl"
+    test_runner_cmd = {
+        "scryer": f"scryer-safe tests/{test_file_name}",
+        "swi": f"swi-safe -g \"run_tests, halt.\" -t tests/{test_file_name}",
+        "trealla": f"trealla-safe tests/{test_file_name}",
+        "tau": f"tau-safe tests/{test_file_name}",
+        "iso": f"prolog-safe tests/{test_file_name}",
+    }
+    test_cmd = test_runner_cmd.get(engine, test_runner_cmd["iso"])
 
     if engine == "swi":
         test_example = f"""```prolog
@@ -261,11 +258,7 @@ run_tests :-
 
     return f"""# {project_name}
 
-> Powered by [prolog-agent-toolkit](https://github.com/dougransom/prolog-agent-toolkit) **v{version}**
-
-A modern Prolog project configured for deterministic execution, engine safety, and automated AI agent collaboration.
-
----
+> **{dialect_name} Project** scaffolded via [`prolog-agent-toolkit`](https://github.com/dougransom/prolog-agent-toolkit) **v{version}**.
 
 ## 1. Project Overview
 
@@ -276,7 +269,7 @@ The `prolog-agent-toolkit` provides a standardized development environment for w
 - **Deterministic Safe Runners**: Cross-platform command-line entry points (`scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`, `prolog-safe`) that run Prolog execution under strict CPU and memory resource limits.
 - **Dialect Standards & Purity**: Enforced coding guidelines, Covington style standards, reified logical predicates (`if_/3`, `dif/2`), pure DCGs, and CLP constraint logic.
 - **Agent Skill Architecture**: Integrated `.agents/` directory providing structured skills and linting rules so AI assistants (e.g. Gemini, Cursor, Claude, Copilot) generate pure, idiomatic code.
-- **Multi-Engine Support**: Seamless portability across ISO-compliant engines (Scryer Prolog, SWI-Prolog, Trealla Prolog, Tau Prolog).
+- **Multi-Engine Support**: Seamless portability across Prolog engines (Scryer Prolog, SWI-Prolog, Trealla Prolog, Tau Prolog).
 
 ---
 
@@ -287,16 +280,16 @@ Recommended canonical project structure supporting single or multi-dialect devel
 ```text
 {project_name}/
 ├── src/                            # Source code directory
-│   ├── core/                       # 100% Pure ISO Prolog core (dialect-agnostic)
+│   ├── core/                       # Portable Prolog core (dialect-agnostic ISO target)
 │   │   └── logic.pl
 │   ├── adapters/                   # Engine shims & compatibility layers
 │   │   ├── scryer/compat.pl        # Scryer imports (charsio, reif, clpz)
 │   │   ├── swi/compat.pl           # SWI imports (clpfd, plunit)
-│   │   ├── trealla/compat.pl       # Trealla ISO imports
+│   │   ├── trealla/compat.pl       # Trealla compatibility shims
 │   │   └── tau/compat.pl           # Tau JS/DOM shims
 │   └── {project_name}.pl           # Main module entry point
 ├── tests/                          # Test suites directory
-│   ├── portable/                   # Engine-agnostic ISO test suite
+│   ├── portable/                   # Engine-agnostic goal assertions
 │   ├── scryer/                     # Scryer testing.pl harness
 │   ├── swi/                        # SWI plunit test suite
 │   └── {test_file_name}            # Default unit test file
@@ -310,7 +303,7 @@ Recommended canonical project structure supporting single or multi-dialect devel
 
 ### Directory Roles & Multi-Dialect Architecture
 
-- **`src/core/`**: Houses 100% pure ISO-compliant Prolog logic (pure DCGs, `dif/2`, reified `if_/3`). Completely free of engine-specific extensions.
+- **`src/core/`**: Houses portable Prolog logic aiming for standard ISO compliance (pure DCGs, `dif/2`, reified `if_/3`). Free of engine-specific extensions.
 - **`src/adapters/`**: Houses dialect compatibility shims normalizing module imports (`library(clpz)` vs `library(clpfd)`), strings, and FFI interfaces per engine.
 - **`tests/`**: Organizes unit tests by portability scope: `portable/` for pure ISO assertions, `scryer/` for Scryer `testing.pl`, `swi/` for SWI `plunit`.
 - **Root Manifests**: `bakage.toml`, `pack.pl`, and `package.json` co-exist at the root without conflict, allowing the codebase to be published to `bakage`, `pack_install`, and `npm` simultaneously.

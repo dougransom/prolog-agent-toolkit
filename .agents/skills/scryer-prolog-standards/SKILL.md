@@ -1,6 +1,6 @@
 ---
 name: scryer-prolog-standards
-description: Coding standards and guidelines for pure, ISO-compliant Scryer Prolog projects. Use when writing, refactoring, or debugging Prolog code specifically for Scryer Prolog.
+description: Coding standards and guidelines for pure Scryer Prolog projects. Use when writing, refactoring, or debugging Prolog code specifically for Scryer Prolog.
 ---
 
 # [Scryer Prolog](https://github.com/mthom/scryer-prolog) Standards
@@ -9,9 +9,9 @@ When writing, refactoring, or reviewing Prolog code for Scryer Prolog, adhere to
 
 ## Core Rules
 
-Scryer Prolog strictly enforces pure, ISO-compliant Prolog conventions:
+Scryer Prolog guidelines emphasize pure Prolog conventions and standard ISO-compliant code structures:
 
-- **General Prolog Conventions**: Inherits all general rules from [Portable ISO Prolog Conventions](../prolog-conventions/SKILL.md) (strings as `chars`, safe [`library(si)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/si.pl) type tests, `dif/2`, `if_/3` reification from [`library(reif)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/reif.pl), higher-order `call/N`, `call//N`, and [`library(lambda)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/lambda.pl)).
+- **General Prolog Conventions**: Inherits all general rules from [Portable ISO Prolog Conventions](../prolog-conventions/SKILL.md) (strings as `chars`, safe [`library(si)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/si.pl) type tests, `dif/2`, `if_/3` reification from [`library(reif)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/reif.pl), higher-order `call/N`, `call//N`, and [`library(lambda)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/lambda.pl)). Agents should attempt to write ISO-compliant code subject to Scryer's capabilities.
 - **No Non-Standard Specifics**: Never use [SWI-Prolog](https://www.swi-prolog.org/) specifics like dicts, SWI string types, or `is_list/1`.
 - **Required Library Imports**: Always explicitly declare imports using `:- use_module(library(...)).`. Do not rely on SWI-Prolog autoloading.
 - **Library Cheat-Sheet Usage**: Rely on the Standard Library Cheat Sheet below for module declarations; do NOT read raw standard library source files unless working with un-documented custom project code.

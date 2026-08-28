@@ -15,7 +15,7 @@ The onboarding process is **interactive and iterative**: at each phase, ask clar
 
 Ask the human programmer (or inspect engine documentation/CLI):
 1. **Engine Identification**: Full name (e.g., `GNU Prolog`, `Ciao Prolog`), CLI binary name (e.g. `gprolog`, `ciao`), and short slug (e.g. `gprolog`, `ciao`).
-2. **ISO Compliance & String Representation**: Standard ISO compliant? Double quote representation (`chars`, `codes`, `atom`, or custom `string`)?
+2. **Engine Features & String Representation**: Supported standard features and double quote representation (`chars`, `codes`, `atom`, or custom `string`)?
 3. **Standard Libraries & Import Directives**: What is the import syntax (`:- use_module(library(...)).` vs `:- use_module(...)` vs auto-loaded)? List key libraries: DCG, CLP, reification, safe type tests, formatting, list utilities.
 4. **Package & Build System**: Package manager (`bakage`, `pack`, `npm`, none)?
 5. **Testing Framework**: Native test framework (`testing.pl`, `plunit`, `bsl`, custom)?
@@ -26,7 +26,7 @@ Ask the human programmer (or inspect engine documentation/CLI):
 ## Phase 2: Dialect Standards & Standard Library Cheat Sheet Creation
 
 Create `.agents/skills/<engine-slug>-prolog-standards/SKILL.md`:
-1. **Core Guidelines**: ISO compliance, string representation, memory limits, and explicit `use_module/1` declarations.
+1. **Core Guidelines**: Engine guidelines, ISO code generation target rules, string representation, memory limits, and explicit `use_module/1` declarations.
 2. **Standard Library Cheat Sheet**:
    - Table containing: Topic/Feature, Import Header (`:- use_module(library(X)).`), Exported Predicates, Dialect Notes.
    - Explicit directive prohibiting AI agents from reading raw OS standard library source files, mandating reliance on the cheat sheet.

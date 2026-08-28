@@ -12,6 +12,9 @@ When writing, refactoring, reviewing, or running Prolog code across any project 
 
 All Prolog code (regardless of target engine) MUST follow the universal style and purity principles:
 
+- **ISO Prolog Code Generation Goal & Engine Neutrality**:
+  - AI assistants MUST attempt to produce ISO-compliant code (standard ISO/IEC 13211-1) subject to the capabilities and limitations of the target Prolog system being used.
+  - AI assistants MUST NOT describe or claim that any Prolog system (e.g. Scryer, SWI, Trealla, Tau, GNU, Ciao) is "ISO compliant" or an "ISO dialect". Systems may make their own compliance claims.
 - **Vendor Neutrality & Open Standards**:
   - All AI agent guidelines, instructions, rules, and skills MUST remain 100% vendor-neutral and open format (`AGENTS.md`, `.agents/skills/<name>/SKILL.md`, `.agents/agents/<name>.md`).
   - Do NOT create proprietary, vendor-specific, or IDE-harness-specific configuration files or directories (such as `.claude/`, `.windsurfrule`, `.cursorrules`, `.github/copilot-instructions.md`, `.clinerules`, `.gemini/`, or harness-specific Emacs configs).
@@ -46,18 +49,18 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
 
 AI assistants MUST select and follow the specific dialect standards corresponding to the target Prolog engine:
 
-- **ISO [Scryer Prolog](https://github.com/mthom/scryer-prolog)**: [.agents/skills/scryer-prolog-standards/SKILL.md](.agents/skills/scryer-prolog-standards/SKILL.md)
+- **[Scryer Prolog](https://github.com/mthom/scryer-prolog)**: [.agents/skills/scryer-prolog-standards/SKILL.md](.agents/skills/scryer-prolog-standards/SKILL.md)
   - Pure DCGs, [`library(si)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/si.pl), `chars` strings, `dif/2`, `if_/3` from [`library(reif)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/reif.pl).
 - **[SWI-Prolog](https://www.swi-prolog.org/)**: [.agents/skills/swi-prolog-standards/SKILL.md](.agents/skills/swi-prolog-standards/SKILL.md)
   - SWI dicts, SWI string types, module declarations, pack manager.
 - **[Trealla Prolog](https://github.com/trealla-prolog/trealla)**: [.agents/skills/trealla-prolog-standards/SKILL.md](.agents/skills/trealla-prolog-standards/SKILL.md)
-  - ISO compliance, WASM embedding, fast standard library parsing.
+  - WASM embedding, fast standard library parsing.
 - **[Tau Prolog](http://tau-prolog.org/)**: [.agents/skills/tau-prolog-standards/SKILL.md](.agents/skills/tau-prolog-standards/SKILL.md)
-  - ISO compliance, JavaScript/Browser DOM integration, `library(dom)`, `library(js)`.
+  - JavaScript/Browser DOM integration, `library(dom)`, `library(js)`.
 - **Portable ISO Prolog Conventions**: [.agents/skills/prolog-conventions/SKILL.md](.agents/skills/prolog-conventions/SKILL.md)
-  - Engine-agnostic ISO standard code compatible across all conforming implementations.
+  - Guidelines for aiming for standard ISO-compliant Prolog code across engines subject to target engine limitations.
 - **Prolog Testing**: [.agents/skills/prolog-testing/SKILL.md](.agents/skills/prolog-testing/SKILL.md)
-  - Scryer `testing.pl` (default), SWI `plunit`, and portable ISO assertions.
+  - Scryer `testing.pl` (default), SWI `plunit`, and portable assertions.
 - **Prolog Packaging**: [.agents/skills/prolog-packaging/SKILL.md](.agents/skills/prolog-packaging/SKILL.md)
   - Scryer `bakage` manifests (default) and SWI `pack` manager.
 - **Prolog Release & Versioning**: [.agents/skills/prolog-release/SKILL.md](.agents/skills/prolog-release/SKILL.md)

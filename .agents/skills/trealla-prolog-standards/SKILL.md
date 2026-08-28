@@ -9,8 +9,8 @@ Guidelines for writing idiomatic Trealla Prolog code:
 
 ## Core Rules
 
-1. **ISO Compliance**: Trealla Prolog emphasizes ISO compliance and fast execution.
-2. **Text & Double Quotes**: Follow standard ISO character lists (`chars`) representation.
+1. **ISO Code Target**: Trealla Prolog emphasizes fast execution, modularity, and WASM support. AI agents should attempt to produce standard ISO-compliant code subject to Trealla's capabilities and limitations.
+2. **Text & Double Quotes**: Follow standard character lists (`chars`) representation.
 3. **Library Cheat-Sheet Usage**: Explicitly declare imports using `:- use_module(library(...)).`. Use the Standard Library Cheat Sheet below.
 4. **Safety**: Always execute code using `trealla-safe` or `prolog-safe` with `PROLOG_ENGINE=trealla`.
 

@@ -14,16 +14,16 @@ Recommended canonical project layout supporting single or multi-dialect developm
 ```text
 starter_project/
 ├── src/                            # Source code directory
-│   ├── core/                       # 100% Pure ISO Prolog core (dialect-agnostic)
+│   ├── core/                       # Portable Prolog core (dialect-agnostic ISO target)
 │   │   └── logic.pl
 │   ├── adapters/                   # Engine shims & compatibility layers
 │   │   ├── scryer/compat.pl        # Scryer imports (charsio, reif, clpz)
 │   │   ├── swi/compat.pl           # SWI imports (clpfd, plunit)
-│   │   ├── trealla/compat.pl       # Trealla ISO imports
+│   │   ├── trealla/compat.pl       # Trealla compatibility shims
 │   │   └── tau/compat.pl           # Tau JS/DOM shims
 │   └── starter_project.pl          # Main module entry point
 ├── tests/                          # Test suites directory
-│   ├── portable/                   # Engine-agnostic ISO test suite
+│   ├── portable/                   # Engine-agnostic goal assertions
 │   ├── scryer/                     # Scryer testing.pl harness
 │   ├── swi/                        # SWI plunit test suite
 │   └── testing.pl                  # Default test harness
@@ -38,7 +38,7 @@ starter_project/
 ## Running Tests
 
 ```bash
-# Scryer Prolog / ISO
+# Scryer Prolog / Portable Runner
 scryer-safe tests/testing.pl
 
 # SWI-Prolog

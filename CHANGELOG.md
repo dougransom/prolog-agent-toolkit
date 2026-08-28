@@ -1,10 +1,12 @@
 ## [0.0.1.dev16] - 2026-08-28
 
 ### Summary of Changes
-- Release v0.0.1.dev16 synchronized across manifest files.
+- Refactored ISO Prolog references across `AGENTS.md`, dialect skills (`scryer`, `trealla`, `tau`, `prolog-conventions`), documentation (`GLOSSARY.md`, `README.md`, `AGENT_GUIDE.md`, `CONTRIBUTING.md`, `ADR 0001`), and CLI scaffolding (`project.py`, `prolog_agent_init.sh`) to eliminate claims of Prolog engine ISO compliance.
+- Established explicit directive for AI agents to attempt ISO-compliant code generation (ISO/IEC 13211-1) subject to target engine capabilities and limitations.
+- Addresses defect report https://github.com/dougransom/prolog-agent-toolkit/issues/1 and community discussion https://github.com/mthom/scryer-prolog/discussions/3436.
 
 ### Added / Modified Predicates
-- Dialect updates and purity enhancements.
+- ISO Prolog code generation directive and target policy in `.agents/AGENTS.md`.
 
 ### Breaking Changes
 - None.

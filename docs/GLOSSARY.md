@@ -28,16 +28,16 @@ Pure rule-based parsing and generation syntax using `-->`. DCGs build ASTs, pars
 ## 2. Dialect & Engine Terminology
 
 ### [Scryer Prolog](https://github.com/mthom/scryer-prolog)
-An ISO-compliant Prolog engine written in Rust emphasizing purity, module safety, [`CLP(Z)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/clpz.pl), pure DCGs, and `chars` string representations.
+A Prolog engine written in Rust emphasizing purity, module safety, [`CLP(Z)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/clpz.pl), pure DCGs, and `chars` string representations.
 
 ### [SWI-Prolog](https://www.swi-prolog.org/)
 A widely used Prolog environment providing module extensions, SWI dicts, string types, and `plunit` testing framework.
 
 ### [Trealla Prolog](https://github.com/trealla-prolog/trealla)
-A lightweight ISO-compliant C-based Prolog interpreter targeted at fast startup, WASM embedding, and standard library parsing.
+A lightweight C-based Prolog interpreter targeted at fast startup, WASM embedding, and standard library parsing.
 
 ### [Tau Prolog](http://tau-prolog.org/)
-An ISO-compliant Prolog interpreter written in JavaScript for running directly inside web browsers and Node.js DOM environments.
+A Prolog interpreter written in JavaScript for running directly inside web browsers and Node.js DOM environments.
 
 ---
 

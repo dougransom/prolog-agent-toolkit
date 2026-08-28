@@ -9,8 +9,8 @@ Guidelines for writing idiomatic Tau Prolog code:
 
 ## Core Rules
 
-1. **ISO Compliance & JS Execution**: Tau Prolog is an open-source ISO Prolog interpreter implemented entirely in JavaScript for browser and Node.js environments.
-2. **Text & Double Quotes**: Follow standard ISO character lists (`chars`) representation for string manipulation.
+1. **JS Execution & ISO Code Target**: Tau Prolog is an open-source Prolog interpreter implemented entirely in JavaScript for browser and Node.js environments. AI agents should attempt to produce standard ISO-compliant code subject to Tau's capabilities and limitations.
+2. **Text & Double Quotes**: Follow standard character lists (`chars`) representation for string manipulation.
 3. **DOM & JS Interoperability**:
    - Use `library(dom)` for browser DOM queries and event handling.
    - Use `library(js)` for JavaScript interop and object inspection.

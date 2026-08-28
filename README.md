@@ -41,7 +41,7 @@ A reusable AI agent skills, coding standards, and multi-engine (Scryer, SWI, Tre
 | Category | Supported Technologies / Systems |
 |---|---|
 | **AI Assistants & IDEs** | [Google Antigravity](https://antigravity.google), [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview), [GitHub Copilot](https://github.com/features/copilot), [Cursor](https://www.cursor.com/), [Windsurf](https://codeium.com/windsurf), [Emacs](https://www.gnu.org/software/emacs/) AI ([`aidermacs`](https://github.com/MatthewZMD/aidermacs), [`agent-shell`](https://github.com/xenodium/agent-shell), [`gptel`](https://github.com/karthink/gptel)) |
-| **Prolog Engines** | [Scryer Prolog](https://github.com/mthom/scryer-prolog) (ISO Default), [SWI-Prolog](https://www.swi-prolog.org/), [Trealla Prolog](https://github.com/trealla-prolog/trealla), [Tau Prolog](http://tau-prolog.org/), [GNU Prolog](http://gprolog.org/), [Ciao Prolog](https://ciao-lang.org/) |
+| **Prolog Engines** | [Scryer Prolog](https://github.com/mthom/scryer-prolog) (Default), [SWI-Prolog](https://www.swi-prolog.org/), [Trealla Prolog](https://github.com/trealla-prolog/trealla), [Tau Prolog](http://tau-prolog.org/), [GNU Prolog](http://gprolog.org/), [Ciao Prolog](https://ciao-lang.org/) |
 | **Language Standards** | [ISO Prolog](https://www.iso.org/standard/21413.html), Definite Clause Grammars (DCG), [`CLP(Z)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/clpz.pl) Constraints, Reification ([`library(reif)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/reif.pl)) |
 | **Agent Capabilities** | Execution Sandboxing, `testing.pl` Unit Testing, `bakage` Manifests, Multi-file Release Versioning |
 
@@ -51,7 +51,7 @@ A reusable AI agent skills, coding standards, and multi-engine (Scryer, SWI, Tre
 
 - **Cross-Platform Safety Wrappers**: Runs Prolog engines safely with execution timeouts, low CPU priority, and memory limits across Linux, macOS, BSD, and Windows.
 - **CLI Management Suite**: Project bootstrapping, module generator, dialect switcher, release manager, and skill validator via `prolog-agent`.
-- **Dialect-Aware Standards**: Enforces ISO Scryer, SWI, Trealla, Tau, and portable Prolog conventions automatically.
+- **Dialect-Aware Standards**: Enforces Scryer, SWI, Trealla, Tau, and portable Prolog conventions automatically.
 - **Autonomous AI Subagents**: Pre-configured subagents for purity auditing, automated refactoring, unit test generation, benchmark running, and security scanning.
 
 ---
@@ -160,16 +160,16 @@ The project is bootstrapped with a clean structure, multi-dialect adapter suppor
 ```text
 my_parser/
 ├── bakage.toml          # Scryer Prolog manifest
-├── pack.pl              # ISO / SWI manifest fallback
+├── pack.pl              # SWI manifest & Scryer fallback
 ├── package.json         # Tau Prolog / npm manifest (optional)
 ├── AGENTS.md            # AI assistant rules & dialect guidelines
 ├── src/
-│   ├── core/            # 100% Pure ISO Prolog core (dialect-agnostic)
+│   ├── core/            # Portable Prolog core (dialect-agnostic ISO target)
 │   │   └── logic.pl
 │   ├── adapters/        # Dialect compatibility shims (scryer, swi, trealla, tau)
 │   └── my_parser.pl     # Starter module with Covington doc block & DCG/CLP(Z) stubs
 └── tests/
-    ├── portable/        # Engine-agnostic ISO unit tests
+    ├── portable/        # Engine-agnostic unit tests
     └── testing.pl       # Scryer testing.pl unit test harness
 ```
 
@@ -181,7 +181,7 @@ scryer-safe -g "use_module(tests/testing), run_tests, halt."
 ```
 
 ### Step 4: Develop with your AI Assistant
-Open the project directory in Google Antigravity, Claude Code, Cursor, Copilot, or Emacs (`aidermacs`/`agent-shell`). The AI assistant automatically detects `.agents/AGENTS.md` and applies pure ISO Prolog guidelines.
+Open the project directory in Google Antigravity, Claude Code, Cursor, Copilot, or Emacs (`aidermacs`/`agent-shell`). The AI assistant automatically detects `.agents/AGENTS.md` and applies Prolog agent guidelines, aiming to produce ISO-compliant code subject to engine capabilities.
 
 **Example Starter Prompts**:
 - *"Implement a pure DCG parser in `src/my_parser.pl` to parse JSON tokens using `library(charsio)` and `library(reif)`."*
@@ -220,7 +220,7 @@ Ask your AI assistant to audit, refactor, or test existing modules using the bui
 
 * **Code Purity & Covington Style Audit**:
   > *"Audit `src/legacy_module.pl` using `prolog-purity-reviewer-agent` and report non-logical cuts or defaulty representations."*
-* **Imperative to Pure ISO Refactoring**:
+* **Imperative to Pure ISO-Target Refactoring**:
   > *"Refactor `cut_heavy_predicate/3` in `src/legacy_module.pl` to pure `if_/3` and `dif/2` using `prolog-refactor-agent`."*
 * **Generate Unit Test Suite**:
   > *"Generate a unit test suite for `src/parser.pl` using `prolog-test-generator-agent`."*
@@ -287,17 +287,17 @@ my_prolog_project/
 │   ├── AGENTS.md                   # Project rules & dialect conventions
 │   └── skills/                     # Engine & tool skills
 ├── src/                            # Source Code Directory
-│   ├── core/                       # 100% Pure ISO Prolog Core (dialect-agnostic)
+│   ├── core/                       # Portable Prolog Core (dialect-agnostic ISO target)
 │   │   ├── logic.pl                # Pure DCGs, term relations, CLP constraints
 │   │   └── types.pl                # Functor data representations
 │   ├── adapters/                   # Dialect Shims & Library Normalization
 │   │   ├── scryer/compat.pl        # Imports library(charsio), library(reif), library(clpz)
 │   │   ├── swi/compat.pl           # Imports library(clpfd), plunit, SWI shims
-│   │   ├── trealla/compat.pl       # Trealla ISO imports & FFI
+│   │   ├── trealla/compat.pl       # Trealla compatibility shims & FFI
 │   │   └── tau/compat.pl           # Tau DOM & JS interoperability hooks
 │   └── my_prolog_project.pl        # Main module entry point
 ├── tests/                          # Test Suites Directory
-│   ├── portable/                   # Engine-Agnostic ISO Test Assertions
+│   ├── portable/                   # Engine-Agnostic Goal Assertions
 │   │   └── test_core.pl            # Pure goal assertions (must_succeed/1)
 │   ├── scryer/                     # Scryer Prolog Test Harness
 │   │   └── test_scryer.pl          # Uses library(testing) / testing.pl
@@ -318,10 +318,10 @@ my_prolog_project/
 
 1. **Multi-Manifest Co-existence**: Package manifests (`bakage.toml`, `pack.pl`, `package.json`, `pyproject.toml`) have distinct filenames and co-exist at the repository root without conflict. This allows publishing the project across multiple ecosystems simultaneously.
 2. **Core vs. Adapter Decoupling**:
-   - `src/core/`: Contains 100% pure ISO Prolog (pure DCGs, `dif/2`, reified `if_/3`). Free of engine-specific imports or extensions.
+   - `src/core/`: Contains portable Prolog logic aiming for ISO compliance (pure DCGs, `dif/2`, reified `if_/3`). Free of engine-specific imports or extensions.
    - `src/adapters/`: Contains thin engine-specific compatibility shims that normalize dialect variations (`library(clpz)` vs `library(clpfd)`).
 3. **Multi-Runner Test Hierarchy**:
-   - `tests/portable/`: Pure goal assertions executable on any ISO engine.
+   - `tests/portable/`: Goal assertions executable on any conforming Prolog engine.
    - `tests/scryer/`: Scryer unit tests using `library(testing)`.
    - `tests/swi/`: SWI-Prolog unit tests using `library(plunit)`.
    - `tests/js/`: JavaScript integration tests querying Tau Prolog via Node.js test runners.
@@ -361,7 +361,7 @@ Prompt your AI assistant to start the interactive onboarding process:
 
 The interactive workflow guides you through 6 iterative phases:
 
-1. **Information Gathering**: Collects CLI binary names (`gprolog`, `ciao`, `yap`), ISO compliance status, string representations (`chars`/`codes`/`string`), import syntax, and runner flags.
+1. **Information Gathering**: Collects CLI binary names (`gprolog`, `ciao`, `yap`), supported standard features, string representations (`chars`/`codes`/`string`), import syntax, and runner flags.
 2. **Dialect Standards & Cheat Sheet Creation**: Generates `.agents/skills/<engine>-prolog-standards/SKILL.md` containing explicit `:- use_module(library(...)).` headers, exported predicate tables, and dialect autoload rules.
 3. **Safety Runner & CLI Entry Point**: Updates `runner.py`, `cli.py`, and `pyproject.toml` to register `<engine>-safe`.
 4. **Project Initializer & Scaffolding**: Updates `prolog-agent init` and `prolog-agent template` options for `--dialect <engine>`.

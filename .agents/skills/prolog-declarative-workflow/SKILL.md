@@ -23,7 +23,7 @@ Before generating Prolog code for any task, AI assistants **MUST** execute the 7
 4. **Explicit Imports**: Always add explicit `:- use_module(library(...)).` headers.
 5. **Document Dependencies**: Detail all imported modules in Covington predicate and file headers.
 6. **Explain Rationale**: State why each selected library was chosen in comments.
-7. **Pure ISO Fallback**: Implement custom predicates only when no suitable library exists.
+7. **Standard ISO Fallback**: Implement custom predicates only when no suitable library exists.
 
 ---
 

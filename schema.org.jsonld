@@ -60,7 +60,7 @@
     {
       "@type": "SoftwareComponent",
       "name": "prolog-refactor-agent",
-      "description": "Autonomous subagent for converting imperative Prolog to pure ISO Prolog."
+      "description": "Autonomous subagent for converting imperative Prolog to pure, standard ISO-compliant Prolog code."
     },
     {
       "@type": "SoftwareComponent",

@@ -15,7 +15,7 @@ This repository is **100% vendor-neutral**. All steering guidelines, specificati
 A multi-engine, cross-platform Prolog safety runner, project scaffolding tool, release manager, AI agent standards registry, and declarative skill toolkit for **[Scryer Prolog](https://github.com/mthom/scryer-prolog)**, **[SWI-Prolog](https://www.swi-prolog.org/)**, **[Trealla Prolog](https://github.com/trealla-prolog/trealla)**, and **[Tau Prolog](http://tau-prolog.org/)**.
 
 ### Q2: Why does it exist?
-To allow AI coding agents to safely write, test, refactor, and run pure ISO-compliant Prolog code without causing infinite loops, crashing operating system resources, or producing unsound/defaulty logic.
+To allow AI coding agents to safely write, test, refactor, and run pure, clean Prolog code (aiming for ISO compliance subject to engine capabilities) without causing infinite loops, crashing operating system resources, or producing unsound/defaulty logic.
 
 ### Q3: What are its major components?
 1. **Python Toolkit Package** ([`prolog_agent_toolkit/`](prolog_agent_toolkit)): Safety runners (`prolog-safe`, `scryer-safe`), CLI initializer (`prolog-agent init`), syntax diagnostic checker, skill frontmatter validator, and release sync manager.
@@ -24,7 +24,7 @@ To allow AI coding agents to safely write, test, refactor, and run pure ISO-comp
 4. **Scaffolding Templates** ([`templates/`](templates)): Starter projects and pure Prolog module templates.
 
 ### Q4: What terminology is important?
-- **ISO Scryer Prolog**: Primary target engine enforcing ISO standard compliance.
+- **Scryer Prolog**: Primary target engine used by default in toolkit templates.
 - **Logical Purity**: Preferring `if_/3` (reification from [`library(reif)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/reif.pl)) and `dif/2` over non-logical cuts (`!`) or negation-as-failure (`\+/1`).
 - **Chars**: Representing strings strictly as lists of 1-character atoms (`"abc"` = `['a','b','c']`).
 - **Safety Runner**: Capped execution wrapper (`scryer-safe`, `prolog-safe`) enforcing CPU/memory quotas to protect host systems.

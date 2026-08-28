@@ -200,7 +200,7 @@ MANIFEST_FILE="bakage.toml"
 TEST_FILE="testing.pl"
 RUNNER_CMD="scryer-safe -g \"use_module('src/${PROJECT_NAME}.pl'), hello(M), write(M), nl, halt.\""
 TEST_CMD="scryer-safe tests/testing.pl"
-DIALECT_NAME="Scryer Prolog (ISO-compliant)"
+DIALECT_NAME="Scryer Prolog"
 SKILL_REF="\`.agents/skills/scryer-prolog-standards/SKILL.md\` and \`.agents/skills/prolog-conventions/SKILL.md\`"
 
 if [ "${DIALECT}" = "swi" ]; then
@@ -237,7 +237,7 @@ The \`prolog-agent-toolkit\` provides a standardized development environment for
 - **Deterministic Safe Runners**: Cross-platform command-line entry points (\`scryer-safe\`, \`swi-safe\`, \`trealla-safe\`, \`tau-safe\`, \`prolog-safe\`) that run Prolog execution under strict CPU and memory resource limits.
 - **Dialect Standards & Purity**: Enforced coding guidelines, Covington style standards, reified logical predicates (\`if_/3\`, \`dif/2\`), pure DCGs, and CLP constraint logic.
 - **Agent Skill Architecture**: Integrated \`.agents/\` directory providing structured skills and linting rules so AI assistants (e.g. Gemini, Cursor, Claude, Copilot) generate pure, idiomatic code.
-- **Multi-Engine Support**: Seamless portability across ISO-compliant engines (Scryer Prolog, SWI-Prolog, Trealla Prolog, Tau Prolog).
+- **Multi-Engine Support**: Seamless portability across Prolog engines (Scryer Prolog, SWI-Prolog, Trealla Prolog, Tau Prolog).
 
 ---
 

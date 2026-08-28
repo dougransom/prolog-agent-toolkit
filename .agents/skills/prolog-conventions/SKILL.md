@@ -1,11 +1,11 @@
 ---
 name: prolog-conventions
-description: Coding standards and guidelines for portable, pure ISO-compliant Prolog across all conforming engines. Use when writing Prolog code intended to run on any ISO Prolog interpreter.
+description: Coding standards and guidelines for writing portable ISO-compliant Prolog code across Prolog systems. Use when writing code intended to run across multiple engines subject to engine capabilities.
 ---
 
-# Prolog Conventions
+# Portable ISO Prolog Conventions
 
-Guidelines for writing clean, portable, pure ISO-compliant Prolog.
+Guidelines for writing clean, portable Prolog code aiming for standard ISO compliance subject to target engine limitations.
 
 ## Core Guidelines
 

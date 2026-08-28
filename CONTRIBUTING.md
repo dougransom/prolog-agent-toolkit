@@ -1,6 +1,6 @@
 # Contributing to Prolog Agent Toolkit
 
-Thank you for contributing to the **Prolog Agent Toolkit**! We welcome contributions for adding new engine safety wrappers, extending AI agent skills, and improving ISO Prolog guidelines.
+Thank you for contributing to the **Prolog Agent Toolkit**! We welcome contributions for adding new engine safety wrappers, extending AI agent skills, and improving Prolog guidelines.
 
 > [!NOTE]
 > **Project Status: Active Development**  
@@ -22,7 +22,7 @@ The toolkit consists of two primary layers:
    - Cross-platform resource sandboxing, execution timeout monitoring, low-CPU scheduling, and RAM limits.
    - Entry points: `prolog-safe`, `scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`.
 2. **AI Agent Customizations** (`.agents/`):
-   - Rules (`.agents/AGENTS.md`, `.agents/references/`) defining ISO Prolog coding standards. `.agents/AGENTS.md` (symlinked as `AGENTS.md` at root) is the **vendor-agnostic single source of truth** across all AI tools.
+   - Rules (`.agents/AGENTS.md`, `.agents/references/`) defining Prolog coding standards and portable ISO code targets. `.agents/AGENTS.md` (symlinked as `AGENTS.md` at root) is the **vendor-agnostic single source of truth** across all AI tools.
    - Skills (`.agents/skills/`) for dialect standards, unit testing (`testing.pl`), package management (`bakage`), and version releases.
 
 ### Vendor Neutrality & Agent Configuration Rules
