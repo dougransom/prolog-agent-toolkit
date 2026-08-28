@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "prolog-agent-toolkit"
-version = "0.0.1.dev12"
+version = "0.0.1.dev13"
 description = "Multi-engine, cross-platform Prolog safety runner and agent toolkit"
 readme = "README.md"
 requires-python = ">=3.9"

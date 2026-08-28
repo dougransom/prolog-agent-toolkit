@@ -1,3 +1,20 @@
+## [0.0.1.dev13] - 2026-08-28
+
+### Summary of Changes
+- Created human-readable Repository Ontology documentation in [`docs/ONTOLOGY.md`](docs/ONTOLOGY.md) explaining the 3-Layer Ontology Architecture (Component Graph, Capability Registry, Domain Terminology).
+- Integrated ontology cross-references across [`docs/GLOSSARY.md`](docs/GLOSSARY.md) and [`AGENT_GUIDE.md`](AGENT_GUIDE.md).
+- Documented Maintenance & Update Policy requiring version string and `Last Updated: YYYY-MM-DD` timestamp synchronization whenever repository architecture evolves.
+
+### Added / Modified
+- `docs/ONTOLOGY.md`: New human-readable ontology guide with Mermaid architecture graph diagrams.
+- `docs/GLOSSARY.md`: Added Section 4 (*System Architecture & Metadata*) linking to `docs/ONTOLOGY.md` and `docs/repository_ontology.json`.
+- `AGENT_GUIDE.md`: Updated Q3 (*Major Components*) to reference `docs/ONTOLOGY.md`.
+- `docs/repository_ontology.json`, `docs/capability_manifest.json`, `schema.org.jsonld`, `README.md`, `pyproject.toml`: Synchronized version `0.0.1.dev13`.
+
+### Breaking Changes
+- None.
+
+
 ## [0.0.1.dev12] - 2026-08-28
 
 ### Summary of Changes

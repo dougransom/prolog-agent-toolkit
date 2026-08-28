@@ -1,6 +1,6 @@
 {
   "name": "Prolog Agent Toolkit Capability Manifest",
-  "version": "0.0.1.dev12",
+  "version": "0.0.1.dev13",
   "vendor_neutral": true,
   "capabilities": {
     "cli_tools": [

@@ -1,6 +1,6 @@
 # Repository Ontology & Information Architecture
 
-> **Version**: `0.0.1.dev12`  
+> **Version**: `0.0.1.dev13`  
 > **Last Updated**: `2026-08-28`  
 > **Machine-Readable Graph**: [`docs/repository_ontology.json`](repository_ontology.json)  
 > **Capability Registry**: [`docs/capability_manifest.json`](capability_manifest.json)  

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "name": "Prolog Agent Toolkit Repository Ontology",
   "description": "Machine-readable graph mapping components, file dependencies, and structural relations",
-  "version": "0.0.1.dev12",
+  "version": "0.0.1.dev13",
   "nodes": [
     {
       "id": "pyproject.toml",
