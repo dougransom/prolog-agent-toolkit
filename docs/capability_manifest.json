@@ -1,0 +1,66 @@
+{
+  "name": "Prolog Agent Toolkit Capability Manifest",
+  "version": "0.0.1.dev11",
+  "vendor_neutral": true,
+  "capabilities": {
+    "cli_tools": [
+      {
+        "name": "prolog-agent init",
+        "description": "Scaffold new Prolog project with src/, tests/, bakage.toml, and .agents/",
+        "args": ["<project-name>", "[--dialect scryer|swi|trealla|tau|iso]"]
+      },
+      {
+        "name": "prolog-agent template",
+        "description": "Generate starter project template",
+        "args": ["<project-name>", "[--dialect scryer|swi|trealla|tau|iso]"]
+      },
+      {
+        "name": "prolog-agent module",
+        "description": "Generate a pure Prolog module file with Covington header and stub predicate",
+        "args": ["<module-name>", "[--dialect scryer|swi|trealla|tau|iso]"]
+      },
+      {
+        "name": "prolog-agent release",
+        "description": "Synchronize package versions across pyproject.toml, bakage.toml, pack.pl, package.json, README.md, and CHANGELOG.md",
+        "args": ["[--version X.Y.Z]"]
+      },
+      {
+        "name": "prolog-agent check-version",
+        "description": "Verify version string parity across all manifest files"
+      },
+      {
+        "name": "prolog-agent validate-skills",
+        "description": "Validate YAML frontmatter formatting across all .agents/skills/ files"
+      }
+    ],
+    "safety_runners": [
+      {
+        "executable": "prolog-safe",
+        "default_engine": "scryer",
+        "description": "Execute Prolog goal or file with CPU memory quotas"
+      },
+      {
+        "executable": "scryer-safe",
+        "default_engine": "scryer",
+        "description": "Resource-capped execution runner for Scryer Prolog"
+      },
+      {
+        "executable": "swi-safe",
+        "default_engine": "swi",
+        "description": "Resource-capped execution runner for SWI-Prolog"
+      },
+      {
+        "executable": "trealla-safe",
+        "default_engine": "trealla",
+        "description": "Resource-capped execution runner for Trealla Prolog"
+      },
+      {
+        "executable": "tau-safe",
+        "default_engine": "tau",
+        "description": "Resource-capped execution runner for Tau Prolog"
+      }
+    ],
+    "subagents_count": 8,
+    "skills_count": 21
+  }
+}

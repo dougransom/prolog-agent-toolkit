@@ -93,3 +93,16 @@ Whenever adding or extending support for a new Prolog engine (e.g. GNU Prolog, C
 5. **Testing Frameworks**:
    - `.agents/skills/prolog-testing/SKILL.md`: Document assertion patterns, test runner predicates, and execution CLI options.
 
+
+---
+
+## AI Agent Contribution Protocol
+
+AI coding agents (Google Antigravity, Claude Code, Cursor, Windsurf, Copilot, or Emacs AI tools) contributing changes to this repository MUST follow this protocol:
+
+1. **Orientation**: Read [`AGENT_GUIDE.md`](file:///home/doug/code/prolog-agent-toolkit/AGENT_GUIDE.md) and inspect [`AGENT_INDEX.json`](file:///home/doug/code/prolog-agent-toolkit/AGENT_INDEX.json) before proposing or implementing changes.
+2. **Anti-Pattern Check**: Check [`docs/ANTI_PATTERNS.md`](file:///home/doug/code/prolog-agent-toolkit/docs/ANTI_PATTERNS.md) to ensure proposed changes do not violate purity rules or duplicate existing helpers.
+3. **Execution Safety**: Execute Prolog goals via safe execution wrappers (`prolog-safe`, `scryer-safe`, `swi-safe`). Never run raw interpreter binaries.
+4. **Clean Bytecode**: Always invoke Python tools with bytecode disabled (`PYTHONDONTWRITEBYTECODE=1 uv run pytest`).
+5. **Skill Validation**: When adding or modifying skills in `.agents/skills/`, run `prolog-agent validate-skills` to ensure YAML frontmatter compliance.
+6. **Version Parity**: When modifying version numbers, edit [`pyproject.toml`](file:///home/doug/code/prolog-agent-toolkit/pyproject.toml) as canonical source of truth and run `prolog-agent release`. Run `prolog-agent check-version` to verify parity.

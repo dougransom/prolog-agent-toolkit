@@ -24,6 +24,10 @@
     },
     {
       "@type": "SoftwareApplication",
+      "name": "Windsurf"
+    },
+    {
+      "@type": "SoftwareApplication",
       "name": "aidermacs"
     },
     {

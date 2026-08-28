@@ -159,6 +159,20 @@ def validate_skills_main() -> None:
     sys.exit(exit_code)
 
 
+def agent_guide_main() -> None:
+    """CLI entry point for prolog-agent-guide."""
+    guide_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "AGENT_GUIDE.md")
+    if not os.path.exists(guide_path):
+        guide_path = "AGENT_GUIDE.md"
+    if os.path.exists(guide_path):
+        with open(guide_path, "r", encoding="utf-8") as f:
+            print(f.read())
+    else:
+        print("Prolog Agent Toolkit Guide: See AGENT_GUIDE.md and AGENTS.md in repository root.")
+    sys.exit(0)
+
+
+
 def scryer_safe_main() -> None:
     """CLI entry point for scryer-safe."""
     os.environ["PROLOG_ENGINE"] = "scryer"

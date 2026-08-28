@@ -1,0 +1,37 @@
+{
+  "name": "Prolog Agent Toolkit Terminology Index",
+  "version": "0.0.1.dev11",
+  "vendor_neutral": true,
+  "terms": [
+    {
+      "term": "Logical Purity",
+      "definition": "Sound declarative logic avoiding non-logical cuts, side-effects, and unsound negation",
+      "reference": "docs/GLOSSARY.md#logical-purity"
+    },
+    {
+      "term": "if_/3",
+      "definition": "Pure reified conditional from library(reif)",
+      "reference": "docs/GLOSSARY.md#if_3--reification-libraryreif"
+    },
+    {
+      "term": "dif/2",
+      "definition": "Pure sound term inequality constraint",
+      "reference": "docs/GLOSSARY.md#dif2"
+    },
+    {
+      "term": "Chars",
+      "definition": "Double-quoted strings represented as lists of single-character atoms",
+      "reference": "docs/GLOSSARY.md#chars-strings"
+    },
+    {
+      "term": "Safety Runner",
+      "definition": "Resource-capped wrapper (prolog-safe, scryer-safe) enforcing execution time and memory limits",
+      "reference": "docs/GLOSSARY.md#safety-runner-prolog-safe-scryer-safe-swi-safe"
+    },
+    {
+      "term": "Bakage",
+      "definition": "Scryer Prolog manifest format (bakage.toml)",
+      "reference": "docs/GLOSSARY.md#bakage-bakagetoml"
+    }
+  ]
+}

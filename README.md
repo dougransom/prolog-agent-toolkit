@@ -6,7 +6,19 @@
 
 Multi-engine, cross-platform (Linux, macOS, BSD, Windows) Prolog execution sandboxing and AI agent skills toolkit.
 
-## Categories & Supported Platforms
+---
+
+> ### 🤖 AI Agent Navigation Quick Start
+> Entering this repository as an AI agent (Google Antigravity, Claude Code, Cursor, Windsurf, Copilot, or Emacs AI tools)?
+> - **Navigation Blueprint & Top 10 Q&A**: Read [`AGENT_GUIDE.md`](file:///home/doug/code/prolog-agent-toolkit/AGENT_GUIDE.md)
+> - **Directory & File Map**: Inspect [`AGENT_INDEX.json`](file:///home/doug/code/prolog-agent-toolkit/AGENT_INDEX.json)
+> - **Component Ontology**: Inspect [`docs/repository_ontology.json`](file:///home/doug/code/prolog-agent-toolkit/docs/repository_ontology.json)
+> - **Capability Manifest**: Inspect [`docs/capability_manifest.json`](file:///home/doug/code/prolog-agent-toolkit/docs/capability_manifest.json)
+> - **Terminology & Glossary**: Read [`docs/GLOSSARY.md`](file:///home/doug/code/prolog-agent-toolkit/docs/GLOSSARY.md)
+> - **Anti-Patterns & Reuse**: Read [`docs/ANTI_PATTERNS.md`](file:///home/doug/code/prolog-agent-toolkit/docs/ANTI_PATTERNS.md)
+
+---
+
 
 | Category | Supported Technologies / Systems |
 |---|---|

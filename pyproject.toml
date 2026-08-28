@@ -27,6 +27,9 @@ keywords = [
     "agent-shell",
     "gptel",
     "emacs",
+    "windsurf",
+    "ai-native",
+    "ontology",
     "dcg",
     "clpz",
     "purity",
@@ -51,12 +54,14 @@ dev = [
 
 [project.scripts]
 prolog-agent = "prolog_agent_toolkit.cli:prolog_agent_main"
+prolog-agent-guide = "prolog_agent_toolkit.cli:agent_guide_main"
 prolog-safe = "prolog_agent_toolkit.cli:prolog_safe_main"
 scryer-safe = "prolog_agent_toolkit.cli:scryer_safe_main"
 swi-safe = "prolog_agent_toolkit.cli:swi_safe_main"
 trealla-safe = "prolog_agent_toolkit.cli:trealla_safe_main"
 tau-safe = "prolog_agent_toolkit.cli:tau_safe_main"
 prolog-validate-skills = "prolog_agent_toolkit.cli:validate_skills_main"
+
 
 [tool.hatch.build.targets.wheel]
 packages = ["prolog_agent_toolkit"]

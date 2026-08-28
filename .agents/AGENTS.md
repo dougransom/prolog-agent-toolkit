@@ -1,8 +1,12 @@
 # Prolog Agent Toolkit Guidelines & Standards
 
-See [.agents/AGENTS.md](.agents/AGENTS.md) for full toolkit guidelines, dialect rules, project initialization (`prolog-agent init`), release workflow (`prolog-agent release`), and safety runner standards.
+> **System Authority**: This document is the source of truth for all coding, architectural, and procedural standards within the Prolog Agent Toolkit.
+> **Cross-Reference Index**:
+> - [Onboarding Blueprint](file:///home/doug/code/prolog-agent-toolkit/AGENT_GUIDE.md) | [Directory Map](file:///home/doug/code/prolog-agent-toolkit/AGENT_INDEX.json)
+> - [Component Ontology](file:///home/doug/code/prolog-agent-toolkit/docs/repository_ontology.json) | [Glossary](file:///home/doug/code/prolog-agent-toolkit/docs/GLOSSARY.md) | [Anti-Patterns](file:///home/doug/code/prolog-agent-toolkit/docs/ANTI_PATTERNS.md)
 
-When writing, refactoring, reviewing, or running Prolog code across any project or Prolog engine, all AI assistants MUST adhere to the standards defined below.
+When writing, refactoring, reviewing, or running Prolog code across any project or Prolog engine, all AI assistants (Google Antigravity, Claude Code, Cursor, Windsurf, GitHub Copilot, aidermacs/agent-shell/gptel in Emacs) MUST adhere to the standards defined below.
+
 
 ## Universal Prolog Style & Purity Guidelines
 

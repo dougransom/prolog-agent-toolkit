@@ -1,0 +1,84 @@
+{
+  "name": "Prolog Agent Toolkit Repository Index",
+  "version": "0.0.1.dev11",
+  "vendor_neutral": true,
+  "canonical_version_file": "pyproject.toml",
+  "authoritative_rules": "AGENTS.md",
+  "primary_onboarding_guide": "AGENT_GUIDE.md",
+  "entry_points": {
+    "agent_guide": "AGENT_GUIDE.md",
+    "agent_rules": "AGENTS.md",
+    "agents_dir_rules": ".agents/AGENTS.md",
+    "repository_ontology": "docs/repository_ontology.json",
+    "capability_manifest": "docs/capability_manifest.json",
+    "glossary": "docs/GLOSSARY.md",
+    "anti_patterns": "docs/ANTI_PATTERNS.md",
+    "skill_catalog": ".agents/skills.json"
+  },
+  "modules": [
+    {
+      "path": "prolog_agent_toolkit/runner.py",
+      "type": "python",
+      "description": "Safety execution runners with CPU/memory resource limits"
+    },
+    {
+      "path": "prolog_agent_toolkit/cli.py",
+      "type": "python",
+      "description": "CLI entrypoints for prolog-agent, prolog-safe, and dialect runners"
+    },
+    {
+      "path": "prolog_agent_toolkit/project.py",
+      "type": "python",
+      "description": "Project initializer, scaffolding, and module generator"
+    },
+    {
+      "path": "prolog_agent_toolkit/syntax_checker.py",
+      "type": "python",
+      "description": "Prolog syntax error diagnostic engine"
+    },
+    {
+      "path": "prolog_agent_toolkit/skill_validator.py",
+      "type": "python",
+      "description": "YAML frontmatter validator for agent skills"
+    },
+    {
+      "path": "prolog_agent_toolkit/release.py",
+      "type": "python",
+      "description": "Multi-file version synchronization and release manager"
+    }
+  ],
+  "agent_subagents": [
+    {
+      "name": "prolog-purity-reviewer-agent",
+      "path": ".agents/agents/prolog-purity-reviewer-agent.md"
+    },
+    {
+      "name": "prolog-refactor-agent",
+      "path": ".agents/agents/prolog-refactor-agent.md"
+    },
+    {
+      "name": "prolog-test-generator-agent",
+      "path": ".agents/agents/prolog-test-generator-agent.md"
+    },
+    {
+      "name": "prolog-portability-reviewer-agent",
+      "path": ".agents/agents/prolog-portability-reviewer-agent.md"
+    },
+    {
+      "name": "prolog-security-reviewer-agent",
+      "path": ".agents/agents/prolog-security-reviewer-agent.md"
+    },
+    {
+      "name": "prolog-pr-reviewer-agent",
+      "path": ".agents/agents/prolog-pr-reviewer-agent.md"
+    },
+    {
+      "name": "prolog-doc-generator-agent",
+      "path": ".agents/agents/prolog-doc-generator-agent.md"
+    },
+    {
+      "name": "prolog-benchmark-runner-agent",
+      "path": ".agents/agents/prolog-benchmark-runner-agent.md"
+    }
+  ]
+}

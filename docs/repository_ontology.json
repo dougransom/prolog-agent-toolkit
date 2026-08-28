@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "Prolog Agent Toolkit Repository Ontology",
+  "description": "Machine-readable graph mapping components, file dependencies, and structural relations",
+  "version": "0.0.1.dev11",
+  "nodes": [
+    {
+      "id": "pyproject.toml",
+      "type": "configuration",
+      "category": "build_system",
+      "description": "Canonical version source of truth and package build metadata"
+    },
+    {
+      "id": "AGENTS.md",
+      "type": "rules",
+      "category": "steering",
+      "description": "Universal Prolog purity, dialect selection, and agent steering rules"
+    },
+    {
+      "id": "AGENT_GUIDE.md",
+      "type": "documentation",
+      "category": "onboarding",
+      "description": "Primary agent navigation guide and 10-question blueprint"
+    },
+    {
+      "id": "prolog_agent_toolkit/runner.py",
+      "type": "code",
+      "category": "execution_safety",
+      "description": "Cross-platform safety wrapper enforcing memory and execution limits"
+    },
+    {
+      "id": "prolog_agent_toolkit/cli.py",
+      "type": "code",
+      "category": "cli",
+      "description": "Command-line interface entry points for prolog-agent and safe runners"
+    },
+    {
+      "id": "prolog_agent_toolkit/project.py",
+      "type": "code",
+      "category": "scaffolding",
+      "description": "Project initialization and pure Prolog module generator"
+    },
+    {
+      "id": "prolog_agent_toolkit/syntax_checker.py",
+      "type": "code",
+      "category": "diagnostics",
+      "description": "Prolog syntax diagnostic parser and typo fixer"
+    },
+    {
+      "id": "prolog_agent_toolkit/skill_validator.py",
+      "type": "code",
+      "category": "validation",
+      "description": "YAML frontmatter validator for agent skills"
+    },
+    {
+      "id": "prolog_agent_toolkit/release.py",
+      "type": "code",
+      "category": "versioning",
+      "description": "Multi-file version synchronizer and release runner"
+    }
+  ],
+  "edges": [
+    {
+      "source": "prolog_agent_toolkit/cli.py",
+      "target": "prolog_agent_toolkit/runner.py",
+      "relation": "imports"
+    },
+    {
+      "source": "prolog_agent_toolkit/cli.py",
+      "target": "prolog_agent_toolkit/project.py",
+      "relation": "imports"
+    },
+    {
+      "source": "prolog_agent_toolkit/cli.py",
+      "target": "prolog_agent_toolkit/release.py",
+      "relation": "imports"
+    },
+    {
+      "source": "prolog_agent_toolkit/cli.py",
+      "target": "prolog_agent_toolkit/skill_validator.py",
+      "relation": "imports"
+    },
+    {
+      "source": "prolog_agent_toolkit/release.py",
+      "target": "pyproject.toml",
+      "relation": "reads_version_from"
+    },
+    {
+      "source": "AGENT_GUIDE.md",
+      "target": "AGENTS.md",
+      "relation": "references_rules"
+    }
+  ]
+}

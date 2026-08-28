@@ -1,5 +1,135 @@
 {
+  "name": "Prolog Agent Toolkit Skill Catalog",
+  "version": "0.0.1.dev11",
   "entries": [
     { "path": "skills" }
+  ],
+  "skills": [
+    {
+      "name": "scryer-prolog-standards",
+      "path": "skills/scryer-prolog-standards/SKILL.md",
+      "description": "Coding standards and standard library cheat sheet for pure ISO Scryer Prolog",
+      "engines": ["scryer"]
+    },
+    {
+      "name": "swi-prolog-standards",
+      "path": "skills/swi-prolog-standards/SKILL.md",
+      "description": "Coding standards, dicts, modules, and pack manager guidelines for SWI-Prolog",
+      "engines": ["swi"]
+    },
+    {
+      "name": "trealla-prolog-standards",
+      "path": "skills/trealla-prolog-standards/SKILL.md",
+      "description": "ISO standards and WASM embedding guidelines for Trealla Prolog",
+      "engines": ["trealla"]
+    },
+    {
+      "name": "tau-prolog-standards",
+      "path": "skills/tau-prolog-standards/SKILL.md",
+      "description": "ISO standards and Browser DOM/JavaScript integration guidelines for Tau Prolog",
+      "engines": ["tau"]
+    },
+    {
+      "name": "prolog-conventions",
+      "path": "skills/prolog-conventions/SKILL.md",
+      "description": "Portable ISO Prolog conventions compatible across all conforming engines",
+      "engines": ["scryer", "swi", "trealla", "tau", "iso"]
+    },
+    {
+      "name": "prolog-clp-constraints",
+      "path": "skills/prolog-clp-constraints/SKILL.md",
+      "description": "Constraint Logic Programming (CLP(Z), CLP(FD)) and labeling strategies",
+      "engines": ["scryer", "swi"]
+    },
+    {
+      "name": "prolog-dcg-mastery",
+      "path": "skills/prolog-dcg-mastery/SKILL.md",
+      "description": "Definite Clause Grammar patterns, AST construction, tokenizing, and pushback lists",
+      "engines": ["scryer", "swi", "trealla", "tau"]
+    },
+    {
+      "name": "prolog-testing",
+      "path": "skills/prolog-testing/SKILL.md",
+      "description": "Unit testing frameworks across Scryer testing.pl, SWI plunit, and portable assertions",
+      "engines": ["scryer", "swi", "trealla", "tau"]
+    },
+    {
+      "name": "prolog-packaging",
+      "path": "skills/prolog-packaging/SKILL.md",
+      "description": "Manifest standards for Scryer bakage.toml and SWI pack manager",
+      "engines": ["scryer", "swi"]
+    },
+    {
+      "name": "prolog-release",
+      "path": "skills/prolog-release/SKILL.md",
+      "description": "Multi-file release versioning synchronization workflow",
+      "engines": ["scryer", "swi", "trealla", "tau"]
+    },
+    {
+      "name": "prolog-linter-static-analysis",
+      "path": "skills/prolog-linter-static-analysis/SKILL.md",
+      "description": "Static analysis for detecting singletons, discontiguous clauses, and non-logical cuts",
+      "engines": ["scryer", "swi", "trealla"]
+    },
+    {
+      "name": "prolog-performance-profiling",
+      "path": "skills/prolog-performance-profiling/SKILL.md",
+      "description": "Choicepoint profiling, first-argument indexing, and reification optimization",
+      "engines": ["scryer", "swi", "trealla"]
+    },
+    {
+      "name": "prolog-debugging-workflow",
+      "path": "skills/prolog-debugging-workflow/SKILL.md",
+      "description": "4-port debugging model, trace points, spy points, and constraint inspection",
+      "engines": ["scryer", "swi", "trealla"]
+    },
+    {
+      "name": "prolog-declarative-workflow",
+      "path": "skills/prolog-declarative-workflow/SKILL.md",
+      "description": "Declarative reasoning workflows for AI agents, mode/determinism annotations",
+      "engines": ["scryer", "swi", "trealla", "tau"]
+    },
+    {
+      "name": "prolog-initializer",
+      "path": "skills/prolog-initializer/SKILL.md",
+      "description": "Project bootstrapping workflows for prolog-agent init and templates",
+      "engines": ["scryer", "swi", "trealla", "tau"]
+    },
+    {
+      "name": "prolog-tabling",
+      "path": "skills/prolog-tabling/SKILL.md",
+      "description": "Tabling, memoization, SLG resolution, and transitive graph closure",
+      "engines": ["scryer", "swi"]
+    },
+    {
+      "name": "prolog-web-services",
+      "path": "skills/prolog-web-services/SKILL.md",
+      "description": "HTTP REST APIs, JSON endpoints, microservices, and WebSockets",
+      "engines": ["scryer", "swi", "trealla"]
+    },
+    {
+      "name": "prolog-ffi-wasm-embedding",
+      "path": "skills/prolog-ffi-wasm-embedding/SKILL.md",
+      "description": "Foreign function interfaces with C, Rust, Python, JavaScript, and WASM",
+      "engines": ["scryer", "swi", "trealla", "tau"]
+    },
+    {
+      "name": "prolog-neurosymbolic-agent",
+      "path": "skills/prolog-neurosymbolic-agent/SKILL.md",
+      "description": "Architecture for LLM + Prolog logic verification and ground-truth checking",
+      "engines": ["scryer", "swi", "trealla"]
+    },
+    {
+      "name": "prolog-code-review",
+      "path": "skills/prolog-code-review/SKILL.md",
+      "description": "PR auditing procedures, logical purity checklists, and safety verification",
+      "engines": ["scryer", "swi", "trealla", "tau"]
+    },
+    {
+      "name": "prolog-engine-onboarding",
+      "path": "skills/prolog-engine-onboarding/SKILL.md",
+      "description": "Workflow for adding support for new Prolog engines to the toolkit",
+      "engines": ["scryer", "swi", "trealla", "tau"]
+    }
   ]
 }
