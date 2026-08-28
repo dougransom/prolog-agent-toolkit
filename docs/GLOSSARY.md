@@ -51,3 +51,14 @@ The package manifest format used by Scryer Prolog to declare project metadata, e
 
 ### Covington Style Guide
 A classic style guide for Prolog programming emphasizing readability, explicit goal ordering, simple clause structures, and human-first layout.
+
+---
+
+## 4. System Architecture & Metadata
+
+### Repository Ontology
+The machine-readable component graph ([`docs/repository_ontology.json`](repository_ontology.json)) and human-readable architecture overview ([`docs/ONTOLOGY.md`](ONTOLOGY.md)) mapping all modules, CLI entry points, subagents, and directed file dependencies.
+- **Human-Readable Guide**: [`docs/ONTOLOGY.md`](ONTOLOGY.md)
+- **Machine-Readable Graph**: [`docs/repository_ontology.json`](repository_ontology.json)
+- **Capability Registry**: [`docs/capability_manifest.json`](capability_manifest.json)
+
