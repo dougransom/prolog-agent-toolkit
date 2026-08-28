@@ -12,6 +12,9 @@ When writing, refactoring, reviewing, or running Prolog code across any project 
 
 All Prolog code (regardless of target engine) MUST follow the universal style and purity principles:
 
+- **Vendor Neutrality & Open Standards**:
+  - All AI agent guidelines, instructions, rules, and skills MUST remain 100% vendor-neutral and open format (`AGENTS.md`, `.agents/skills/<name>/SKILL.md`, `.agents/agents/<name>.md`).
+  - Do NOT create proprietary, vendor-specific, or IDE-harness-specific configuration files or directories (such as `.claude/`, `.windsurfrule`, `.cursorrules`, `.github/copilot-instructions.md`, `.clinerules`, `.gemini/`, or harness-specific Emacs configs).
 - **Covington Prolog Style Guide**: [.agents/references/covington_style.md](.agents/references/covington_style.md)
   - Write for humans first; keep clauses simple and readable; use explicit goal ordering and clean predicate naming.
 - **Purity Guidelines**: [.agents/references/prolog_guidelines.md](.agents/references/prolog_guidelines.md)

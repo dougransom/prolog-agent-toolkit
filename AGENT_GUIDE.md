@@ -2,7 +2,10 @@
 
 Welcome to **`prolog-agent-toolkit`**. This document is the primary onboarding entry point designed specifically for AI coding agents (Google Antigravity, Claude Code, Cursor, Windsurf, GitHub Copilot, and Emacs AI tools such as `aidermacs`, `agent-shell`, and `gptel`).
 
-This repository is **100% vendor-neutral**. All steering guidelines, specifications, and navigation blueprints follow open, standard Markdown and JSON metadata format conventions.
+This repository is **100% vendor-neutral**. All steering guidelines, specifications, and navigation blueprints follow open, standard Markdown (`AGENTS.md`, `.agents/skills/<name>/SKILL.md`, `.agents/agents/<name>.md`) and JSON metadata format conventions.
+
+> [!IMPORTANT]
+> **Vendor Neutrality Principle**: AI agent instructions MUST remain vendor-agnostic. Do NOT create vendor-specific or IDE-harness-specific configuration files (such as `.claude/`, `.windsurfrule`, `.cursorrules`, `.github/copilot-instructions.md`, `.clinerules`, `.gemini/`, or harness-specific Emacs configs). All rules and skills belong strictly in standard `.agents/` layout so any AI coding tool or harness can consume them natively.
 
 ---
 

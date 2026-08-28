@@ -15,6 +15,12 @@ The toolkit consists of two primary layers:
    - Rules (`.agents/AGENTS.md`, `.agents/references/`) defining ISO Prolog coding standards. `.agents/AGENTS.md` (symlinked as `AGENTS.md` at root) is the **vendor-agnostic single source of truth** across all AI tools.
    - Skills (`.agents/skills/`) for dialect standards, unit testing (`testing.pl`), package management (`bakage`), and version releases.
 
+### Vendor Neutrality & Agent Configuration Rules
+All AI agent instructions, rules, and skills MUST remain **100% vendor-neutral** and open-format:
+- **Use Open Standards**: All guidelines MUST be authored in standard Markdown and JSON inside `.agents/` (`AGENTS.md`, `.agents/skills/<name>/SKILL.md`, `.agents/agents/<name>.md`).
+- **Prohibit Vendor/IDE Lock-In Files**: Do **NOT** create proprietary, vendor-specific, or IDE-harness-specific configuration files or directories (such as `.claude/`, `.windsurfrule`, `.cursorrules`, `.github/copilot-instructions.md`, `.clinerules`, `.gemini/`, or harness-specific Emacs config snippets).
+- **Universal Portability**: By storing guidelines strictly in standard `.agents/` layout, any AI coding assistant or harness (Google Antigravity, Claude Code, Cursor, Windsurf, GitHub Copilot, aidermacs/agent-shell/gptel) can natively read and apply the instructions without fragmentation.
+
 ---
 
 ## 2. Adding a New Skill
