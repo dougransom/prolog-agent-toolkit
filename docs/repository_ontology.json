@@ -57,9 +57,20 @@
       "type": "code",
       "category": "versioning",
       "description": "Multi-file version synchronizer and release runner"
+    },
+    {
+      "id": "prolog_agent_toolkit/discovery.py",
+      "type": "code",
+      "category": "discovery",
+      "description": "Hybrid Prolog library, module, and package discovery engine"
     }
   ],
   "edges": [
+    {
+      "source": "prolog_agent_toolkit/cli.py",
+      "target": "prolog_agent_toolkit/discovery.py",
+      "relation": "imports"
+    },
     {
       "source": "prolog_agent_toolkit/cli.py",
       "target": "prolog_agent_toolkit/runner.py",

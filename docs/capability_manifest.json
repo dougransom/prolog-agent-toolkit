@@ -31,6 +31,11 @@
       {
         "name": "prolog-agent validate-skills",
         "description": "Validate YAML frontmatter formatting across all .agents/skills/ files"
+      },
+      {
+        "name": "prolog-agent discover",
+        "description": "Discover available Prolog libraries, modules, and packages across static database, local project manifests, and live engines",
+        "args": ["[--engine scryer|swi|trealla|tau|gnu|all]", "[--query <keyword>]", "[--mode static|dynamic|hybrid]", "[--json]"]
       }
     ],
     "safety_runners": [
@@ -61,6 +66,6 @@
       }
     ],
     "subagents_count": 8,
-    "skills_count": 21
+    "skills_count": 22
   }
 }

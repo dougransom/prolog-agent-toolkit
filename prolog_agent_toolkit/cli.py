@@ -14,7 +14,7 @@ from prolog_agent_toolkit.project import (
 )
 from prolog_agent_toolkit.release import run_release, check_versions
 from prolog_agent_toolkit.hooks import install_hooks
-
+from prolog_agent_toolkit.discovery import discover_capabilities, format_discovery_report
 
 
 def list_subagents(agents_dir: str = ".agents/agents") -> None:
@@ -52,6 +52,7 @@ def prolog_agent_main() -> None:
         print("  prolog-agent init <project-name> [--dialect|--engine scryer|swi|trealla|tau|iso]")
         print("  prolog-agent template <project-name> [--dialect|--engine scryer|swi|trealla|tau|iso]")
         print("  prolog-agent module <module-name> [--dialect|--engine scryer|swi|trealla|tau|iso]")
+        print("  prolog-agent discover [--engine scryer|swi|trealla|tau|gnu|all] [--query <keyword>] [--mode static|dynamic|hybrid] [--json]")
         print("  prolog-agent init-script")
         print("  prolog-agent release [--version X.Y.Z]")
         print("  prolog-agent check-version")
@@ -103,6 +104,27 @@ def prolog_agent_main() -> None:
         engine = get_dialect()
         exit_code = generate_module(module_name, engine=engine)
         sys.exit(exit_code)
+
+    elif cmd == "discover":
+        engine = get_dialect() if ("--dialect" in args or "--engine" in args) else "all"
+        query = None
+        if "--query" in args:
+            idx = args.index("--query")
+            if idx + 1 < len(args):
+                query = args[idx + 1]
+        mode = "hybrid"
+        if "--mode" in args:
+            idx = args.index("--mode")
+            if idx + 1 < len(args):
+                mode = args[idx + 1]
+        
+        data = discover_capabilities(engine=engine, query=query, mode=mode)
+        if "--json" in args:
+            import json
+            print(json.dumps(data, indent=2))
+        else:
+            print(format_discovery_report(data))
+        sys.exit(0)
 
     elif cmd == "init-script":
         exit_code = print_init_script()

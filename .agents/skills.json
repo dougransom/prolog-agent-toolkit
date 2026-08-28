@@ -130,6 +130,12 @@
       "path": "skills/prolog-engine-onboarding/SKILL.md",
       "description": "Workflow for adding support for new Prolog engines to the toolkit",
       "engines": ["scryer", "swi", "trealla", "tau"]
+    },
+    {
+      "name": "prolog-library-discovery",
+      "path": "skills/prolog-library-discovery/SKILL.md",
+      "description": "Pre-code-generation library, module, and package discovery protocol across Prolog engines",
+      "engines": ["scryer", "swi", "trealla", "tau", "gnu", "iso"]
     }
   ]
 }

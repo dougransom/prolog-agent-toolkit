@@ -14,6 +14,19 @@ LLMs naturally default to imperative thinking (treating Prolog like Python or Ja
 
 ---
 
+## 1.5. Pre-Code-Generation Library Discovery Protocol
+
+Before generating Prolog code for any task, AI assistants **MUST** execute the 7-step library discovery protocol:
+1. **Target Engine**: Identify target Prolog engine (`scryer`, `swi`, `trealla`, `tau`, `gnu`, `iso`).
+2. **Capability Discovery**: Run `prolog-agent discover --engine <engine>` or consult dialect cheat-sheets and manifests (`bakage.toml`, `pack.pl`).
+3. **Prefer Built-Ins**: Reuse built-in standard libraries or installed packages instead of re-implementing functionality.
+4. **Explicit Imports**: Always add explicit `:- use_module(library(...)).` headers.
+5. **Document Dependencies**: Detail all imported modules in Covington predicate and file headers.
+6. **Explain Rationale**: State why each selected library was chosen in comments.
+7. **Pure ISO Fallback**: Implement custom predicates only when no suitable library exists.
+
+---
+
 ## 2. Mode, Determinism & Choice-Point Contracts
 
 Always annotate or specify predicate operational semantics:

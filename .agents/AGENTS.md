@@ -27,6 +27,8 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
   - Use test-first scaffolding (`testing.pl` / `plunit` / configured test framework) and DCG structure generation.
 - **Programmer Steering Guidelines**: [.agents/references/programmer_guidelines.md](.agents/references/programmer_guidelines.md)
   - Best practices for human programmers when prompting, constraining, and steering AI coding assistants.
+- **Pre-Code-Generation Library Discovery Policy**: [.agents/skills/prolog-library-discovery/SKILL.md](.agents/skills/prolog-library-discovery/SKILL.md)
+  - BEFORE generating Prolog code, AI assistants MUST execute the 7-step discovery protocol: (1) Identify target engine; (2) Run `prolog-agent discover --engine <engine>` or inspect dialect cheat sheets / manifests; (3) Prefer discovered built-in libraries and installed packs over writing custom logic from scratch; (4) Explicitly declare `:- use_module(library(...)).` headers; (5) Document selected dependencies in headers; (6) Explain dependency selection rationale; (7) Only implement custom code when no suitable library exists.
 - **Standard Library Cheat-Sheet Steering**:
   - AI assistants MUST use dialect skill cheat sheets for `:- use_module(library(...)).` declarations and predicate signatures instead of assuming SWI-style autoloading.
   - AI assistants MUST NOT read raw standard library implementation source files, relying on concise cheat sheets and pre-trained semantics to conserve context window tokens.

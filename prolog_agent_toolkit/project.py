@@ -136,6 +136,17 @@ def generate_agents_md_content(project_name: str, engine: str = "scryer") -> str
 
 When writing, refactoring, or reviewing Prolog code in this project, all AI assistants MUST adhere to the standards defined below.
 
+## Pre-Code-Generation Library Discovery Policy
+
+Before generating Prolog code, AI assistants MUST follow the 7-step discovery protocol:
+1. **Identify Target Engine**: Target engine for this repository is **{engine.upper()} Prolog**.
+2. **Discover Available Capabilities**: Run `prolog-agent discover --engine {engine}` or inspect dialect library cheat sheets and project manifests (`bakage.toml`, `pack.pl`, `package.json`).
+3. **Prefer Installed Capabilities**: Always reuse built-in standard libraries or installed packages instead of implementing custom code from scratch.
+4. **Explicit Imports**: Always declare explicit `:- use_module(library(...)).` headers.
+5. **Document Dependencies**: Detail all selected library modules in Covington module headers.
+6. **Explain Rationale**: Document why a selected library was chosen in predicate comments.
+7. **Pure ISO Fallback**: Only implement custom predicates when no suitable library exists.
+
 ## Dialect & Safety Standards ({engine.upper()})
 
 - **Target Engine**: {engine.capitalize()} Prolog
@@ -144,8 +155,11 @@ When writing, refactoring, or reviewing Prolog code in this project, all AI assi
 - **Covington Style**: Keep clauses readable, use explicit goal ordering, and clean predicate naming.
 - **Strings**: Use standard double-quoted `chars` character lists (for Scryer/ISO) or dialect-native string primitives.
 
-## Verification
+## Discovery & Verification
 ```bash
+# Discover libraries available for target engine
+prolog-agent discover --engine {engine}
+
 # Run unit tests safely
 {safe_runner} tests/testing.pl
 ```
