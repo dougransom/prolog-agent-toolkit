@@ -37,6 +37,10 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
   - AI assistants MUST NOT read raw standard library implementation source files, relying on concise cheat sheets and pre-trained semantics to conserve context window tokens.
 - **Human Editing Syntax Error Diagnostics**:
   - Whenever Prolog compilation or consult fails after human editing, AI assistants MUST scan target source files for common punctuation typos (`:` instead of `:-`, `->` instead of `-->`, `#` or `//` line comments, `!=`, `<=`, `=>`, `<>`), and report exact file, line number, column, and fix recommendations to the programmer.
+- **Portable Hyperlinks Policy**:
+  - Avoid absolute `file://` hyperlinks on the local filesystem that break on other machines or on GitHub.
+  - When encountering or adding local file links, use portable relative Markdown links (e.g. `[AGENT_GUIDE.md](AGENT_GUIDE.md)` instead of `file:///path/to/AGENT_GUIDE.md`).
+  - If a `file://` link was provided by a human programmer (rather than an AI code agent), ask the programmer if they want to fix it first before replacing it.
 
 ## Multi-Engine Dialect Selection & Rules
 

@@ -125,3 +125,4 @@ AI coding agents (Google Antigravity, Claude Code, Cursor, Windsurf, Copilot, or
 4. **Clean Bytecode**: Always invoke Python tools with bytecode disabled (`PYTHONDONTWRITEBYTECODE=1 uv run pytest`).
 5. **Skill Validation**: When adding or modifying skills in [`.agents/skills/`](.agents/skills/), run `prolog-agent validate-skills` to ensure YAML frontmatter compliance.
 6. **Version Parity**: When modifying version numbers, edit [`pyproject.toml`](pyproject.toml) as canonical source of truth and run `prolog-agent release`. Run `prolog-agent check-version` to verify parity.
+7. **Portable Hyperlinks**: Avoid absolute `file://` hyperlinks. Use relative Markdown links for local workspace files. If a `file://` link was authored by a human contributor, ask them if they want to fix it first before replacing it.

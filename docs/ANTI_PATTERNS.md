@@ -14,6 +14,7 @@ This document specifies **forbidden practices** and **anti-patterns** that AI co
 | **Python Tooling** | Allowing Python executions or test runs to leave `__pycache__` or `.pyc` clutter. | Set `PYTHONDONTWRITEBYTECODE=1` on all Python invocations (`PYTHONDONTWRITEBYTECODE=1 uv run pytest`). |
 | **Version Sync** | Manually hardcoding version strings in individual files (`pack.pl`, `README.md`). | Version source of truth is [`pyproject.toml`](../pyproject.toml). Run `prolog-agent release --version X.Y.Z` or resolve version via `importlib.metadata.version("prolog-agent-toolkit")`. |
 | **Syntax Errors** | Ignoring human punctuation errors (`:` instead of `:-`, `->` instead of `-->`). | Use [`prolog_agent_toolkit.syntax_checker`](../prolog_agent_toolkit/syntax_checker.py) to parse compilation failures and recommend exact fixes. |
+| **Hyperlinks** | Using absolute `file://` URIs for local files (`file:///path/to/doc.md`). | Use relative Markdown links (`[doc.md](doc.md)`). Ask human authors before converting human-written `file://` links. |
 
 ---
 
