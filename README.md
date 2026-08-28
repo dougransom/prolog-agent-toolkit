@@ -6,6 +6,10 @@
 
 Multi-engine, cross-platform (Linux, macOS, BSD, Windows) Prolog execution sandboxing and AI agent skills toolkit.
 
+> [!NOTE]
+> **Project Status: Active Development**  
+> This toolkit is fully usable today for sandboxed Prolog execution, project scaffolding, library discovery, and guiding AI assistants. However, it remains under **active development**. If you have ideas, feedback, feature suggestions, or want to contribute, please see [`CONTRIBUTING.md`](file:///home/doug/code/prolog-agent-toolkit/CONTRIBUTING.md)!
+
 ---
 
 > ### 🤖 AI Agent Navigation Quick Start

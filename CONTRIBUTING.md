@@ -2,6 +2,16 @@
 
 Thank you for contributing to the **Prolog Agent Toolkit**! We welcome contributions for adding new engine safety wrappers, extending AI agent skills, and improving ISO Prolog guidelines.
 
+> [!NOTE]
+> **Project Status: Active Development**  
+> The toolkit is fully functional and usable today, but remains under **active development**. We strongly encourage community feedback and contributions!
+>
+> We are open to:
+> - **[Pull Requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)**: Code changes, new Prolog engine safety wrappers, bug fixes, or AI skill additions.
+> - **[GitHub Issues](https://github.com/dougransom/prolog-agent-toolkit/issues)** for:
+>   - Suggestions for new features, architectural goals, or engine targets.
+>   - Suggestions for prompts or agent workflows to run on this project itself!
+
 ---
 
 ## 1. Project Architecture
