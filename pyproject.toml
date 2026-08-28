@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "prolog-agent-toolkit"
-version = "0.0.1.dev15"
+version = "0.0.1.dev16"
 description = "Reusable AI agent skills, coding standards, and safety runner toolkit for multi-engine Prolog"
 readme = "README.md"
 requires-python = ">=3.9"
