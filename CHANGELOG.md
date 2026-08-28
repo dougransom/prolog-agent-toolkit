@@ -1,3 +1,23 @@
+## [0.0.1.dev12] - 2026-08-28
+
+### Summary of Changes
+- Integrated Pre-Code-Generation Prolog Library & Capability Discovery protocol (`prolog-agent discover`, dynamic introspection, static cheat sheets, and Covington header rationale comments).
+- Enhanced `prolog-agent module` and project scaffolding to automatically inject library dependency documentation in Covington headers.
+- Enforced vendor-neutral open agent guidelines across `.agents/AGENTS.md`, `AGENT_GUIDE.md`, and `CONTRIBUTING.md`, prohibiting proprietary IDE/harness config files (`.claude/`, `.windsurfrule`, `.cursorrules`).
+- Added 4-layer architectural blueprint section to `README.md` for applying agent toolkit patterns to other programming languages.
+- Documented developer workflow flexibility for lightweight/test-free use cases (interactive REPL top-levels, scratch scripts) in `README.md` and `AGENT_GUIDE.md`.
+
+### Added / Modified
+- `prolog_agent_toolkit/discovery.py` & `cli.py`: Enhanced discovery engine, query filtering, and report formatting.
+- `prolog_agent_toolkit/project.py`: Updated module header generation with library rationale stubs.
+- `.agents/skills/prolog-library-discovery/SKILL.md`: Added Covington header standards and pure ISO fallback examples.
+- `.agents/agents/prolog-refactor-agent.md` & `prolog-test-generator-agent.md`: Added mandatory pre-code-generation discovery protocol.
+- `README.md`, `AGENT_GUIDE.md`, `CONTRIBUTING.md`, `pyproject.toml`, `schema.org.jsonld`, `docs/capability_manifest.json`, `docs/repository_ontology.json`: Synchronized version `0.0.1.dev12` and added vendor neutrality and workflow flexibility documentation.
+
+### Breaking Changes
+- None.
+
+
 ## [0.0.1.dev11] - 2026-08-27
 
 ### Summary of Changes
