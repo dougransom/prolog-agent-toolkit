@@ -1,3 +1,15 @@
+## [0.0.1.dev15] - 2026-08-28
+
+### Summary of Changes
+- Release v0.0.1.dev15 synchronized across manifest files.
+
+### Added / Modified Predicates
+- Dialect updates and purity enhancements.
+
+### Breaking Changes
+- None.
+
+
 ## [0.0.1.dev14] - 2026-08-28
 
 ### Summary of Changes
