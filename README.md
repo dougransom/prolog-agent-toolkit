@@ -375,6 +375,30 @@ When working with AI coding assistants (Google Antigravity, Claude Code, Cursor,
 
 ---
 
+## Applying this Architectural Pattern to Other Programming Languages
+
+While `prolog-agent-toolkit` is tailored specifically for multi-engine Prolog software, its underlying **4-layer architectural blueprint** can serve as inspiration for developers wanting to build similar AI-agent toolkits for other programming language ecosystems (such as Lisp, Erlang, Elixir, Scheme, Haskell, Python, Rust, or C++):
+
+```mermaid
+flowchart TD
+    A["1. Resource Sandboxing Layer (<lang>-safe)"] --> B["2. Pre-Code Discovery Layer (<lang>-agent discover)"]
+    B --> C["3. Declarative Rules & Skills Layer (.agents/)"]
+    C --> D["4. Automated Verification & Diagnostics Layer"]
+```
+
+### The 4-Layer Agent Toolkit Blueprint
+
+1. **Resource Sandboxing Layer (`<lang>-safe`)**:
+   - A lightweight execution wrapper around the language runtime (REPL or script runner) enforcing CPU timeouts, RAM caps, and execution priority to protect host environments when AI agents execute untrusted code.
+2. **Pre-Code-Generation Discovery Layer (`<lang>-agent discover`)**:
+   - A CLI/API mechanism that queries installed modules, standard libraries, and package manifests before code generation so AI assistants reuse built-in capabilities instead of writing custom code.
+3. **Declarative Rules & Skills Layer (`.agents/`)**:
+   - A vendor-neutral `.agents/` folder containing root `AGENTS.md` steering rules, language dialect cheat sheets, and subagent workflow guidelines compatible across any AI coding assistant.
+4. **Automated Verification & Diagnostics Layer**:
+   - Automated syntax checkers, linters, and test runners (`testing.pl`, `pytest`, `cargo check`, `hlint`) that provide immediate empirical feedback to the AI assistant to confirm code correctness.
+
+---
+
 ## Release & Versioning Workflow
 
 - **Canonical Version Source**: `pyproject.toml` is the canonical version source of truth.
