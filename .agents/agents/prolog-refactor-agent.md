@@ -6,7 +6,11 @@
 
 When invoked to refactor Prolog code:
 
-1. **Audit Purity & Data Structure Cleanliness**:
+1. **Pre-Code-Generation Library Discovery Protocol**:
+   - Run `prolog-agent discover --engine <engine>` to discover built-in standard libraries (`library(reif)`, `library(clpz)`, `library(clpfd)`, etc.) before refactoring.
+   - Prefer discovered built-in libraries over custom predicate reimplementations.
+   - Explicitly declare `:- use_module(library(...)).` headers and document selection rationale in Covington module comments.
+2. **Audit Purity & Data Structure Cleanliness**:
    - Identify non-logical cuts (`!`), imperative side effects, and non-pure type tests (`var/1`, `nonvar/1`).
    - Identify **defaulty data representations** (where data variants lack distinguishing principal functors). Wrap data variants in explicit principal functors (`leaf(L)`, `node(L, R)`).
 2. **Convert Control Flow & Reify Comparisons**:

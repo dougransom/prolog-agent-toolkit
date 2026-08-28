@@ -6,7 +6,10 @@
 
 When invoked to generate tests for Prolog modules or predicates:
 
-1. **Framework Detection**:
+1. **Pre-Code-Generation Library Discovery Protocol**:
+   - Run `prolog-agent discover --engine <engine>` to discover available testing modules (`library(plunit)`, `library(testing)`, etc.) before generating test scaffolding.
+   - Prefer discovered native testing libraries and explicit module imports.
+2. **Framework Detection**:
    - For Scryer Prolog target: Use `library(testing)`.
    - For SWI-Prolog target: Use `library(plunit)`.
    - For Portable ISO target: Generate portable ISO assertions.

@@ -399,12 +399,42 @@ def generate_module(module_name: str, engine: str = "scryer", output_dir: str = 
 
     if engine == "swi":
         decl = f":- module({module_name}, [\n    hello/1,\n    parse_item//1,\n    solve_range/2\n]).\n"
+        doc = (
+            f"/** <module> {module_name}\n"
+            f" *\n"
+            f" *  Dependencies & Selection Rationale:\n"
+            f" *  - library(clpfd): SWI finite domain integer constraint solver.\n"
+            f" */\n"
+        )
         imports = ":- use_module(library(clpfd)).\n"
     elif engine == "trealla":
         decl = f"% Trealla Prolog Module: {module_name}\n"
-        imports = ":- use_module(library(charsio)).\n:- use_module(library(dcgs)).\n"
+        doc = (
+            f"/** <module> {module_name}\n"
+            f" *\n"
+            f" *  Dependencies & Selection Rationale:\n"
+            f" *  - library(charsio): Character list I/O.\n"
+            f" *  - library(dcgs): Pure ISO Definite Clause Grammars.\n"
+            f" *  - library(clpz): Trealla integer constraints.\n"
+            f" */\n"
+        )
+        imports = (
+            ":- use_module(library(charsio)).\n"
+            ":- use_module(library(dcgs)).\n"
+            ":- use_module(library(clpz)).\n"
+        )
     else:
         decl = f":- module({module_name}, [\n    hello/1,\n    parse_item//1,\n    solve_range/2\n]).\n"
+        doc = (
+            f"/** <module> {module_name}\n"
+            f" *\n"
+            f" *  Dependencies & Selection Rationale:\n"
+            f" *  - library(charsio): Pure character list I/O.\n"
+            f" *  - library(dcgs): Definite Clause Grammar processing.\n"
+            f" *  - library(clpz): Integer constraint logic programming.\n"
+            f" *  - library(reif): Pure reified conditional logic (if_/3, dif/2).\n"
+            f" */\n"
+        )
         imports = (
             ":- use_module(library(charsio)).\n"
             ":- use_module(library(dcgs)).\n"
@@ -413,7 +443,7 @@ def generate_module(module_name: str, engine: str = "scryer", output_dir: str = 
         )
 
     content = (
-        f"{decl}\n{imports}\n"
+        f"{decl}\n{doc}\n{imports}\n"
         f"%%\thello(-Greeting:chars) is det.\n"
         f"%\tGenerates a standard greeting string for {module_name}.\n"
         f'hello("Hello from {module_name}!").\n\n'

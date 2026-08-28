@@ -62,6 +62,55 @@ When operating dynamically in safe environments, agents can interrogate live Pro
 
 ---
 
+## Covington Header Standard & Examples
+
+AI assistants MUST include dependency documentation in the Covington module header:
+
+### Example: Module with Discovered Libraries
+```prolog
+:- module(n_queens, [n_queens/2]).
+
+/** <module> N-Queens Constraint Solver
+ *
+ *  Dependencies & Rationale:
+ *  - library(clpz): Used for (#=)/2 and labeling/2. Chosen for declarative
+ *    domain constraints and optimal performance over custom search routines.
+ *  - library(lists): Used for length/2 and maplist/2. Chosen for ISO purity.
+ */
+
+:- use_module(library(clpz)).
+:- use_module(library(lists)).
+
+n_queens(N, Qs) :-
+    length(Qs, N),
+    Qs ins 1..N,
+    n_queens_constraints(Qs),
+    labeling([], Qs).
+```
+
+### Example: Pure ISO Fallback (No Suitable Library Found)
+```prolog
+:- module(custom_tree, [tree_depth/2]).
+
+/** <module> Custom Binary Tree Depth
+ *
+ *  Dependencies & Rationale:
+ *  - No standard library found for custom tree AST depth computation.
+ *  - Fallback: Implemented using 100% pure ISO Prolog pattern matching and dif/2.
+ */
+
+:- use_module(library(reif), [if_/3]).
+
+tree_depth(nil, 0).
+tree_depth(node(_, L, R), D) :-
+    tree_depth(L, DL),
+    tree_depth(R, DR),
+    D0 #= max(DL, DR),
+    D #= D0 + 1.
+```
+
+---
+
 ## Universal Guidelines & References
 
 - [Portable ISO Prolog Conventions](../prolog-conventions/SKILL.md)
