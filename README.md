@@ -8,7 +8,11 @@ Multi-engine, cross-platform (Linux, macOS, BSD, Windows) Prolog execution sandb
 
 > [!NOTE]
 > **Project Status: Active Development**  
-> This toolkit is fully usable today for sandboxed Prolog execution, project scaffolding, library discovery, and guiding AI assistants. However, it remains under **active development**. If you have ideas, feedback, feature suggestions, or want to contribute, please see [`CONTRIBUTING.md`](file:///home/doug/code/prolog-agent-toolkit/CONTRIBUTING.md)!
+> This toolkit is fully usable today for sandboxed Prolog execution, project scaffolding, library discovery, and guiding AI assistants. However, it remains under **active development**.
+>
+> This project is currently hosted in the original Architect's GitHub repository. If there is sufficient interest to build a community of users, it likely will be moved to a [GitHub Organization](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/about-organizations) so the project is not dependent on one person reviewing Pull Requests.
+>
+> If you have ideas, feedback, feature suggestions, or want to contribute, please see [`CONTRIBUTING.md`](file:///home/doug/code/prolog-agent-toolkit/CONTRIBUTING.md)!
 
 ---
 
