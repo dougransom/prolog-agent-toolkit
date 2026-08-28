@@ -12,30 +12,30 @@ A reusable AI agent skills, coding standards, and multi-engine (Scryer, SWI, Tre
 >
 > This project is currently hosted in the original Architect's GitHub repository. If there is sufficient interest to build a community of users, it likely will be moved to a [GitHub Organization](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/about-organizations) so the project is not dependent on one person reviewing Pull Requests.
 >
-> If you have ideas, feedback, feature suggestions, or want to contribute, please see [`CONTRIBUTING.md`](file:///home/doug/code/prolog-agent-toolkit/CONTRIBUTING.md)!
+> If you have ideas, feedback, feature suggestions, or want to contribute, please see [`CONTRIBUTING.md`](CONTRIBUTING.md)!
 
 ---
 
 > ### 🤖 AI Agent Navigation Quick Start
-> Entering this repository as an AI agent (Google Antigravity, Claude Code, Cursor, Windsurf, Copilot, or Emacs AI tools)?
-> Key features: reusable agent skills (`.agents/skills/`), Prolog purity standards (`if_/3`, `dif/2`), library discovery (`prolog-agent discover`), and multi-engine safety execution.
-> - **Navigation Blueprint & Top 10 Q&A**: Read [`AGENT_GUIDE.md`](file:///home/doug/code/prolog-agent-toolkit/AGENT_GUIDE.md)
-> - **Coding & Purity Standards**: Inspect [`AGENTS.md`](file:///home/doug/code/prolog-agent-toolkit/AGENTS.md) and `.agents/skills/`
+> Entering this repository as an AI agent ([Google Antigravity](https://antigravity.google), [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview), [Cursor](https://www.cursor.com/), [Windsurf](https://codeium.com/windsurf), [GitHub Copilot](https://github.com/features/copilot), or [Emacs](https://www.gnu.org/software/emacs/) AI tools)?
+> Key features: reusable agent skills ([`.agents/skills/`](.agents/skills/)), Prolog purity standards (`if_/3`, `dif/2`), library discovery (`prolog-agent discover`), and multi-engine safety execution.
+> - **Navigation Blueprint & Top 10 Q&A**: Read [`AGENT_GUIDE.md`](AGENT_GUIDE.md)
+> - **Coding & Purity Standards**: Inspect [`AGENTS.md`](AGENTS.md) and [`.agents/skills/`](.agents/skills/)
 > - **Library Discovery Protocol**: See `prolog-library-discovery` skill or run `prolog-agent discover`
-> - **Directory & File Map**: Inspect [`AGENT_INDEX.json`](file:///home/doug/code/prolog-agent-toolkit/AGENT_INDEX.json)
-> - **Component Ontology**: Inspect [`docs/repository_ontology.json`](file:///home/doug/code/prolog-agent-toolkit/docs/repository_ontology.json)
-> - **Capability Manifest**: Inspect [`docs/capability_manifest.json`](file:///home/doug/code/prolog-agent-toolkit/docs/capability_manifest.json)
-> - **Terminology & Glossary**: Read [`docs/GLOSSARY.md`](file:///home/doug/code/prolog-agent-toolkit/docs/GLOSSARY.md)
-> - **Anti-Patterns & Reuse**: Read [`docs/ANTI_PATTERNS.md`](file:///home/doug/code/prolog-agent-toolkit/docs/ANTI_PATTERNS.md)
+> - **Directory & File Map**: Inspect [`AGENT_INDEX.json`](AGENT_INDEX.json)
+> - **Component Ontology**: Inspect [`docs/repository_ontology.json`](docs/repository_ontology.json)
+> - **Capability Manifest**: Inspect [`docs/capability_manifest.json`](docs/capability_manifest.json)
+> - **Terminology & Glossary**: Read [`docs/GLOSSARY.md`](docs/GLOSSARY.md)
+> - **Anti-Patterns & Reuse**: Read [`docs/ANTI_PATTERNS.md`](docs/ANTI_PATTERNS.md)
 
 ---
 
 
 | Category | Supported Technologies / Systems |
 |---|---|
-| **AI Assistants & IDEs** | Google Antigravity (AGY), Claude Code (Anthropic), GitHub Copilot, Cursor, Windsurf, Emacs AI (`aidermacs`, `agent-shell`, `gptel`) |
-| **Prolog Engines** | Scryer Prolog (ISO Default), SWI-Prolog, Trealla Prolog, Tau Prolog, GNU Prolog, Ciao Prolog |
-| **Language Standards** | ISO Prolog, Definite Clause Grammars (DCG), CLP(Z) Constraints, Reification (`reif`) |
+| **AI Assistants & IDEs** | [Google Antigravity](https://antigravity.google), [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview), [GitHub Copilot](https://github.com/features/copilot), [Cursor](https://www.cursor.com/), [Windsurf](https://codeium.com/windsurf), [Emacs](https://www.gnu.org/software/emacs/) AI ([`aidermacs`](https://github.com/MatthewZMD/aidermacs), [`agent-shell`](https://github.com/xenodium/agent-shell), [`gptel`](https://github.com/karthink/gptel)) |
+| **Prolog Engines** | [Scryer Prolog](https://github.com/mthom/scryer-prolog) (ISO Default), [SWI-Prolog](https://www.swi-prolog.org/), [Trealla Prolog](https://github.com/trealla-prolog/trealla), [Tau Prolog](http://tau-prolog.org/), [GNU Prolog](http://gprolog.org/), [Ciao Prolog](https://ciao-lang.org/) |
+| **Language Standards** | [ISO Prolog](https://www.iso.org/standard/21413.html), Definite Clause Grammars (DCG), [`CLP(Z)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/clpz.pl) Constraints, Reification ([`library(reif)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/reif.pl)) |
 | **Agent Capabilities** | Execution Sandboxing, `testing.pl` Unit Testing, `bakage` Manifests, Multi-file Release Versioning |
 
 ---
@@ -75,10 +75,10 @@ A reusable AI agent skills, coding standards, and multi-engine (Scryer, SWI, Tre
 ### 1. Prerequisites
 - **Python Package Manager**: [`uv`](https://github.com/astral-sh/uv) (recommended for tool isolation and high performance).
 - **Target Prolog Engines**: At least one supported Prolog interpreter installed on system `PATH`:
-  - **Scryer Prolog**: `scryer-prolog`
-  - **SWI-Prolog**: `swipl`
-  - **Trealla Prolog**: `tpl`
-  - **Tau Prolog**: `tau-prolog` or Node.js runtime
+  - **[Scryer Prolog](https://github.com/mthom/scryer-prolog)**: `scryer-prolog`
+  - **[SWI-Prolog](https://www.swi-prolog.org/)**: `swipl`
+  - **[Trealla Prolog](https://github.com/trealla-prolog/trealla)**: `tpl`
+  - **[Tau Prolog](http://tau-prolog.org/)**: `tau-prolog` or Node.js runtime
 
 ### 2. Install CLI Tools with `uv`
 

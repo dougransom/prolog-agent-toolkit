@@ -7,7 +7,7 @@
 AI coding agents executing arbitrary Prolog goals can accidentally introduce non-terminating recursive search loops, unbounded backtracking, or high memory allocations that freeze or crash host OS environments.
 
 ## Decision
-All Prolog executions invoked by AI agents or automated test suites MUST use resource-capped execution wrappers (`prolog-safe`, `scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`) provided by [`prolog_agent_toolkit/runner.py`](file:///home/doug/code/prolog-agent-toolkit/prolog_agent_toolkit/runner.py). Direct execution of raw interpreter binaries (`scryer-prolog`, `swipl`, `tpl`) is strictly forbidden.
+All Prolog executions invoked by AI agents or automated test suites MUST use resource-capped execution wrappers (`prolog-safe`, `scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`) provided by [`prolog_agent_toolkit/runner.py`](../../prolog_agent_toolkit/runner.py). Direct execution of raw interpreter binaries ([`scryer-prolog`](https://github.com/mthom/scryer-prolog), [`swipl`](https://www.swi-prolog.org/), [`tpl`](https://github.com/trealla-prolog/trealla)) is strictly forbidden.
 
 ## Rationale
 1. **Host Stability**: `runner.py` applies process timeouts and memory quotas via `psutil`.

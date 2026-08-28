@@ -7,7 +7,7 @@
 This project contains package manifests and documentation across multiple ecosystems: Python (`pyproject.toml`), Scryer Prolog (`bakage.toml`), SWI-Prolog (`pack.pl`), Tau Prolog (`package.json`), web metadata (`schema.org.jsonld`), and Markdown documentation (`README.md`, `CHANGELOG.md`).
 
 ## Decision
-[`pyproject.toml`](file:///home/doug/code/prolog-agent-toolkit/pyproject.toml) is designated as the single canonical source of truth for the project version string.
+[`pyproject.toml`](../../pyproject.toml) is designated as the single canonical source of truth for the project version string.
 
 ## Rationale
 1. **Single Source of Truth**: Eliminates version mismatch bugs and manual editing across multiple files.

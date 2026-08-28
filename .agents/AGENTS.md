@@ -2,10 +2,10 @@
 
 > **System Authority**: This document is the source of truth for all coding, architectural, and procedural standards within the Prolog Agent Toolkit.
 > **Cross-Reference Index**:
-> - [Onboarding Blueprint](file:///home/doug/code/prolog-agent-toolkit/AGENT_GUIDE.md) | [Directory Map](file:///home/doug/code/prolog-agent-toolkit/AGENT_INDEX.json)
-> - [Component Ontology](file:///home/doug/code/prolog-agent-toolkit/docs/repository_ontology.json) | [Glossary](file:///home/doug/code/prolog-agent-toolkit/docs/GLOSSARY.md) | [Anti-Patterns](file:///home/doug/code/prolog-agent-toolkit/docs/ANTI_PATTERNS.md)
+> - [Onboarding Blueprint](AGENT_GUIDE.md) | [Directory Map](AGENT_INDEX.json)
+> - [Component Ontology](docs/repository_ontology.json) | [Glossary](docs/GLOSSARY.md) | [Anti-Patterns](docs/ANTI_PATTERNS.md)
 
-When writing, refactoring, reviewing, or running Prolog code across any project or Prolog engine, all AI assistants (Google Antigravity, Claude Code, Cursor, Windsurf, GitHub Copilot, aidermacs/agent-shell/gptel in Emacs) MUST adhere to the standards defined below.
+When writing, refactoring, reviewing, or running Prolog code across any project or Prolog engine, all AI assistants ([Google Antigravity](https://antigravity.google), [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview), [Cursor](https://www.cursor.com/), [Windsurf](https://codeium.com/windsurf), [GitHub Copilot](https://github.com/features/copilot), [`aidermacs`](https://github.com/MatthewZMD/aidermacs)/[`agent-shell`](https://github.com/xenodium/agent-shell)/[`gptel`](https://github.com/karthink/gptel) in [Emacs](https://www.gnu.org/software/emacs/)) MUST adhere to the standards defined below.
 
 
 ## Universal Prolog Style & Purity Guidelines
@@ -20,9 +20,9 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
 - **Purity Guidelines**: [.agents/references/prolog_guidelines.md](.agents/references/prolog_guidelines.md)
   - Prefer logical purity (`if_/3`, `dif/2`, pure DCGs); prefer `dif/2` over negation-as-failure `\+/1` for sound term inequality; avoid unnecessary cuts (`!`) and side effects.
   - Prefer **clean vs. defaulty data representations** where element kinds are distinguished by principal functors (e.g. `leaf(L)` vs `node(L, R)`).
-  - Prefer higher-order constructs (`call/N`, `call//N`, `maplist/N`, `foldl/N`) and `library(lambda)` (`\X^...`, `\X^Y^Goal`) to avoid duplicating predicate structures or DCG traversals.
-  - Prefer pure efficiency: first-argument indexing, reified `zcompare/3` arithmetic comparison, and early constraint pruning (`dif/2`, CLP(Z)).
-  - Prefer coroutining (`freeze/2`, `when/2`) to suspend goals until variables are instantiated, preferring CLP(Z)/`dif/2` over manual coroutining where specialized constraints apply.
+  - Prefer higher-order constructs (`call/N`, `call//N`, `maplist/N`, `foldl/N`) and [`library(lambda)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/lambda.pl) (`\X^...`, `\X^Y^Goal`) to avoid duplicating predicate structures or DCG traversals.
+  - Prefer pure efficiency: first-argument indexing, reified `zcompare/3` arithmetic comparison, and early constraint pruning (`dif/2`, [`CLP(Z)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/clpz.pl)).
+  - Prefer coroutining (`freeze/2`, `when/2`) to suspend goals until variables are instantiated, preferring [`CLP(Z)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/clpz.pl)/`dif/2` over manual coroutining where specialized constraints apply.
   - When relating conditions to values, isolate the test-value relation (e.g. `if_(G, A="A", A="B"), write(A)`).
 - **Declarative AI Workflow**: [.agents/skills/prolog-declarative-workflow/SKILL.md](.agents/skills/prolog-declarative-workflow/SKILL.md)
   - Use declarative reasoning based on unification, constraints, and backtracking (never imperative thinking).
@@ -42,13 +42,13 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
 
 AI assistants MUST select and follow the specific dialect standards corresponding to the target Prolog engine:
 
-- **ISO Scryer Prolog**: [.agents/skills/scryer-prolog-standards/SKILL.md](.agents/skills/scryer-prolog-standards/SKILL.md)
-  - Pure DCGs, `library(si)`, `chars` strings, `dif/2`, `if_/3` from `library(reif)`.
-- **SWI-Prolog**: [.agents/skills/swi-prolog-standards/SKILL.md](.agents/skills/swi-prolog-standards/SKILL.md)
+- **ISO [Scryer Prolog](https://github.com/mthom/scryer-prolog)**: [.agents/skills/scryer-prolog-standards/SKILL.md](.agents/skills/scryer-prolog-standards/SKILL.md)
+  - Pure DCGs, [`library(si)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/si.pl), `chars` strings, `dif/2`, `if_/3` from [`library(reif)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/reif.pl).
+- **[SWI-Prolog](https://www.swi-prolog.org/)**: [.agents/skills/swi-prolog-standards/SKILL.md](.agents/skills/swi-prolog-standards/SKILL.md)
   - SWI dicts, SWI string types, module declarations, pack manager.
-- **Trealla Prolog**: [.agents/skills/trealla-prolog-standards/SKILL.md](.agents/skills/trealla-prolog-standards/SKILL.md)
+- **[Trealla Prolog](https://github.com/trealla-prolog/trealla)**: [.agents/skills/trealla-prolog-standards/SKILL.md](.agents/skills/trealla-prolog-standards/SKILL.md)
   - ISO compliance, WASM embedding, fast standard library parsing.
-- **Tau Prolog**: [.agents/skills/tau-prolog-standards/SKILL.md](.agents/skills/tau-prolog-standards/SKILL.md)
+- **[Tau Prolog](http://tau-prolog.org/)**: [.agents/skills/tau-prolog-standards/SKILL.md](.agents/skills/tau-prolog-standards/SKILL.md)
   - ISO compliance, JavaScript/Browser DOM integration, `library(dom)`, `library(js)`.
 - **Portable ISO Prolog Conventions**: [.agents/skills/prolog-conventions/SKILL.md](.agents/skills/prolog-conventions/SKILL.md)
   - Engine-agnostic ISO standard code compatible across all conforming implementations.
@@ -117,7 +117,7 @@ When a user requests a new project or starts a new Prolog repository, AI assista
 ## Safety & Cross-Platform Execution
 
 - **CLI Entry Points**: ALL Prolog code executions MUST use the cross-platform CLI safety entry points (`prolog-agent`, `prolog-safe`, `scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`).
-- **Forbidden Invocations**: AI assistants MUST NEVER execute raw interpreter binaries (`scryer-prolog`, `swipl`, `tpl`, `tau-prolog`, `gprolog`, `ciao`) directly.
+- **Forbidden Invocations**: AI assistants MUST NEVER execute raw interpreter binaries ([`scryer-prolog`](https://github.com/mthom/scryer-prolog), [`swipl`](https://www.swi-prolog.org/), [`tpl`](https://github.com/trealla-prolog/trealla), [`tau-prolog`](http://tau-prolog.org/), [`gprolog`](http://gprolog.org/), [`ciao`](https://ciao-lang.org/)) directly.
 - **Specifying Engine**: Set `PROLOG_ENGINE` environment variable (e.g., `export PROLOG_ENGINE=scryer`, `export PROLOG_ENGINE=swi`, `export PROLOG_ENGINE=trealla`, `export PROLOG_ENGINE=tau`).
 - **Python Invocation & Clean Workspace**:
   - Python tools, test runners, and CLI invocations MUST NOT leave intermediate bytecode or cache artifacts (`__pycache__`, `.pyc`, `.pytest_cache`) in source or test directories.
