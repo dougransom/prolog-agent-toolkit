@@ -4,7 +4,7 @@
 **Category**: AI Assistant Developer Tools / Prolog Language Tooling  
 **Metadata**: [schema.org.jsonld](schema.org.jsonld)
 
-Multi-engine, cross-platform (Linux, macOS, BSD, Windows) Prolog execution sandboxing and AI agent skills toolkit.
+A reusable AI agent skills, coding standards, and multi-engine (Scryer, SWI, Trealla, Tau) safety execution toolkit for Prolog.
 
 > [!NOTE]
 > **Project Status: Active Development**  
@@ -18,7 +18,10 @@ Multi-engine, cross-platform (Linux, macOS, BSD, Windows) Prolog execution sandb
 
 > ### 🤖 AI Agent Navigation Quick Start
 > Entering this repository as an AI agent (Google Antigravity, Claude Code, Cursor, Windsurf, Copilot, or Emacs AI tools)?
+> Key features: reusable agent skills (`.agents/skills/`), Prolog purity standards (`if_/3`, `dif/2`), library discovery (`prolog-agent discover`), and multi-engine safety execution.
 > - **Navigation Blueprint & Top 10 Q&A**: Read [`AGENT_GUIDE.md`](file:///home/doug/code/prolog-agent-toolkit/AGENT_GUIDE.md)
+> - **Coding & Purity Standards**: Inspect [`AGENTS.md`](file:///home/doug/code/prolog-agent-toolkit/AGENTS.md) and `.agents/skills/`
+> - **Library Discovery Protocol**: See `prolog-library-discovery` skill or run `prolog-agent discover`
 > - **Directory & File Map**: Inspect [`AGENT_INDEX.json`](file:///home/doug/code/prolog-agent-toolkit/AGENT_INDEX.json)
 > - **Component Ontology**: Inspect [`docs/repository_ontology.json`](file:///home/doug/code/prolog-agent-toolkit/docs/repository_ontology.json)
 > - **Capability Manifest**: Inspect [`docs/capability_manifest.json`](file:///home/doug/code/prolog-agent-toolkit/docs/capability_manifest.json)
