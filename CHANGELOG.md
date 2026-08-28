@@ -1,3 +1,18 @@
+## [0.0.1.dev14] - 2026-08-28
+
+### Summary of Changes
+- Updated project descriptions to emphasize reusable AI agent skills, coding standards, and multi-engine safety execution.
+- Enhanced Agent Navigation Quick Start section in `README.md` with explicit links to purity standards, library discovery protocol (`prolog-agent discover`), and agent guidelines (`AGENTS.md`).
+- Synchronized version `0.0.1.dev14` across all manifests (`pyproject.toml`, `README.md`, `schema.org.jsonld`, `docs/capability_manifest.json`, `docs/repository_ontology.json`, `CHANGELOG.md`).
+
+### Added / Modified
+- `README.md`, `pyproject.toml`, `schema.org.jsonld`: Refined project description and navigation references.
+- `docs/capability_manifest.json`, `docs/repository_ontology.json`: Updated version metadata to `0.0.1.dev14`.
+
+### Breaking Changes
+- None.
+
+
 ## [0.0.1.dev13] - 2026-08-28
 
 ### Summary of Changes
