@@ -121,6 +121,16 @@ def init_project(project_name: str, engine: str = "scryer", base_dir: str = ".")
         with open(changelog_path, "w", encoding="utf-8") as f:
             f.write("# Changelog\n\nAll notable changes will be documented in this file.\n")
 
+    # 7. .gitignore creation
+    gitignore_path = os.path.join(project_dir, ".gitignore")
+    if not os.path.exists(gitignore_path):
+        with open(gitignore_path, "w", encoding="utf-8") as f:
+            f.write("scryer_libs/\n")
+            f.write("dist/\n")
+            f.write(".cache/\n")
+            f.write("*.swp\n")
+            f.write("*.tmp\n")
+
     print(f"Project '{project_name}' successfully initialized!")
     return 0
 

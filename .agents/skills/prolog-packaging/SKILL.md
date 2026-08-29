@@ -9,19 +9,31 @@ Use this skill when initializing package manifests, managing dependencies, or pr
 
 ## Scryer Prolog Packaging (`bakage`)
 
-For Scryer Prolog projects, use [`bakage`](https://github.com/bakaq/bakage) packaging conventions.
+For Scryer Prolog projects, dependency management and package loading use [`bakage`](https://github.com/bakaq/bakage).
 
-### Manifest Formats (`scryer-manifest.pl` or `pack.pl`)
+> [!WARNING]
+> `bakage` is an experimental testing ground and package manager for Scryer Prolog. It fetches dependencies via Git into a local `scryer_libs/` directory.
 
-`bakage` uses Prolog term facts in `scryer-manifest.pl`:
+### 1. Initial Setup & Downloading `bakage.pl`
+Download `bakage.pl` into your project root on first use:
+```bash
+curl -sSL -o bakage.pl https://raw.githubusercontent.com/bakaq/bakage/main/bakage.pl
+chmod +x bakage.pl
+```
+
+### 2. Package Manifest (`scryer-manifest.pl`)
+Define project metadata and Git/local dependencies in `scryer-manifest.pl` using standard Prolog terms:
+
 ```prolog
 name("my_scryer_lib").
 version("0.1.0").
 main_file("src/my_scryer_lib.pl").
-dependencies([]).
+dependencies([
+    git("https://github.com/user/dependency_pkg", "main")
+]).
 ```
 
-Or classic `pack.pl` manifest:
+Or classic SWI/Scryer `pack.pl` manifest:
 ```prolog
 name(my_scryer_lib).
 version('0.1.0').
@@ -33,11 +45,22 @@ dependencies([
 ]).
 ```
 
-### Installing Dependencies with `bakage`
-Run `bakage` to fetch dependencies:
+### 3. Installing Dependencies (`./bakage.pl install`)
+Run `bakage.pl` to fetch dependencies into the local `scryer_libs/` directory:
 ```bash
-bakage install
+./bakage.pl install
+# or: scryer-safe bakage.pl install
 ```
+
+### 4. Importing Packages in Prolog Code
+In your Prolog source files, load the package manager and use `pkg(name)` to import installed packages from `scryer_libs/`:
+
+```prolog
+:- use_module(bakage).
+:- use_module(pkg(dependency_pkg)).
+```
+
+Add `scryer_libs/` and `dist/` to `.gitignore`.
 
 ---
 
