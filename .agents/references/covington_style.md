@@ -59,6 +59,17 @@ license: "Public Domain"
 ## 6. Goal Ordering
 - Order goals by logical dependency: earlier goals should bind variables used later.  
 - Place cheap tests before expensive ones.  
+  ```prolog
+  % BAD: Expensive graph traversal called before cheap type guard
+  process_item(Item, Res) :-
+      expensive_graph_search(Item, Res),
+      integer(Item).
+
+  % GOOD: Cheap guard test placed first to fail fast before expensive search
+  process_item(Item, Res) :-
+      integer(Item),
+      expensive_graph_search(Item, Res).
+  ```
 - Place deterministic goals before nondeterministic ones when possible.  
 - Avoid unnecessary choice points.
 
@@ -75,6 +86,16 @@ license: "Public Domain"
 ## 8. Recursion & Iteration
 - Prefer tail recursion when appropriate.  
 - Keep accumulator variables clearly named (`Acc`, `Out`, `State`).  
+  ```prolog
+  % Tail-recursive sum using explicit accumulator parameter Acc
+  list_sum(Ls, Sum) :-
+      list_sum_(Ls, 0, Sum).
+
+  list_sum_([], Acc, Acc).
+  list_sum_([X|Xs], Acc0, Sum) :-
+      Acc1 #= Acc0 + X,
+      list_sum_(Xs, Acc1, Sum).
+  ```
 - Document the meaning of accumulators.  
 - Avoid deeply nested recursion when a helper predicate improves clarity.
 
