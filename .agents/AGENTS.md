@@ -21,7 +21,9 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
 - **Covington Prolog Style Guide**: [.agents/references/covington_style.md](.agents/references/covington_style.md)
   - Write for humans first; keep clauses simple and readable; use explicit goal ordering and clean predicate naming.
 - **Purity Guidelines**: [.agents/references/prolog_guidelines.md](.agents/references/prolog_guidelines.md)
-  - Prefer logical purity (`if_/3`, `dif/2`, pure DCGs); prefer `dif/2` over negation-as-failure `\+/1` for sound term inequality; avoid unnecessary cuts (`!`) and side effects.
+  - Prefer logical purity (`if_/3`, `dif/2`, pure DCGs); prefer `dif/2` over negation-as-failure `\+/1` for sound term inequality.
+  - **Avoid `!`, `\+/1`, `->` for Performance**: NEVER introduce cuts (`!`), negation-as-failure (`\+/1`), or soft cuts (`->`) merely for performance reasons.
+  - **Mandatory Comment Justifications for Correctness**: If cuts (`!`), `\+/1`, or `->` must be introduced for *correctness* when pure logic constructs (`if_/3`, `dif/2`) cannot achieve the required behavior, write an explicit comment in the code explaining why pure constructs were insufficient.
   - Prefer **clean vs. defaulty data representations** where element kinds are distinguished by principal functors (e.g. `leaf(L)` vs `node(L, R)`).
   - Prefer higher-order constructs (`call/N`, `call//N`, `maplist/N`, `foldl/N`) and [`library(lambda)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/lambda.pl) (`\X^...`, `\X^Y^Goal`) to avoid duplicating predicate structures or DCG traversals.
   - Prefer pure efficiency: first-argument indexing, reified `zcompare/3` arithmetic comparison, and early constraint pruning (`dif/2`, [`CLP(Z)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/clpz.pl)).

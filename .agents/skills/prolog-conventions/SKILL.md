@@ -9,7 +9,7 @@ Guidelines for writing clean, portable Prolog code aiming for standard ISO compl
 
 ## Core Guidelines
 
-1. **Logical Purity**: Prefer pure predicates. Avoid unnecessary side effects, negation-as-failure `\+/1`, or non-deterministic cuts `!` where pure logic constructs (`dif/2`, `if_/3`) can be used. Prefer `dif(X, Y)` over `\+ (X = Y)` for sound term inequality.
+1. **Logical Purity & Impure Construct Restrictions**: Prefer pure predicates (`dif/2`, `if_/3`). NEVER introduce cuts (`!`), negation-as-failure (`\+/1`), or soft cuts (`->`) for performance optimization. If an impure construct (`!`, `\+/1`, `->`) must be introduced for *correctness* (when pure constructs `if_/3` or `dif/2` cannot express the logic), write an explicit inline comment justifying why pure logic constructs were insufficient. Prefer `dif(X, Y)` over `\+ (X = Y)` for sound term inequality.
 2. **Strings as Character Lists (`chars`)**: Represent strings and text as lists of characters (`chars`). `double_quotes` must always be set to `chars`.
 3. **Safe Type Testing**: Prefer pure, safe type tests (e.g. `library(si)`: `list_si/1`, `atom_si/1`, `chars_si/1`, `integer_si/1`) over impure non-monotonic type checks (`is_list/1`).
 4. **Higher-Order Logic & Lambdas**: Use higher-order predicates (`call/N`, `call//N`, `maplist/N`, `foldl/N`, `include/3`, `exclude/3`) and `library(lambda)` (`\X^...`, `\X^Y^Goal`) to eliminate code repetition.

@@ -1,6 +1,8 @@
 Prefer prolog code with [logical purity properties](purity.md) ([Metalevel.at source](https://www.metalevel.at/prolog/purity)). Included in this are:
 - prefer `dif/2` over negation-as-failure `\+/1` (e.g. `dif(X, Y)` instead of `\+ (X = Y)`) for sound, pure term inequality.
 - prefer `if_/3` and the predicates from `library(reif)`.
+- **NEVER introduce cuts (`!`), negation-as-failure (`\+/1`), or soft cuts (`->`) for performance reasons.** Use pure efficiency techniques (first-argument indexing, `zcompare/3`, early constraint pruning) instead.
+- **If cuts (`!`), `\+/1`, or `->` MUST be introduced for correctness instead of pure logic constructs, write an explicit comment in the code explaining why pure constructs (`if_/3`, `dif/2`) were insufficient.**
 - prefer CLP(Z) and CLP(B) over impure built-in predicates.
 - prefer clean vs defaulty data representations ([Metalevel.at data#clean](https://www.metalevel.at/prolog/data#clean)).
 - prefer pure efficiency techniques like argument indexing, reified `zcompare/3`, and early constraint pruning ([Metalevel.at efficiency](https://www.metalevel.at/prolog/efficiency)).
