@@ -56,6 +56,21 @@ A reusable AI agent skills, coding standards, and multi-engine (Scryer, SWI, Tre
 
 ---
 
+## Design Philosophy & IDE Interoperability
+
+**Goal: Focus exclusively on what is idiosyncratic to Prolog development.**
+
+- **Does this toolkit conflict with general IDE skills or custom skill collections?**  
+  **No.** `prolog-agent-toolkit` is strictly complementary. IDEs and general agent skill collections (e.g. Antigravity, Claude Code, Cursor, Copilot plugins) handle broad engineering tasks—Git workflows, web application frameworks, databases, and general system scripts.
+- **Where `prolog-agent-toolkit` fits:**  
+  General LLMs often fail on Prolog because training data skews toward imperative coding patterns and non-logical cuts (`!`). This toolkit steps in specifically where Prolog requires domain expertise:
+  - **Logical Purity**: Pure reified conditionals (`if_/3`), sound term inequality (`dif/2`), and pure DCGs.
+  - **Engine Dialects & String Types**: Enforcing ISO `chars` lists vs SWI string objects, and explicit module declarations across Scryer, SWI, Trealla, and Tau Prolog.
+  - **Sandboxed Interpreter Safety**: Preventing infinite search loops or system resource starvation via resource-capped safety runners (`scryer-safe`, `swi-safe`, `trealla-safe`, `prolog-safe`).
+  - **Open Standard `.agents/` Interoperability**: Built on standard Markdown and JSON frontmatter so general IDE skills and Prolog skills coexist without collision.
+
+---
+
 ## CLI Reference Summary
 
 | Command | Purpose |

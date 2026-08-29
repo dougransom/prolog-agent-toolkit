@@ -63,6 +63,9 @@ No. Scaffolding creates `tests/` and manifests (`bakage.toml`/`pack.pl`) as a be
 - **Scratch Scripts**: Run `scryer-safe scratch.pl` to execute standalone scripts without a test suite or manifest.
 - **Minimal Codebases**: Users are free to remove `tests/` or manifest files from scaffolded projects.
 
+### Q12: Does this toolkit conflict with general IDE skills or custom skill collections?
+No. General IDE skills handle generic software engineering (Git workflows, web frameworks, databases, general scripts). `prolog-agent-toolkit` focuses strictly on what is idiosyncratic to Prolog (logical purity, reified predicates `if_/3`, ISO `chars` lists, DCGs, multi-engine library discovery, and safe sandboxed execution). The open `.agents/` layout allows both general IDE skills and Prolog skills to load seamlessly side-by-side.
+
 ---
 
 ## 2. Information Architecture & Key Files Map
