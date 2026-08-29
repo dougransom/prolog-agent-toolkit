@@ -52,7 +52,7 @@ A reusable AI agent skills, coding standards, and multi-engine (Scryer, SWI, Tre
 - **Cross-Platform Safety Wrappers**: Runs Prolog engines safely with execution timeouts, low CPU priority, and memory limits across Linux, macOS, BSD, and Windows.
 - **CLI Management Suite**: Project bootstrapping, module generator, dialect switcher, release manager, and skill validator via `prolog-agent`.
 - **Dialect-Aware Standards**: Enforces Scryer, SWI, Trealla, Tau, and portable Prolog conventions automatically.
-- **Autonomous AI Subagents**: Pre-configured subagents for purity auditing, automated refactoring, unit test generation, benchmark running, and security scanning.
+- **Autonomous AI Subagents & Skills**: Pre-configured subagents and skills for purity auditing, automated refactoring, legacy project migration (`prolog-migrate-project`), unit test generation, benchmark running, and security scanning.
 
 ---
 
@@ -206,7 +206,10 @@ Open the project directory in Google Antigravity, Claude Code, Cursor, Copilot, 
 
 ## Quickstart: Working with an Existing Prolog Project
 
-Follow this guide to bring safety sandboxing, linting, and autonomous subagents to an existing Prolog codebase:
+Follow this guide (or use the [`prolog-migrate-project`](.agents/skills/prolog-migrate-project/SKILL.md) skill) to bring safety sandboxing, standard layouts, and autonomous subagents to an existing Prolog codebase.
+
+> [!TIP]
+> **Recommended Git Isolation**: When performing major restructuring or removing legacy vendor configs, use a separate Git worktree first (`git worktree add -b migrate/prolog-agent-toolkit ../my-repo-migrate main`) so your existing codebase remains safe until verified.
 
 ### Step 1: Adopt Agent Rules into Existing Repository
 In your existing project root, link or copy `.agents`:

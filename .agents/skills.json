@@ -136,6 +136,12 @@
       "path": "skills/prolog-library-discovery/SKILL.md",
       "description": "Pre-code-generation library, module, and package discovery protocol across Prolog engines",
       "engines": ["scryer", "swi", "trealla", "tau", "gnu", "iso"]
+    },
+    {
+      "name": "prolog-migrate-project",
+      "path": "skills/prolog-migrate-project/SKILL.md",
+      "description": "Migration workflow for updating legacy Prolog projects to toolkit standards within a safe Git branch/worktree",
+      "engines": ["scryer", "swi", "trealla", "tau", "iso"]
     }
   ]
 }

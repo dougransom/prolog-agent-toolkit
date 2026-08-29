@@ -87,6 +87,8 @@ AI assistants MUST select and follow the specific dialect standards correspondin
   - Guidelines and checklists for auditing Prolog PRs, checking logical purity, determinism, portability, and safety.
 - **Engine Onboarding**: [.agents/skills/prolog-engine-onboarding/SKILL.md](.agents/skills/prolog-engine-onboarding/SKILL.md)
   - Interactive, iterative workflow for onboarding new Prolog engines and dialect targets into the toolkit.
+- **Project Migration**: [.agents/skills/prolog-migrate-project/SKILL.md](.agents/skills/prolog-migrate-project/SKILL.md)
+  - Migration workflow for upgrading legacy Prolog codebases to toolkit conventions in a safe Git branch/worktree.
 
 ## Autonomous Agent Subagents (`.agents/agents/`)
 
