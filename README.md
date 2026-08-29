@@ -131,8 +131,30 @@ prolog-agent --help
 
 To ensure rules and skills **never get clobbered or overwritten** when updating or working inside target repositories, choose one of the following methods:
 
-#### Option A: Symlink into Target Project (Recommended for Team & Project Scope)
-Symlinking connects your project root directly to `prolog-agent-toolkit`. Updating the toolkit automatically updates all linked projects without file conflicts:
+#### Option A: Git Submodule Integration (PRIMARY RECOMMENDED METHOD for Repositories & Teams)
+Adding the toolkit as a Git submodule ensures every contributor and AI assistant on any machine gets exact skill parity without breaking local files or requiring global configuration:
+
+```bash
+# Inside your target Prolog project root:
+git submodule add https://github.com/dougransom/prolog-agent-toolkit.git .agents-toolkit
+
+# Configure project .agents/skills.json to inherit toolkit skills:
+mkdir -p .agents
+cat << 'EOF' > .agents/skills.json
+{
+  "entries": [
+    { "path": "skills" },
+    { "path": ".agents-toolkit/.agents/skills" }
+  ]
+}
+EOF
+
+# Link root AGENTS.md to submodule rules:
+ln -s .agents-toolkit/.agents/AGENTS.md AGENTS.md
+```
+
+#### Option B: Symlink into Target Project (Recommended for Personal Local Dev)
+Symlinking connects your project root directly to a local copy of `prolog-agent-toolkit`:
 
 ```bash
 # Inside your target Prolog project root:
@@ -140,18 +162,16 @@ ln -s /path/to/prolog-agent-toolkit/.agents .agents
 ln -s .agents/AGENTS.md AGENTS.md
 ```
 
-#### Option B: Custom Search Paths via `skills.json` (Recommended for Personal Setup)
+#### Option C: Custom Search Paths via `skills.json` (Recommended for Machine-Wide Setup)
 Google Antigravity automatically loads rules and skills from both **Global Root** (`~/.gemini/config`) and **Workspace Root** (`.agents`).
 
-To load skills globally across all projects on your machine without copying files, create `~/.gemini/config/skills.json` (or `.agents/skills.json` for workspace-level search paths):
+To load skills globally across all projects on your machine without copying files, create `~/.gemini/config/skills.json`:
 
 ```json
 {
   "entries": [
     { "path": "/path/to/prolog-agent-toolkit/.agents/skills" }
-  ],
-  "inherits": [],
-  "exclude": []
+  ]
 }
 ```
 
@@ -343,6 +363,7 @@ my_prolog_project/
    - `tests/scryer/`: Scryer unit tests using `library(testing)`.
    - `tests/swi/`: SWI-Prolog unit tests using `library(plunit)`.
    - `tests/js/`: JavaScript integration tests querying Tau Prolog via Node.js test runners.
+4. **Optional `make packages` Target**: Projects can define clean `Makefile` packaging recipes (`package_bakage`, `package_swi`, `package_npm`, `package_python`) so `make packages` creates distribution archives (`dist/`) for every configured package manager.
 
 ---
 

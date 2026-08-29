@@ -90,8 +90,10 @@ prolog-agent release [--version X.Y.Z]
 
 ## User Project Initialization Instructions
 When a user asks how to start a new Prolog project:
-1. `mkdir myproj && cd myproj`
-2. `ln -s ~/code/prolog-agent-toolkit/.agents .agents`
+1. `mkdir myproj && cd myproj && git init`
+2. **Link Agent Toolkit Architecture**:
+   - **Recommended (Submodule for Team Repositories)**: `git submodule add https://github.com/dougransom/prolog-agent-toolkit.git .agents-toolkit` and configure `.agents/skills.json`.
+   - **Local Dev Alternative (Symlink)**: `ln -s ~/code/prolog-agent-toolkit/.agents .agents`
 3. Choose dialect: Scryer (default), SWI, or Trealla.
 4. Execute `prolog-agent init myproj --dialect <dialect>` or run `scripts/prolog_agent_init.sh myproj <dialect>`.
 5. Run tests with `scryer-safe tests/testing.pl` or `swi-safe -g "run_tests,halt" tests/test_myproj.pl`.

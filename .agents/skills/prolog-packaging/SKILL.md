@@ -82,3 +82,39 @@ For Tau Prolog projects (Node.js and Web/DOM), use `npm` package manager with `p
 npm install tau-prolog
 ```
 
+---
+
+## Makefile Packaging Targets (`make packages`)
+
+Projects can include optional packaging recipes in their `Makefile` to build release archives for all configured package managers:
+
+```makefile
+.PHONY: packages package_bakage package_swi package_npm package_python
+
+# Aggregate target: Builds release artifacts for all configured package managers
+packages: test docs package_bakage package_swi
+
+# 1. Scryer Prolog bakage archive
+package_bakage:
+	@echo "=== Building Scryer bakage package ==="
+	mkdir -p dist
+	tar -czvf dist/$(NAME)-$(VERSION)-bakage.tar.gz bakage.toml pack.pl README.md LICENSE src/ tests/
+
+# 2. SWI-Prolog pack archive
+package_swi:
+	@echo "=== Building SWI pack_install package ==="
+	mkdir -p dist
+	zip -r dist/$(NAME)-$(VERSION)-swi.zip pack.pl prolog/ README.md LICENSE
+
+# 3. Tau Prolog / npm package
+package_npm:
+	@echo "=== Building npm package ==="
+	npm pack --pack-destination=dist/
+
+# 4. Python FFI / CLI package (if applicable)
+package_python:
+	@echo "=== Building Python wheel and sdist ==="
+	uv build --out-dir dist/
+```
+
+

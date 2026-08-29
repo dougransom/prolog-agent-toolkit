@@ -52,20 +52,42 @@ rm -rf .claude .cursorrules .windsurfrule .clinerules .github/copilot-instructio
 
 ---
 
-## Phase 3: Linking Agent Architecture & Standards
+## Phase 3: Linking Agent Architecture & Standards (Git Submodule Recommended)
 
 Connect the project to the central Prolog Agent Toolkit skills, subagents, and guidelines:
 
-1. **Link or Copy `.agents/`**:
+1. **Option A: Git Submodule Integration (PRIMARY RECOMMENDED METHOD for Teams & Repositories)**:
+   Add the toolkit as a Git submodule so any contributor or AI assistant on any machine gets exact skill parity without breaking local files:
    ```bash
-   # Option A: Symlink central .agents directory (recommended for local dev)
-   ln -s /path/to/prolog-agent-toolkit/.agents .agents
+   # Add the toolkit as a submodule (.agents-toolkit)
+   git submodule add https://github.com/dougransom/prolog-agent-toolkit.git .agents-toolkit
 
-   # Option B: Copy .agents directory (for standalone repo distribution)
-   cp -r /path/to/prolog-agent-toolkit/.agents .agents
+   # Configure .agents/skills.json to inherit skills from the submodule
+   mkdir -p .agents
+   cat << 'EOF' > .agents/skills.json
+   {
+     "entries": [
+       { "path": "skills" },
+       { "path": ".agents-toolkit/.agents/skills" }
+     ]
+   }
+   EOF
+
+   # Link root AGENTS.md to the submodule rules
+   ln -s .agents-toolkit/.agents/AGENTS.md AGENTS.md
    ```
-2. **Verify `AGENTS.md`**:
-   Ensure a vendor-neutral `AGENTS.md` file exists in the project root referencing Covington style guidelines and dialect standards.
+
+2. **Option B: Local Machine Symlink (Recommended for Personal Local Dev)**:
+   ```bash
+   ln -s /path/to/prolog-agent-toolkit/.agents .agents
+   ln -s .agents/AGENTS.md AGENTS.md
+   ```
+
+3. **Option C: Direct Copy (For Standalone Non-Submodule Distribution)**:
+   ```bash
+   cp -r /path/to/prolog-agent-toolkit/.agents .agents
+   cp /path/to/prolog-agent-toolkit/.agents/AGENTS.md AGENTS.md
+   ```
 
 ---
 

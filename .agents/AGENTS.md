@@ -62,7 +62,7 @@ AI assistants MUST select and follow the specific dialect standards correspondin
 - **Prolog Testing**: [.agents/skills/prolog-testing/SKILL.md](.agents/skills/prolog-testing/SKILL.md)
   - Scryer `testing.pl` (default), SWI `plunit`, and portable assertions.
 - **Prolog Packaging**: [.agents/skills/prolog-packaging/SKILL.md](.agents/skills/prolog-packaging/SKILL.md)
-  - Scryer `bakage` manifests (default) and SWI `pack` manager.
+  - Scryer `bakage` manifests (default), SWI `pack` manager, `npm` for Tau, and optional `make packages` Makefile recipes.
 - **Prolog Release & Versioning**: [.agents/skills/prolog-release/SKILL.md](.agents/skills/prolog-release/SKILL.md)
   - Multi-file version synchronization (`pack.pl`, `pyproject.toml`, `README.md`), Git tagging, and post-release prompts.
 - **CLP Constraints**: [.agents/skills/prolog-clp-constraints/SKILL.md](.agents/skills/prolog-clp-constraints/SKILL.md)
@@ -111,7 +111,7 @@ AI assistants provide the virtual and CLI commands:
 - `prolog-agent init-script`
 
 When a user requests a new project or starts a new Prolog repository, AI assistants MUST execute or guide the initializer workflow:
-1. **Directory Structure**: Create `<project-name>/`, containing `src/`, `tests/`, `README.md`, `CHANGELOG.md`, and `.agents/` (symlink or copy instructions).
+1. **Directory Structure**: Create `<project-name>/`, containing `src/`, `tests/`, `README.md`, `CHANGELOG.md`, and `.agents/` (recommending Git Submodule integration `git submodule add ... .agents-toolkit` or symlink).
 2. **Package Manifest**:
    - **Scryer / ISO**: Create `bakage.toml` (`name`, `version = "0.1.0"`, `modules = ["src/<project-name>.pl"]`, `requires`) and `pack.pl`.
    - **SWI-Prolog**: Create `pack.pl` manifest (`name('<project-name>')`, `version('0.1.0')`, `title`, `author`).
