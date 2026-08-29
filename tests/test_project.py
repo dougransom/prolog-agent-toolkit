@@ -22,14 +22,14 @@ def test_init_project_scryer(temp_project_dir):
     proj_dir = os.path.join(temp_project_dir, "my_scryer_app")
     assert os.path.exists(os.path.join(proj_dir, "src", "my_scryer_app.pl"))
     assert os.path.exists(os.path.join(proj_dir, "tests", "testing.pl"))
-    assert os.path.exists(os.path.join(proj_dir, "bakage.toml"))
+    assert os.path.exists(os.path.join(proj_dir, "scryer-manifest.pl"))
     assert os.path.exists(os.path.join(proj_dir, "README.md"))
     assert os.path.exists(os.path.join(proj_dir, "AGENTS.md"))
 
-    with open(os.path.join(proj_dir, "bakage.toml"), "r") as f:
+    with open(os.path.join(proj_dir, "scryer-manifest.pl"), "r") as f:
         content = f.read()
-    assert 'name = "my_scryer_app"' in content
-    assert 'version = "0.1.0"' in content
+    assert 'name("my_scryer_app")' in content
+    assert 'version("0.1.0")' in content
 
 
 def test_init_project_swi(temp_project_dir):
@@ -77,7 +77,7 @@ def test_generate_template(temp_project_dir):
     proj_dir = os.path.join(temp_project_dir, "tpl_app")
     assert os.path.exists(os.path.join(proj_dir, "src", "tpl_app.pl"))
     assert os.path.exists(os.path.join(proj_dir, "tests", "testing.pl"))
-    assert os.path.exists(os.path.join(proj_dir, "bakage.toml"))
+    assert os.path.exists(os.path.join(proj_dir, "scryer-manifest.pl"))
     assert os.path.exists(os.path.join(proj_dir, "CHANGELOG.md"))
 
 
@@ -96,9 +96,9 @@ def test_run_release(temp_project_dir):
     res = run_release(new_version="0.2.0", target_dir=proj_dir)
     assert res == 0
 
-    with open(os.path.join(proj_dir, "bakage.toml"), "r") as f:
+    with open(os.path.join(proj_dir, "scryer-manifest.pl"), "r") as f:
         content = f.read()
-    assert 'version = "0.2.0"' in content
+    assert 'version("0.2.0")' in content
 
     changelog_path = os.path.join(proj_dir, "CHANGELOG.md")
     assert os.path.exists(changelog_path)

@@ -256,21 +256,21 @@ STATIC_LIBRARY_DATABASE: Dict[str, List[Dict[str, str]]] = {
 
 
 def discover_manifest_packages(project_dir: str = ".") -> List[Dict[str, Any]]:
-    """Scan local directory for package manifest files (bakage.toml, pack.pl, package.json)."""
+    """Scan local directory for package manifest files (scryer-manifest.pl, pack.pl, package.json)."""
     manifests = []
 
-    # 1. bakage.toml
-    bakage_path = os.path.join(project_dir, "bakage.toml")
-    if os.path.exists(bakage_path):
-        with open(bakage_path, "r", encoding="utf-8") as f:
+    # 1. scryer-manifest.pl
+    scryer_manifest_path = os.path.join(project_dir, "scryer-manifest.pl")
+    if os.path.exists(scryer_manifest_path):
+        with open(scryer_manifest_path, "r", encoding="utf-8") as f:
             content = f.read()
-        name_match = re.search(r'name\s*=\s*"([^"]+)"', content)
-        req_match = re.search(r'requires\s*=\s*\[(.*?)\]', content, re.DOTALL)
+        name_match = re.search(r"name\(\s*[\"\']?([a-zA-Z0-9_\-]+)[\"\']?\s*\)", content)
+        deps_match = re.search(r"dependencies\(\s*\[(.*?)\]\s*\)", content, re.DOTALL)
         deps = []
-        if req_match:
-            deps = [d.strip(' "\'\t\n') for d in req_match.group(1).split(",") if d.strip(' "\'\t\n')]
+        if deps_match:
+            deps = [d.strip(' "\'\t\n') for d in deps_match.group(1).split(",") if d.strip(' "\'\t\n')]
         manifests.append({
-            "source": "bakage.toml",
+            "source": "scryer-manifest.pl",
             "name": name_match.group(1) if name_match else os.path.basename(os.path.abspath(project_dir)),
             "engine": "scryer",
             "dependencies": deps

@@ -23,13 +23,13 @@ def init_project(project_name: str, engine: str = "scryer", base_dir: str = ".")
 
     # 1. Manifest file creation
     if engine in ("scryer", "iso", "trealla"):
-        bakage_path = os.path.join(project_dir, "bakage.toml")
-        if not os.path.exists(bakage_path):
-            with open(bakage_path, "w", encoding="utf-8") as f:
-                f.write(f'name = "{project_name}"\n')
-                f.write('version = "0.1.0"\n')
-                f.write(f'modules = ["src/{project_name}.pl"]\n')
-                f.write('requires = []\n')
+        scryer_manifest_path = os.path.join(project_dir, "scryer-manifest.pl")
+        if not os.path.exists(scryer_manifest_path):
+            with open(scryer_manifest_path, "w", encoding="utf-8") as f:
+                f.write(f'name("{project_name}").\n')
+                f.write('version("0.1.0").\n')
+                f.write(f'main_file("src/{project_name}.pl").\n')
+                f.write('dependencies([]).\n')
 
         pack_path = os.path.join(project_dir, "pack.pl")
         if not os.path.exists(pack_path):
@@ -140,7 +140,7 @@ When writing, refactoring, or reviewing Prolog code in this project, all AI assi
 
 Before generating Prolog code, AI assistants MUST follow the 7-step discovery protocol:
 1. **Identify Target Engine**: Target engine for this repository is **{engine.upper()} Prolog**.
-2. **Discover Available Capabilities**: Run `prolog-agent discover --engine {engine}` or inspect dialect library cheat sheets and project manifests (`bakage.toml`, `pack.pl`, `package.json`).
+2. **Discover Available Capabilities**: Run `prolog-agent discover --engine {engine}` or inspect dialect library cheat sheets and project manifests (`scryer-manifest.pl`, `pack.pl`, `package.json`).
 3. **Prefer Installed Capabilities**: Always reuse built-in standard libraries or installed packages instead of implementing custom code from scratch.
 4. **Explicit Imports**: Always declare explicit `:- use_module(library(...)).` headers.
 5. **Document Dependencies**: Detail all selected library modules in Covington module headers.
@@ -294,7 +294,7 @@ Recommended canonical project structure supporting single or multi-dialect devel
 │   ├── swi/                        # SWI plunit test suite
 │   └── {test_file_name}            # Default unit test file
 ├── AGENTS.md                       # AI assistant rules & dialect guidelines
-├── bakage.toml                     # Scryer Prolog bakage manifest
+├── scryer-manifest.pl                     # Scryer Prolog bakage manifest
 ├── pack.pl                         # SWI-Prolog pack manifest & Scryer fallback
 ├── package.json                    # Tau Prolog / npm manifest (optional for Node/DOM)
 ├── CHANGELOG.md                    # Version release history
@@ -306,7 +306,7 @@ Recommended canonical project structure supporting single or multi-dialect devel
 - **`src/core/`**: Houses portable Prolog logic aiming for standard ISO compliance (pure DCGs, `dif/2`, reified `if_/3`). Free of engine-specific extensions.
 - **`src/adapters/`**: Houses dialect compatibility shims normalizing module imports (`library(clpz)` vs `library(clpfd)`), strings, and FFI interfaces per engine.
 - **`tests/`**: Organizes unit tests by portability scope: `portable/` for pure ISO assertions, `scryer/` for Scryer `testing.pl`, `swi/` for SWI `plunit`.
-- **Root Manifests**: `bakage.toml`, `pack.pl`, and `package.json` co-exist at the root without conflict, allowing the codebase to be published to `bakage`, `pack_install`, and `npm` simultaneously.
+- **Root Manifests**: `scryer-manifest.pl`, `pack.pl`, and `package.json` co-exist at the root without conflict, allowing the codebase to be published to `bakage`, `pack_install`, and `npm` simultaneously.
 - **`AGENTS.md`**: AI assistant guidelines, dialect rules, and safe execution constraints.
 - **`README.md`**: Human-facing developer documentation, architectural overview, and setup guide.
 

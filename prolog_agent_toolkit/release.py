@@ -56,7 +56,7 @@ def check_versions(target_dir: str = ".") -> int:
     print("Checking version parity across project files...")
 
     checks = [
-        ("bakage.toml", r'version\s*=\s*["\']([^"\']+)["\']'),
+        ("scryer-manifest.pl", r"version\(['\"]([^'\"]+)['\"]\)" ),
         ("pack.pl", r"version\(['\"]([^'\"]+)['\"]\)" ),
         ("package.json", r'"version"\s*:\s*"([^"]+)"'),
         ("schema.org.jsonld", r'"version"\s*:\s*"([^"]+)"'),
@@ -118,11 +118,11 @@ def run_release(new_version: str = None, target_dir: str = ".") -> int:
 
     print(f"Preparing release v{new_version} in {target_dir}...")
 
-    # 1. Update bakage.toml
+    # 1. Update scryer-manifest.pl
     sync_file_version(
-        os.path.join(target_dir, "bakage.toml"),
-        r'version\s*=\s*["\'][^"\']+["\']',
-        f'version = "{new_version}"'
+        os.path.join(target_dir, "scryer-manifest.pl"),
+        r"version\(['\"][^'\"]+['\"]\)",
+        f'version("{new_version}")'
     )
 
     # 2. Update pack.pl

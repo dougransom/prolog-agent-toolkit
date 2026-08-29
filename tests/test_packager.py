@@ -4,7 +4,7 @@ import tempfile
 import tarfile
 import pytest
 
-from prolog_agent_toolkit.packager import build_package, parse_bakage_toml, parse_pack_pl
+from prolog_agent_toolkit.packager import build_package, parse_scryer_manifest, parse_pack_pl
 
 
 @pytest.fixture
@@ -15,9 +15,9 @@ def temp_pkg_dir():
 
 
 def test_build_package_scryer(temp_pkg_dir):
-    bakage_path = os.path.join(temp_pkg_dir, "bakage.toml")
-    with open(bakage_path, "w") as f:
-        f.write('name = "test_pkg"\nversion = "1.2.3"\nmodules = ["src/test_pkg.pl"]\n')
+    manifest_path = os.path.join(temp_pkg_dir, "scryer-manifest.pl")
+    with open(manifest_path, "w") as f:
+        f.write('name("test_pkg").\nversion("1.2.3").\nmain_file("src/test_pkg.pl").\n')
 
     src_dir = os.path.join(temp_pkg_dir, "src")
     os.makedirs(src_dir, exist_ok=True)
@@ -33,7 +33,7 @@ def test_build_package_scryer(temp_pkg_dir):
 
     with tarfile.open(tar_path, "r:gz") as tar:
         names = tar.getnames()
-        assert any("bakage.toml" in n for n in names)
+        assert any("scryer-manifest.pl" in n for n in names)
         assert any("src/test_pkg.pl" in n for n in names)
 
 

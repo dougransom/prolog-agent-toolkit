@@ -41,7 +41,7 @@ def test_discover_manifest_packages(temp_project_dir):
 
     manifests = discover_manifest_packages(project_dir=app_dir)
     assert len(manifests) >= 1
-    bakage_m = next((m for m in manifests if m["source"] == "bakage.toml"), None)
+    bakage_m = next((m for m in manifests if m["source"] == "scryer-manifest.pl"), None)
     assert bakage_m is not None
     assert bakage_m["name"] == "disc_scryer_app"
 

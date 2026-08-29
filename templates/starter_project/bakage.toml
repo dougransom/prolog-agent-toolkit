@@ -1,4 +1,0 @@
-name = "starter_project"
-version = "0.1.0"
-modules = ["src/starter_project.pl"]
-requires = []

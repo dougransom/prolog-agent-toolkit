@@ -11,14 +11,14 @@ Use this skill when initializing package manifests, managing dependencies, or pr
 
 For Scryer Prolog projects, use [`bakage`](https://github.com/bakaq/bakage) packaging conventions.
 
-### Manifest Formats (`bakage.toml` or `pack.pl`)
+### Manifest Formats (`scryer-manifest.pl` or `pack.pl`)
 
-`bakage` supports standard `bakage.toml` metadata:
-```toml
-name = "my_scryer_lib"
-version = "0.1.0"
-modules = ["src/my_scryer_lib.pl"]
-requires = []
+`bakage` uses Prolog term facts in `scryer-manifest.pl`:
+```prolog
+name("my_scryer_lib").
+version("0.1.0").
+main_file("src/my_scryer_lib.pl").
+dependencies([]).
 ```
 
 Or classic `pack.pl` manifest:

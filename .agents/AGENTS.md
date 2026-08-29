@@ -117,7 +117,7 @@ AI assistants provide the virtual and CLI commands:
 When a user requests a new project or starts a new Prolog repository, AI assistants MUST execute or guide the initializer workflow:
 1. **Directory Structure**: Create `<project-name>/`, containing `src/`, `tests/`, `README.md`, `CHANGELOG.md`, and `.agents/` (recommending Git Submodule integration `git submodule add ... .agents-toolkit` or symlink).
 2. **Package Manifest**:
-   - **Scryer / ISO**: Create `bakage.toml` (`name`, `version = "0.1.0"`, `modules = ["src/<project-name>.pl"]`, `requires`) and `pack.pl`.
+   - **Scryer / ISO**: Create `scryer-manifest.pl` (`name("pkg")`, `version("0.1.0")`, `main_file("src/<project-name>.pl")`, `dependencies([])`) and `pack.pl`.
    - **SWI-Prolog**: Create `pack.pl` manifest (`name('<project-name>')`, `version('0.1.0')`, `title`, `author`).
    - **Trealla Prolog**: No manifest created (no package manager).
    - **Tau Prolog**: Create `package.json` (`name`, `version`, `tau-prolog` dependency).
@@ -144,7 +144,7 @@ AI assistants provide the virtual and CLI command: `prolog-agent release [--vers
 ### Canonical Version Source of Truth & Rules:
 1. **Canonical Version**: `pyproject.toml` is the single canonical source of truth for the release version (which may include development tags such as `X.Y.Z.devN` or `vX.Y.Z`).
 2. **Runtime Python Resolution**: Python files MUST resolve the package version dynamically at runtime via `importlib.metadata.version("prolog-agent-toolkit")`.
-3. **Multi-File Synchronization**: Non-Python manifest/doc files (`bakage.toml`, `pack.pl`, `package.json`, `README.md`, `CHANGELOG.md`) MUST be updated by the agent whenever the `pyproject.toml` version changes or when running `prolog-agent release`.
+3. **Multi-File Synchronization**: Non-Python manifest/doc files (`scryer-manifest.pl`, `pack.pl`, `package.json`, `README.md`, `CHANGELOG.md`) MUST be updated by the agent whenever the `pyproject.toml` version changes or when running `prolog-agent release`.
 4. **Git Tag Matching**: The Git tag created during release MUST exactly match the version string in `pyproject.toml` (e.g. `v0.0.1` or `v0.0.1.dev3`).
 
 ### Release Execution Steps:

@@ -8,44 +8,29 @@ import json
 sys.dont_write_bytecode = True
 os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
 
-try:
-    import tomllib  # Python 3.11+
-except ImportError:
-    try:
-        import tomli as tomllib  # Fallback for older python
-    except ImportError:
-        tomllib = None
 
-
-def parse_bakage_toml(filepath: str) -> dict:
-    """Parse bakage.toml file for package metadata."""
+def parse_scryer_manifest(filepath: str) -> dict:
+    """
+    Parse scryer-manifest.pl (bakage manifest format) for package metadata.
+    Format is Prolog facts: name("pkg"), version("0.1.0"), main_file("...").
+    """
     metadata = {}
     if not os.path.exists(filepath):
         return metadata
 
-    if tomllib is not None:
-        try:
-            with open(filepath, "rb") as f:
-                data = tomllib.load(f)
-                metadata["name"] = data.get("name")
-                metadata["version"] = data.get("version")
-                metadata["modules"] = data.get("modules", [])
-                metadata["requires"] = data.get("requires", [])
-                return metadata
-        except Exception:
-            pass
-
-    # Basic regex fallback if tomllib/tomli not available
     with open(filepath, "r", encoding="utf-8") as f:
         content = f.read()
 
-    name_m = re.search(r'name\s*=\s*["\']([^"\']+)["\']', content)
-    ver_m = re.search(r'version\s*=\s*["\']([^"\']+)["\']', content)
+    name_m = re.search(r"name\(\s*[\"\']?([a-zA-Z0-9_\-]+)[\"\']?\s*\)", content)
+    ver_m = re.search(r"version\(\s*[\"\']?([a-zA-Z0-9_\-\.]+)[\"\']?\s*\)", content)
+    main_m = re.search(r"main_file\(\s*[\"\']?([^\"\']+)[\"\']?\s*\)", content)
 
     if name_m:
         metadata["name"] = name_m.group(1)
     if ver_m:
         metadata["version"] = ver_m.group(1)
+    if main_m:
+        metadata["main_file"] = main_m.group(1)
 
     return metadata
 
@@ -90,11 +75,12 @@ def parse_package_json(filepath: str) -> dict:
 def build_package(target_dir: str = ".", engine: str = "scryer", out_dir: str = "dist") -> int:
     """
     Validate manifest and build distribution archive for Prolog package.
+    Supports scryer-manifest.pl (Scryer bakage), pack.pl (SWI/Scryer), and package.json (Tau).
     """
     target_dir = os.path.abspath(target_dir)
     engine = (engine or "scryer").lower()
 
-    bakage_toml = os.path.join(target_dir, "bakage.toml")
+    scryer_manifest = os.path.join(target_dir, "scryer-manifest.pl")
     pack_pl = os.path.join(target_dir, "pack.pl")
     package_json = os.path.join(target_dir, "package.json")
 
@@ -102,9 +88,9 @@ def build_package(target_dir: str = ".", engine: str = "scryer", out_dir: str = 
     manifest_type = None
 
     if engine in ("scryer", "iso", "trealla"):
-        if os.path.exists(bakage_toml):
-            metadata = parse_bakage_toml(bakage_toml)
-            manifest_type = "bakage.toml"
+        if os.path.exists(scryer_manifest):
+            metadata = parse_scryer_manifest(scryer_manifest)
+            manifest_type = "scryer-manifest.pl"
         elif os.path.exists(pack_pl):
             metadata = parse_pack_pl(pack_pl)
             manifest_type = "pack.pl"
@@ -119,9 +105,9 @@ def build_package(target_dir: str = ".", engine: str = "scryer", out_dir: str = 
 
     # General fallback
     if not metadata.get("name"):
-        if os.path.exists(bakage_toml):
-            metadata = parse_bakage_toml(bakage_toml)
-            manifest_type = "bakage.toml"
+        if os.path.exists(scryer_manifest):
+            metadata = parse_scryer_manifest(scryer_manifest)
+            manifest_type = "scryer-manifest.pl"
         elif os.path.exists(pack_pl):
             metadata = parse_pack_pl(pack_pl)
             manifest_type = "pack.pl"
@@ -135,12 +121,12 @@ def build_package(target_dir: str = ".", engine: str = "scryer", out_dir: str = 
     print(f"Package Name : {pkg_name}")
     print(f"Package Vers : {pkg_ver}")
 
-    # Validate modules if specified in bakage.toml
-    modules = metadata.get("modules", [])
-    for mod in modules:
-        mod_path = os.path.join(target_dir, mod)
-        if not os.path.exists(mod_path):
-            sys.stderr.write(f"Warning: Declared module file '{mod}' in bakage.toml not found at {mod_path}\n")
+    # Validate main_file if specified in scryer-manifest.pl
+    main_file = metadata.get("main_file")
+    if main_file:
+        main_path = os.path.join(target_dir, main_file)
+        if not os.path.exists(main_path):
+            sys.stderr.write(f"Warning: Declared main_file '{main_file}' in scryer-manifest.pl not found at {main_path}\n")
 
     dist_path = os.path.join(target_dir, out_dir)
     os.makedirs(dist_path, exist_ok=True)
