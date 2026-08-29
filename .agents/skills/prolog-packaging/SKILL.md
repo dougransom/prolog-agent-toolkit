@@ -84,27 +84,39 @@ npm install tau-prolog
 
 ---
 
+## Packaging & Archive Validation CLI (`prolog-agent pack`)
+
+Use `prolog-agent pack` to validate manifests (`bakage.toml`, `pack.pl`, `package.json`), verify that all declared module source files exist, and build clean release archives:
+
+```bash
+# Build Scryer bakage tar.gz archive
+prolog-agent pack --engine scryer
+
+# Build SWI pack zip archive
+prolog-agent pack --engine swi
+```
+
+---
+
 ## Makefile Packaging Targets (`make packages`)
 
-Projects can include optional packaging recipes in their `Makefile` to build release archives for all configured package managers:
+Projects can include packaging recipes in their `Makefile` leveraging `prolog-agent pack`:
 
 ```makefile
 .PHONY: packages package_bakage package_swi package_npm package_python
 
-# Aggregate target: Builds release artifacts for all configured package managers
-packages: test docs package_bakage package_swi
+# Aggregate target: Builds release artifacts for configured package managers
+packages: test package_bakage package_swi
 
 # 1. Scryer Prolog bakage archive
 package_bakage:
 	@echo "=== Building Scryer bakage package ==="
-	mkdir -p dist
-	tar -czvf dist/$(NAME)-$(VERSION)-bakage.tar.gz bakage.toml pack.pl README.md LICENSE src/ tests/
+	prolog-agent pack --engine scryer
 
 # 2. SWI-Prolog pack archive
 package_swi:
 	@echo "=== Building SWI pack_install package ==="
-	mkdir -p dist
-	zip -r dist/$(NAME)-$(VERSION)-swi.zip pack.pl prolog/ README.md LICENSE
+	prolog-agent pack --engine swi
 
 # 3. Tau Prolog / npm package
 package_npm:

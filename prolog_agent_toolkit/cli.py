@@ -15,6 +15,7 @@ from prolog_agent_toolkit.project import (
 from prolog_agent_toolkit.release import run_release, check_versions
 from prolog_agent_toolkit.hooks import install_hooks
 from prolog_agent_toolkit.discovery import discover_capabilities, format_discovery_report
+from prolog_agent_toolkit.packager import build_package
 
 
 def list_subagents(agents_dir: str = ".agents/agents") -> None:
@@ -53,6 +54,7 @@ def prolog_agent_main() -> None:
         print("  prolog-agent template <project-name> [--dialect|--engine scryer|swi|trealla|tau|iso]")
         print("  prolog-agent module <module-name> [--dialect|--engine scryer|swi|trealla|tau|iso]")
         print("  prolog-agent discover [--engine scryer|swi|trealla|tau|gnu|all] [--query <keyword>] [--mode static|dynamic|hybrid] [--json]")
+        print("  prolog-agent pack [--engine scryer|swi|trealla|tau|iso] [--out-dir dist]")
         print("  prolog-agent init-script")
         print("  prolog-agent release [--version X.Y.Z]")
         print("  prolog-agent check-version")
@@ -125,6 +127,16 @@ def prolog_agent_main() -> None:
         else:
             print(format_discovery_report(data))
         sys.exit(0)
+
+    elif cmd == "pack":
+        engine = get_dialect()
+        out_dir = "dist"
+        if "--out-dir" in args:
+            idx = args.index("--out-dir")
+            if idx + 1 < len(args):
+                out_dir = args[idx + 1]
+        exit_code = build_package(engine=engine, out_dir=out_dir)
+        sys.exit(exit_code)
 
     elif cmd == "init-script":
         exit_code = print_init_script()
