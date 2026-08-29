@@ -10,6 +10,7 @@ Thank you for contributing to the **Prolog Agent Toolkit**! We welcome contribut
 > - **[Pull Requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)**: Code changes, new Prolog engine safety wrappers, bug fixes, or AI skill additions.
 > - **[GitHub Issues](https://github.com/dougransom/prolog-agent-toolkit/issues)** for:
 >   - Suggestions for new features, architectural goals, or engine targets.
+>   - Examples of unwanted AI-generated Prolog code ("AI slop", copy-pasted loops, unnecessary low-level cuts `!`, `->`, `\+`) to help refine agent rules and purity guidelines.
 >   - Suggestions for prompts or agent workflows to run on this project itself!
 
 ---

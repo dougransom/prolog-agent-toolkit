@@ -1,3 +1,16 @@
+## [0.0.1.dev17] - 2026-08-29
+
+### Summary of Changes
+- Updated `CONTRIBUTING.md` guidelines for reporting unwanted AI-generated Prolog code ("AI slop", copy-pasted loops, unnecessary low-level cuts `!`, `->`, `\+`) to refine agent rules and purity standards.
+- Created GitHub issues [#2](https://github.com/dougransom/prolog-agent-toolkit/issues/2) and [#3](https://github.com/dougransom/prolog-agent-toolkit/issues/3) for agent purity guidance and duplication detection/refactoring.
+
+### Added / Modified
+- `CONTRIBUTING.md`: GitHub Issues reporting guidelines.
+
+### Breaking Changes
+- None.
+
+
 ## [0.0.1.dev16] - 2026-08-28
 
 ### Summary of Changes
