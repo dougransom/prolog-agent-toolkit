@@ -15,7 +15,7 @@ from prolog_agent_toolkit.project import (
 from prolog_agent_toolkit.release import run_release, check_versions
 from prolog_agent_toolkit.hooks import install_hooks
 from prolog_agent_toolkit.discovery import discover_capabilities, format_discovery_report
-from prolog_agent_toolkit.packager import build_package
+from prolog_agent_toolkit.packager import PackageBuilder
 
 
 def list_subagents(agents_dir: str = ".agents/agents") -> None:
@@ -135,7 +135,7 @@ def prolog_agent_main() -> None:
             idx = args.index("--out-dir")
             if idx + 1 < len(args):
                 out_dir = args[idx + 1]
-        exit_code = build_package(engine=engine, out_dir=out_dir)
+        exit_code = PackageBuilder().build(engine=engine, out_dir=out_dir)
         sys.exit(exit_code)
 
     elif cmd == "init-script":

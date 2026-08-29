@@ -5,9 +5,6 @@ import tarfile
 import pytest
 
 from prolog_agent_toolkit.packager import (
-    build_package,
-    parse_scryer_manifest,
-    parse_pack_pl,
     PackageBuilder,
     ScryerManifestParser,
     SwiPackParser,
@@ -32,7 +29,11 @@ def test_build_package_scryer(temp_pkg_dir):
     with open(os.path.join(src_dir, "test_pkg.pl"), "w") as f:
         f.write(":- module(test_pkg, []).\n")
 
-    res = build_package(target_dir=temp_pkg_dir, engine="scryer", out_dir="dist")
+    parser_meta = ScryerManifestParser().parse_file(manifest_path)
+    assert parser_meta["name"] == "test_pkg"
+    assert parser_meta["version"] == "1.2.3"
+
+    res = PackageBuilder().build(target_dir=temp_pkg_dir, engine="scryer", out_dir="dist")
     assert res == 0
 
     dist_dir = os.path.join(temp_pkg_dir, "dist")
@@ -50,7 +51,11 @@ def test_build_package_swi(temp_pkg_dir):
     with open(pack_path, "w") as f:
         f.write("name('swi_pkg').\nversion('0.5.0').\n")
 
-    res = build_package(target_dir=temp_pkg_dir, engine="swi", out_dir="dist")
+    parser_meta = SwiPackParser().parse_file(pack_path)
+    assert parser_meta["name"] == "swi_pkg"
+    assert parser_meta["version"] == "0.5.0"
+
+    res = PackageBuilder().build(target_dir=temp_pkg_dir, engine="swi", out_dir="dist")
     assert res == 0
 
     dist_dir = os.path.join(temp_pkg_dir, "dist")

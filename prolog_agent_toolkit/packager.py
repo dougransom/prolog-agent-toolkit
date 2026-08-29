@@ -245,21 +245,3 @@ class PackageBuilder:
 
         print(f"Package successfully built at: {archive_file}")
         return 0
-
-
-# --- Functions for Backward Compatibility ---
-
-def parse_scryer_manifest(filepath: str) -> dict:
-    return ScryerManifestParser().parse_file(filepath)
-
-
-def parse_pack_pl(filepath: str) -> dict:
-    return SwiPackParser().parse_file(filepath)
-
-
-def parse_package_json(filepath: str) -> dict:
-    return TauJsonParser().parse_file(filepath)
-
-
-def build_package(target_dir: str = ".", engine: str = "scryer", out_dir: str = "dist") -> int:
-    return PackageBuilder().build(target_dir=target_dir, engine=engine, out_dir=out_dir)
