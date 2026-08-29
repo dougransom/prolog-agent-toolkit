@@ -45,3 +45,30 @@ Instead of asking AI to debug raw logic, ask targeted operational questions:
 - *"List all choice points in this predicate."*
 - *"Rewrite this cut-heavy (`!`) code using pure logical constructs (`dif/2`, `if_/3` from `library(reif)`)."*
 - *"Rewrite this predicate to be tail-recursive."*
+
+---
+
+## 7. Describing Custom Style Overrides & Preference Examples
+If you have specific style preferences or reference examples that complement or override the default toolkit conventions, convey them using these 5 customization channels:
+
+1. **Workspace Rules (`.agents/AGENTS.md` or `.agents/rules/*.md`)**: Add rule blocks with explicit "Preferred Example" and "Prohibited Example" code snippets for project-wide enforcement:
+   ```markdown
+   # Custom Prolog Code Style Standards
+
+   ## Rule: Prefer Clean AST Functors over Tagged Lists
+   Always represent abstract syntax trees with explicit principal functors rather than ad-hoc lists or tuples.
+
+   ### Preferred Example:
+   lit(Chars)
+   seq(Left, Right)
+
+   ### Prohibited Example:
+   [lit, Chars]
+   [seq, Left, Right]
+   ```
+2. **Custom Project Skills (`.agents/skills/<name>/SKILL.md`)**: Package canonical `.pl` implementations in an `examples/` directory for complex patterns.
+3. **Global Machine Rules (`~/.gemini/config/AGENTS.md`)**: Set machine-wide user preferences across all projects.
+4. **In-Prompt Structural Directives**: Provide explicit AST constructors, mode annotations (`+`/`-`), or determinism goals (`det`/`semidet`) directly in your request.
+5. **Interactive Learning (`/learn`)**: Use `/learn` after correcting code formatting to persist your style preferences automatically.
+
+

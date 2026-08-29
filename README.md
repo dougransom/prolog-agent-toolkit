@@ -422,6 +422,45 @@ When working with AI coding assistants (Google Antigravity, Claude Code, Cursor,
 5. **Delegate DCG & Structural Boilerplate**: Let AI handle grammar production rules, AST building, and string formatting.
 6. **Use AI for Refactoring & Choice-Point Audits**: Ask AI to identify choice points, make code tail-recursive, or transform cut-heavy logic into pure forms (`dif/2`, `if_/3`).
 
+### Customizing & Overriding Code Generation Defaults
+
+If you have specific preferences, coding standards, or reference examples for how you like Prolog code generated that complement or override this toolkit's defaults, you can describe them using 5 standard customization layers:
+
+1. **Workspace Rules (`.agents/AGENTS.md` or `.agents/rules/*.md`)**: Define project-wide coding style rules and canonical code examples. Checked into Git so all team members and AI assistants share the same guidelines.
+2. **Custom Project Skills (`.agents/skills/<name>/SKILL.md`)**: Create targeted skills containing domain-specific patterns, AST schemas, or sample `.pl` implementations in an `examples/` subfolder.
+3. **Global Machine Rules (`~/.gemini/config/AGENTS.md` or `~/.gemini/config/rules/`)**: Set personal preferences across all local projects without modifying repository files.
+4. **Interactive Prompt Steer & AST Specifications**: Pass explicit term constructors (e.g. `lit(Chars)` vs list tuples), mode annotations (`+`/`-`), determinism requirements (`det`/`semidet`), or test harnesses (`testing.pl`) directly in your prompt text.
+5. **Persistent Learning (`/learn`)**: Use the `/learn` slash command after refining a generated snippet so the assistant persists the new style rules for future interactions.
+
+#### Example Workspace Rule (`.agents/rules/prolog_style.md`)
+
+```markdown
+# Custom Prolog Code Style Standards
+
+## Rule: Prefer Clean AST Functors over Tagged Lists
+Always represent abstract syntax trees with explicit principal functors rather than ad-hoc lists or tuples.
+
+### Preferred Example:
+lit(Chars)
+seq(Left, Right)
+alt(Left, Right)
+
+### Prohibited Example:
+[lit, Chars]
+[seq, Left, Right]
+```
+
+#### Precedence Hierarchy
+```text
+Workspace Rules & Custom Skills (.agents/)   [Highest - Overrides toolkit defaults]
+   ↓
+Global User Rules (~/.gemini/config/)
+   ↓
+Toolkit Built-in Standards & Defaults         [Lowest]
+```
+
+
+
 ---
 
 ## Applying this Architectural Pattern to Other Programming Languages

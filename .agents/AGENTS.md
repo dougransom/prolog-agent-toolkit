@@ -44,6 +44,10 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
   - Avoid absolute `file://` hyperlinks on the local filesystem that break on other machines or on GitHub.
   - When encountering or adding local file links, use portable relative Markdown links (e.g. `[AGENT_GUIDE.md](AGENT_GUIDE.md)` instead of `file:///path/to/AGENT_GUIDE.md`).
   - If a `file://` link was provided by a human programmer (rather than an AI code agent), ask the programmer if they want to fix it first before replacing it.
+- **Custom Style Overrides & Programmer Preference Precedence**:
+  - Whenever a human programmer provides explicit code generation examples, AST term constructors, mode/determinism contracts, or custom style rules (in prompt text, workspace rules `.agents/AGENTS.md` / `.agents/rules/`, or custom project skills `.agents/skills/`), AI assistants MUST prioritize the programmer's explicit instructions and reference examples over toolkit default choices.
+  - Precedence order: (1) In-prompt instructions & AST constructors; (2) Workspace rules & custom skills (`.agents/`); (3) Global user rules (`~/.gemini/config/`); (4) Toolkit defaults & built-in skills.
+
 
 ## Multi-Engine Dialect Selection & Rules
 
