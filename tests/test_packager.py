@@ -4,7 +4,15 @@ import tempfile
 import tarfile
 import pytest
 
-from prolog_agent_toolkit.packager import build_package, parse_scryer_manifest, parse_pack_pl
+from prolog_agent_toolkit.packager import (
+    build_package,
+    parse_scryer_manifest,
+    parse_pack_pl,
+    PackageBuilder,
+    ScryerManifestParser,
+    SwiPackParser,
+    TauJsonParser,
+)
 
 
 @pytest.fixture
@@ -48,3 +56,46 @@ def test_build_package_swi(temp_pkg_dir):
     dist_dir = os.path.join(temp_pkg_dir, "dist")
     zip_path = os.path.join(dist_dir, "swi_pkg-0.5.0-swi.zip")
     assert os.path.exists(zip_path)
+
+
+class MockCustomParser:
+    manifest_name = "custom-manifest.txt"
+
+    def parse_content(self, content: str):
+        return {"name": "custom_injected_app", "version": "9.9.9"}
+
+    def parse_file(self, filepath: str):
+        return {"name": "custom_injected_app", "version": "9.9.9"}
+
+
+class MockCustomWriter:
+    extension = "mock"
+    written = False
+
+    def write_archive(self, target_dir, archive_path, pkg_name, pkg_ver, filter_fn=None):
+        self.written = True
+        with open(archive_path, "w") as f:
+            f.write(f"{pkg_name}=={pkg_ver}")
+
+
+def test_package_builder_dependency_injection(temp_pkg_dir):
+    manifest_path = os.path.join(temp_pkg_dir, "custom-manifest.txt")
+    with open(manifest_path, "w") as f:
+        f.write("custom content")
+
+    mock_parser = MockCustomParser()
+    mock_writer = MockCustomWriter()
+
+    builder = PackageBuilder(
+        parsers=[mock_parser],
+        archive_writers={"custom_engine": mock_writer}
+    )
+
+    res = builder.build(target_dir=temp_pkg_dir, engine="custom_engine", out_dir="dist")
+    assert res == 0
+    assert mock_writer.written is True
+
+    out_file = os.path.join(temp_pkg_dir, "dist", "custom_injected_app-9.9.9-custom_engine.mock")
+    assert os.path.exists(out_file)
+    with open(out_file, "r") as f:
+        assert f.read() == "custom_injected_app==9.9.9"

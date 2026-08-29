@@ -4,136 +4,206 @@ import tarfile
 import zipfile
 import re
 import json
+from typing import Dict, List, Optional, Protocol, Tuple, Callable
 
 sys.dont_write_bytecode = True
 os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
 
 
-def parse_scryer_manifest(filepath: str) -> dict:
-    """
-    Parse scryer-manifest.pl (bakage manifest format) for package metadata.
-    Format is Prolog facts: name("pkg"), version("0.1.0"), main_file("...").
-    """
-    metadata = {}
-    if not os.path.exists(filepath):
+# --- Abstract Protocols / Interfaces ---
+
+class ManifestParser(Protocol):
+    manifest_name: str
+
+    def parse_content(self, content: str) -> Dict[str, str]: ...
+    def parse_file(self, filepath: str) -> Dict[str, str]: ...
+
+
+class ArchiveWriter(Protocol):
+    extension: str
+
+    def write_archive(
+        self,
+        target_dir: str,
+        archive_path: str,
+        pkg_name: str,
+        pkg_ver: str,
+        filter_fn: Optional[Callable[[str], bool]] = None
+    ) -> None: ...
+
+
+# --- Concrete Manifest Parsers ---
+
+class ScryerManifestParser:
+    manifest_name = "scryer-manifest.pl"
+
+    def parse_content(self, content: str) -> Dict[str, str]:
+        metadata = {}
+        name_m = re.search(r"name\(\s*[\"\']?([a-zA-Z0-9_\-]+)[\"\']?\s*\)", content)
+        ver_m = re.search(r"version\(\s*[\"\']?([a-zA-Z0-9_\-\.]+)[\"\']?\s*\)", content)
+        main_m = re.search(r"main_file\(\s*[\"\']?([^\"\']+)[\"\']?\s*\)", content)
+
+        if name_m:
+            metadata["name"] = name_m.group(1)
+        if ver_m:
+            metadata["version"] = ver_m.group(1)
+        if main_m:
+            metadata["main_file"] = main_m.group(1)
+
         return metadata
 
-    with open(filepath, "r", encoding="utf-8") as f:
-        content = f.read()
-
-    name_m = re.search(r"name\(\s*[\"\']?([a-zA-Z0-9_\-]+)[\"\']?\s*\)", content)
-    ver_m = re.search(r"version\(\s*[\"\']?([a-zA-Z0-9_\-\.]+)[\"\']?\s*\)", content)
-    main_m = re.search(r"main_file\(\s*[\"\']?([^\"\']+)[\"\']?\s*\)", content)
-
-    if name_m:
-        metadata["name"] = name_m.group(1)
-    if ver_m:
-        metadata["version"] = ver_m.group(1)
-    if main_m:
-        metadata["main_file"] = main_m.group(1)
-
-    return metadata
-
-
-def parse_pack_pl(filepath: str) -> dict:
-    """Parse SWI/Scryer pack.pl for metadata."""
-    metadata = {}
-    if not os.path.exists(filepath):
-        return metadata
-
-    with open(filepath, "r", encoding="utf-8") as f:
-        content = f.read()
-
-    name_m = re.search(r"name\(\s*['\"]?([a-zA-Z0-9_\-]+)['\"]?\s*\)", content)
-    ver_m = re.search(r"version\(\s*['\"]?([a-zA-Z0-9_\-\.]+)['\"]?\s*\)", content)
-
-    if name_m:
-        metadata["name"] = name_m.group(1)
-    if ver_m:
-        metadata["version"] = ver_m.group(1)
-
-    return metadata
-
-
-def parse_package_json(filepath: str) -> dict:
-    """Parse package.json for Tau Prolog metadata."""
-    metadata = {}
-    if not os.path.exists(filepath):
-        return metadata
-
-    try:
+    def parse_file(self, filepath: str) -> Dict[str, str]:
+        if not os.path.exists(filepath):
+            return {}
         with open(filepath, "r", encoding="utf-8") as f:
-            data = json.load(f)
+            return self.parse_content(f.read())
+
+
+class SwiPackParser:
+    manifest_name = "pack.pl"
+
+    def parse_content(self, content: str) -> Dict[str, str]:
+        metadata = {}
+        name_m = re.search(r"name\(\s*['\"]?([a-zA-Z0-9_\-]+)['\"]?\s*\)", content)
+        ver_m = re.search(r"version\(\s*['\"]?([a-zA-Z0-9_\-\.]+)['\"]?\s*\)", content)
+
+        if name_m:
+            metadata["name"] = name_m.group(1)
+        if ver_m:
+            metadata["version"] = ver_m.group(1)
+
+        return metadata
+
+    def parse_file(self, filepath: str) -> Dict[str, str]:
+        if not os.path.exists(filepath):
+            return {}
+        with open(filepath, "r", encoding="utf-8") as f:
+            return self.parse_content(f.read())
+
+
+class TauJsonParser:
+    manifest_name = "package.json"
+
+    def parse_content(self, content: str) -> Dict[str, str]:
+        metadata = {}
+        try:
+            data = json.loads(content)
             metadata["name"] = data.get("name")
             metadata["version"] = data.get("version")
-    except Exception:
-        pass
+        except Exception:
+            pass
+        return metadata
 
-    return metadata
+    def parse_file(self, filepath: str) -> Dict[str, str]:
+        if not os.path.exists(filepath):
+            return {}
+        try:
+            with open(filepath, "r", encoding="utf-8") as f:
+                return self.parse_content(f.read())
+        except Exception:
+            return {}
 
 
-def build_package(target_dir: str = ".", engine: str = "scryer", out_dir: str = "dist") -> int:
+# --- Concrete Archive Writers ---
+
+class TarGzArchiveWriter:
+    extension = "tar.gz"
+
+    def write_archive(
+        self,
+        target_dir: str,
+        archive_path: str,
+        pkg_name: str,
+        pkg_ver: str,
+        filter_fn: Optional[Callable[[str], bool]] = None
+    ) -> None:
+        with tarfile.open(archive_path, "w:gz") as tar:
+            for root, dirs, files in os.walk(target_dir):
+                dirs[:] = [d for d in dirs if d not in {".git", ".cache", "__pycache__", ".venv", "dist", "node_modules"}]
+                for file in files:
+                    full_path = os.path.join(root, file)
+                    rel_path = os.path.relpath(full_path, target_dir)
+                    if filter_fn is None or filter_fn(rel_path):
+                        arcname = os.path.join(f"{pkg_name}-{pkg_ver}", rel_path)
+                        tar.add(full_path, arcname=arcname)
+
+
+class ZipArchiveWriter:
+    extension = "zip"
+
+    def write_archive(
+        self,
+        target_dir: str,
+        archive_path: str,
+        pkg_name: str,
+        pkg_ver: str,
+        filter_fn: Optional[Callable[[str], bool]] = None
+    ) -> None:
+        with zipfile.ZipFile(archive_path, "w", zipfile.ZIP_DEFLATED) as zf:
+            for root, dirs, files in os.walk(target_dir):
+                dirs[:] = [d for d in dirs if d not in {".git", ".cache", "__pycache__", ".venv", "dist", "node_modules"}]
+                for file in files:
+                    full_path = os.path.join(root, file)
+                    rel_path = os.path.relpath(full_path, target_dir)
+                    if filter_fn is None or filter_fn(rel_path):
+                        arcname = os.path.join(f"{pkg_name}-{pkg_ver}", rel_path)
+                        zf.write(full_path, arcname)
+
+
+# --- Dependency Injection Package Builder ---
+
+class PackageBuilder:
     """
-    Validate manifest and build distribution archive for Prolog package.
-    Supports scryer-manifest.pl (Scryer bakage), pack.pl (SWI/Scryer), and package.json (Tau).
+    Package builder orchestrator leveraging injected manifest parsers and archive writers.
     """
-    target_dir = os.path.abspath(target_dir)
-    engine = (engine or "scryer").lower()
 
-    scryer_manifest = os.path.join(target_dir, "scryer-manifest.pl")
-    pack_pl = os.path.join(target_dir, "pack.pl")
-    package_json = os.path.join(target_dir, "package.json")
+    def __init__(
+        self,
+        parsers: Optional[List[ManifestParser]] = None,
+        archive_writers: Optional[Dict[str, ArchiveWriter]] = None
+    ):
+        self.parsers = parsers or [
+            ScryerManifestParser(),
+            SwiPackParser(),
+            TauJsonParser()
+        ]
+        self.archive_writers = archive_writers or {
+            "swi": ZipArchiveWriter(),
+            "scryer": TarGzArchiveWriter(),
+            "trealla": TarGzArchiveWriter(),
+            "tau": TarGzArchiveWriter(),
+            "iso": TarGzArchiveWriter(),
+            "default": TarGzArchiveWriter()
+        }
 
-    metadata = {}
-    manifest_type = None
+    def resolve_manifest(self, target_dir: str, engine: str) -> Tuple[Dict[str, str], Optional[str]]:
+        preferred_manifest = {
+            "scryer": "scryer-manifest.pl",
+            "iso": "scryer-manifest.pl",
+            "trealla": "scryer-manifest.pl",
+            "swi": "pack.pl",
+            "tau": "package.json"
+        }.get(engine)
 
-    if engine in ("scryer", "iso", "trealla"):
-        if os.path.exists(scryer_manifest):
-            metadata = parse_scryer_manifest(scryer_manifest)
-            manifest_type = "scryer-manifest.pl"
-        elif os.path.exists(pack_pl):
-            metadata = parse_pack_pl(pack_pl)
-            manifest_type = "pack.pl"
-    elif engine == "swi":
-        if os.path.exists(pack_pl):
-            metadata = parse_pack_pl(pack_pl)
-            manifest_type = "pack.pl"
-    elif engine == "tau":
-        if os.path.exists(package_json):
-            metadata = parse_package_json(package_json)
-            manifest_type = "package.json"
+        if preferred_manifest:
+            parser = next((p for p in self.parsers if getattr(p, "manifest_name", None) == preferred_manifest), None)
+            if parser:
+                filepath = os.path.join(target_dir, parser.manifest_name)
+                if os.path.exists(filepath):
+                    meta = parser.parse_file(filepath)
+                    if meta.get("name"):
+                        return meta, parser.manifest_name
 
-    # General fallback
-    if not metadata.get("name"):
-        if os.path.exists(scryer_manifest):
-            metadata = parse_scryer_manifest(scryer_manifest)
-            manifest_type = "scryer-manifest.pl"
-        elif os.path.exists(pack_pl):
-            metadata = parse_pack_pl(pack_pl)
-            manifest_type = "pack.pl"
+        for parser in self.parsers:
+            filepath = os.path.join(target_dir, parser.manifest_name)
+            if os.path.exists(filepath):
+                meta = parser.parse_file(filepath)
+                if meta.get("name"):
+                    return meta, parser.manifest_name
 
-    pkg_name = metadata.get("name") or os.path.basename(target_dir)
-    pkg_ver = metadata.get("version") or "0.1.0"
+        return {}, None
 
-    print(f"=== Prolog Agent Packager ===")
-    print(f"Engine Target: {engine}")
-    print(f"Manifest File: {manifest_type or 'None found'}")
-    print(f"Package Name : {pkg_name}")
-    print(f"Package Vers : {pkg_ver}")
-
-    # Validate main_file if specified in scryer-manifest.pl
-    main_file = metadata.get("main_file")
-    if main_file:
-        main_path = os.path.join(target_dir, main_file)
-        if not os.path.exists(main_path):
-            sys.stderr.write(f"Warning: Declared main_file '{main_file}' in scryer-manifest.pl not found at {main_path}\n")
-
-    dist_path = os.path.join(target_dir, out_dir)
-    os.makedirs(dist_path, exist_ok=True)
-
-    archive_base = f"{pkg_name}-{pkg_ver}-{engine}"
-
-    def should_include(rel_path: str) -> bool:
+    def default_filter(self, rel_path: str) -> bool:
         parts = rel_path.split(os.sep)
         ignore_dirs = {".git", ".cache", "__pycache__", ".venv", ".pytest_cache", "dist", "node_modules"}
         if any(p in ignore_dirs for p in parts):
@@ -142,32 +212,54 @@ def build_package(target_dir: str = ".", engine: str = "scryer", out_dir: str = 
             return False
         return True
 
-    if engine == "swi":
-        archive_name = f"{archive_base}.zip"
-        archive_file = os.path.join(dist_path, archive_name)
-        print(f"Building SWI pack zip archive: {archive_file}...")
-        with zipfile.ZipFile(archive_file, "w", zipfile.ZIP_DEFLATED) as zf:
-            for root, dirs, files in os.walk(target_dir):
-                dirs[:] = [d for d in dirs if d not in {".git", ".cache", "__pycache__", ".venv", "dist", "node_modules"}]
-                for file in files:
-                    full_path = os.path.join(root, file)
-                    rel_path = os.path.relpath(full_path, target_dir)
-                    if should_include(rel_path):
-                        arcname = os.path.join(f"{pkg_name}-{pkg_ver}", rel_path)
-                        zf.write(full_path, arcname)
-    else:
-        archive_name = f"{archive_base}.tar.gz"
-        archive_file = os.path.join(dist_path, archive_name)
-        print(f"Building Scryer/ISO bakage tar.gz archive: {archive_file}...")
-        with tarfile.open(archive_file, "w:gz") as tar:
-            for root, dirs, files in os.walk(target_dir):
-                dirs[:] = [d for d in dirs if d not in {".git", ".cache", "__pycache__", ".venv", "dist", "node_modules"}]
-                for file in files:
-                    full_path = os.path.join(root, file)
-                    rel_path = os.path.relpath(full_path, target_dir)
-                    if should_include(rel_path):
-                        arcname = os.path.join(f"{pkg_name}-{pkg_ver}", rel_path)
-                        tar.add(full_path, arcname=arcname)
+    def build(self, target_dir: str = ".", engine: str = "scryer", out_dir: str = "dist") -> int:
+        target_dir = os.path.abspath(target_dir)
+        engine = (engine or "scryer").lower()
 
-    print(f"Package successfully built at: {archive_file}")
-    return 0
+        metadata, manifest_type = self.resolve_manifest(target_dir, engine)
+
+        pkg_name = metadata.get("name") or os.path.basename(target_dir)
+        pkg_ver = metadata.get("version") or "0.1.0"
+
+        print(f"=== Prolog Agent Packager ===")
+        print(f"Engine Target: {engine}")
+        print(f"Manifest File: {manifest_type or 'None found'}")
+        print(f"Package Name : {pkg_name}")
+        print(f"Package Vers : {pkg_ver}")
+
+        main_file = metadata.get("main_file")
+        if main_file:
+            main_path = os.path.join(target_dir, main_file)
+            if not os.path.exists(main_path):
+                sys.stderr.write(f"Warning: Declared main_file '{main_file}' in manifest not found at {main_path}\n")
+
+        dist_path = os.path.join(target_dir, out_dir)
+        os.makedirs(dist_path, exist_ok=True)
+
+        writer = self.archive_writers.get(engine, self.archive_writers.get("default", TarGzArchiveWriter()))
+        archive_name = f"{pkg_name}-{pkg_ver}-{engine}.{writer.extension}"
+        archive_file = os.path.join(dist_path, archive_name)
+
+        print(f"Building {engine} archive ({writer.extension}): {archive_file}...")
+        writer.write_archive(target_dir, archive_file, pkg_name, pkg_ver, filter_fn=self.default_filter)
+
+        print(f"Package successfully built at: {archive_file}")
+        return 0
+
+
+# --- Functions for Backward Compatibility ---
+
+def parse_scryer_manifest(filepath: str) -> dict:
+    return ScryerManifestParser().parse_file(filepath)
+
+
+def parse_pack_pl(filepath: str) -> dict:
+    return SwiPackParser().parse_file(filepath)
+
+
+def parse_package_json(filepath: str) -> dict:
+    return TauJsonParser().parse_file(filepath)
+
+
+def build_package(target_dir: str = ".", engine: str = "scryer", out_dir: str = "dist") -> int:
+    return PackageBuilder().build(target_dir=target_dir, engine=engine, out_dir=out_dir)
