@@ -31,3 +31,8 @@ def get_version() -> str:
 
 
 __version__ = get_version()
+
+from prolog_agent_toolkit.session import PrologSession, QueryResult
+
+__all__ = ["__version__", "get_version", "PrologSession", "QueryResult"]
+

@@ -16,6 +16,8 @@ from prolog_agent_toolkit.release import run_release, check_versions
 from prolog_agent_toolkit.hooks import install_hooks
 from prolog_agent_toolkit.discovery import discover_capabilities, format_discovery_report
 from prolog_agent_toolkit.packager import PackageBuilder
+from prolog_agent_toolkit.session import PrologSession
+
 
 
 def list_subagents(agents_dir: str = ".agents/agents") -> None:
@@ -50,6 +52,8 @@ def prolog_agent_main() -> None:
     if not args or args[0] in ("-h", "--help", "help"):
         print("Prolog Agent Toolkit CLI")
         print("Usage:")
+        print("  prolog-agent query <query-term> [--engine scryer|swi|trealla|tau] [--file <file.pl>] [--timeout 20s]")
+        print("  prolog-agent repl [--engine scryer|swi|trealla|tau] [--file <file.pl>] [--timeout 20s]")
         print("  prolog-agent init <project-name> [--dialect|--engine scryer|swi|trealla|tau|iso]")
         print("  prolog-agent template <project-name> [--dialect|--engine scryer|swi|trealla|tau|iso]")
         print("  prolog-agent module <module-name> [--dialect|--engine scryer|swi|trealla|tau|iso]")
@@ -62,6 +66,7 @@ def prolog_agent_main() -> None:
         print("  prolog-agent list-subagents")
         print("  prolog-agent validate-skills")
         sys.exit(0)
+
 
     cmd = args[0]
 
@@ -164,7 +169,67 @@ def prolog_agent_main() -> None:
         exit_code = install_hooks(hook_type=hook_type)
         sys.exit(exit_code)
 
+    elif cmd == "query":
+        if len(args) < 2:
+            sys.stderr.write("Error: Missing query string for prolog-agent query.\n")
+            sys.stderr.write("Usage: prolog-agent query <query-term> [--engine <engine>] [--file <file.pl>] [--timeout <timeout>]\n")
+            sys.exit(1)
+        query_str = args[1]
+        engine = get_dialect()
+        file_path = None
+        if "--file" in args:
+            idx = args.index("--file")
+            if idx + 1 < len(args):
+                file_path = args[idx + 1]
+        timeout_val = None
+        if "--timeout" in args:
+            idx = args.index("--timeout")
+            if idx + 1 < len(args):
+                timeout_val = args[idx + 1]
+
+        files = [file_path] if file_path else []
+        with PrologSession(engine=engine, files=files, timeout=timeout_val) as session:
+            res = session.query(query_str)
+            if res.output:
+                print(res.output)
+            sys.exit(res.exit_code or 0)
+
+    elif cmd == "repl":
+        engine = get_dialect()
+        file_path = None
+        if "--file" in args:
+            idx = args.index("--file")
+            if idx + 1 < len(args):
+                file_path = args[idx + 1]
+        timeout_val = None
+        if "--timeout" in args:
+            idx = args.index("--timeout")
+            if idx + 1 < len(args):
+                timeout_val = args[idx + 1]
+
+        files = [file_path] if file_path else []
+        print(f"Prolog Agent Toolkit Interactive Session [{engine}]")
+        print("Type Prolog queries ending with '.' (or 'halt.' to exit):")
+        with PrologSession(engine=engine, files=files, timeout=timeout_val) as session:
+            while session.is_alive():
+                try:
+                    q = input("?- ").strip()
+                    if not q:
+                        continue
+                    if q == "halt.":
+                        break
+                    res = session.query(q)
+                    if res.output:
+                        print(res.output)
+                    if res.timed_out:
+                        print("[prolog-safe] Session terminated due to query timeout.")
+                        break
+                except (EOFError, KeyboardInterrupt):
+                    break
+        sys.exit(0)
+
     elif cmd == "list-subagents":
+
         list_subagents()
         sys.exit(0)
 

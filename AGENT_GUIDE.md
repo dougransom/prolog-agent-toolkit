@@ -59,9 +59,10 @@ Follow the **AI Agent Contribution Protocol** in [`CONTRIBUTING.md`](CONTRIBUTIN
 
 ### Q11: Are unit tests or package manifests required for simple/toplevel use cases?
 No. Scaffolding creates `tests/` and manifests (`bakage.toml`/`pack.pl`) as a best practice so AI agents can perform automated test verification. However, safety runners (`scryer-safe`, `swi-safe`, `trealla-safe`, `prolog-safe`) work standalone:
-- **Interactive REPL**: Run `scryer-safe` or `swi-safe` directly to launch a sandboxed top-level REPL without any project or tests.
+- **Interactive REPL & Query Posting**: Run `prolog-agent query "<query>"` or `prolog-agent repl` (or Python `PrologSession`) to post queries to a running top-level interpreter. The interpreter stays alive across queries and only terminates if a posted query exceeds the safety timeout.
 - **Scratch Scripts**: Run `scryer-safe scratch.pl` to execute standalone scripts without a test suite or manifest.
 - **Minimal Codebases**: Users are free to remove `tests/` or manifest files from scaffolded projects.
+
 
 ### Q12: Does this toolkit conflict with general IDE skills or custom skill collections?
 No. General IDE skills handle generic software engineering (Git workflows, web frameworks, databases, general scripts). `prolog-agent-toolkit` focuses strictly on what is idiosyncratic to Prolog (logical purity, reified predicates `if_/3`, ISO `chars` lists, DCGs, multi-engine library discovery, and safe sandboxed execution). The open `.agents/` layout allows both general IDE skills and Prolog skills to load seamlessly side-by-side.

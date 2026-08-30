@@ -290,14 +290,17 @@ PROLOG_TIMEOUT=15s PROLOG_MEMORY_MAX=200M prolog-safe -g "main, halt."
 
 If you do not want a formal package structure or test suite (e.g. playing in the top-level REPL, writing quick logic puzzles, single-file scripts, or classroom learning), use one of these lightweight alternatives:
 
-#### 1. Interactive REPL / Top-Level Exploration (No project, no tests, no manifest)
-Launch an interactive top-level REPL safely from any terminal directory without creating any files, folders, manifests, or test suites:
+#### 1. Interactive REPL / Top-Level Queries & Persistent Sessions
+Launch interactive top-level REPLs or post successive queries safely to a running Prolog interpreter process without losing state between queries:
 ```bash
-scryer-safe    # Interactive Scryer Prolog top-level REPL with resource caps
-swi-safe       # Interactive SWI-Prolog top-level REPL
-trealla-safe   # Interactive Trealla Prolog top-level REPL
+prolog-agent query "X = 42."                       # Single query execution against top-level
+prolog-agent query "test_fact(X)." --file src/main.pl # Query after consulting file
+prolog-agent repl                                  # Persistent interactive query session
+scryer-safe                                         # Interactive Scryer Prolog top-level REPL with resource caps
+swi-safe                                            # Interactive SWI-Prolog top-level REPL
 ```
-Use the top-level to query goals, test unification, and experiment interactively with CPU/RAM safety limits protecting your OS from infinite loops.
+Software agents can also use Python `PrologSession` (`with PrologSession(engine="scryer") as session: session.query("...")`) to post queries to a running top-level interpreter. The interpreter process stays active across queries and is **only terminated if a posted query exceeds the configured timeout**.
+
 
 #### 2. Standalone Single-File & Scratch Scripting
 Create single `.pl` files anywhere without scaffolding a full directory layout:

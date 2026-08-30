@@ -132,7 +132,11 @@ When a user requests a new project or starts a new Prolog repository, AI assista
 ## Safety & Cross-Platform Execution
 
 - **CLI Entry Points**: ALL Prolog code executions MUST use the cross-platform CLI safety entry points (`prolog-agent`, `prolog-safe`, `scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`).
-- **Forbidden Invocations**: AI assistants MUST NEVER execute raw interpreter binaries ([`scryer-prolog`](https://github.com/mthom/scryer-prolog), [`swipl`](https://www.swi-prolog.org/), [`tpl`](https://github.com/trealla-prolog/trealla), [`tau-prolog`](http://tau-prolog.org/), [`gprolog`](http://gprolog.org/), [`ciao`](https://ciao-lang.org/)) directly.
+- **Interactive Top-Level Queries & Persistent Sessions**:
+  - Software agents can post multiple queries successively to a running Prolog interpreter using `PrologSession` or `prolog-agent query`/`prolog-agent repl`.
+  - The Prolog interpreter process remains active across queries and is **only terminated if a posted query fails to respond within the configured timeout** (`prolog-safe` timeout, defaulting to 20s).
+- **Forbidden Invocations**: AI assistants MUST NEVER execute raw interpreter binaries ([`scryer-prolog`](https://github.com/mthom/scryer-prolog), [`swipl`](https://www.swi-prolog.org/), [`tpl`](https://github.com/trealla-prolog/trealla), [`tau-prolog`](http://tau-prolog.org/), [`gprolog`](http://gprolog.org/), [`ciao`](https://ciao-lang.org/)) directly without safety wrappers (`PrologSession`, `prolog-safe`, `scryer-safe`, etc.).
+
 - **Specifying Engine**: Set `PROLOG_ENGINE` environment variable (e.g., `export PROLOG_ENGINE=scryer`, `export PROLOG_ENGINE=swi`, `export PROLOG_ENGINE=trealla`, `export PROLOG_ENGINE=tau`).
 - **Python Invocation & Clean Workspace**:
   - Python tools, test runners, and CLI invocations MUST NOT leave intermediate bytecode or cache artifacts (`__pycache__`, `.pyc`, `.pytest_cache`) in source or test directories.

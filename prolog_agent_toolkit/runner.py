@@ -130,7 +130,8 @@ def run_prolog_safe(
     args: List[str],
     default_engine: str = "scryer",
     default_timeout: str = "20s",
-    default_memory: str = "50M",
+    default_memory: str = "500M",
+
     default_cpu_quota: str = "65%",
 ) -> int:
     """Run Prolog binary safely with cross-platform timeout, priority, memory safeguards, and syntax error diagnostics."""
