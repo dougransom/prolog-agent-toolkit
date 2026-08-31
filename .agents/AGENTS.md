@@ -62,6 +62,21 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
 - **Custom Style Overrides & Programmer Preference Precedence**:
   - Whenever a human programmer provides explicit code generation examples, AST term constructors, mode/determinism contracts, or custom style rules (in prompt text, workspace rules `.agents/AGENTS.md` / `.agents/rules/`, or custom project skills `.agents/skills/`), AI assistants MUST prioritize the programmer's explicit instructions and reference examples over toolkit default choices.
   - Precedence order: (1) In-prompt instructions & AST constructors; (2) Workspace rules & custom skills (`.agents/`); (3) Global user rules (`~/.gemini/config/`); (4) Toolkit defaults & built-in skills.
+- **Homoiconicity & Skill Invocation**: Prolog is homoiconic — terms ARE the program. The agent toolkit leverages this so that skills, capabilities, and invocations are represented as Prolog terms/facts, making them simultaneously documentation, data, and executable code.
+  - **Concrete skill registry format**: Declare skill capabilities as two-argument facts `skill(SkillName, Capabilities)` where `SkillName` is an atom and `Capabilities` is a list of capability atoms:
+    ```prolog
+    skill(prolog_conventions,   [purity, dcg, clp, type_testing, strings]).
+    skill(prolog_code_review,   [purity, determinism, portability, safety, testing]).
+    skill(prolog_clp_constraints, [clp, scheduling, optimization, labeling]).
+    skill(scryer_prolog_standards, [scryer, modules, reif, si, chars]).
+    ```
+  - **Discovery via queries**: Because skills are Prolog facts, capability lookup becomes a standard Prolog query — no string matching or external config parsing required:
+    ```prolog
+    % Find all skills relevant to DCG work:
+    ?- skill(Name, Caps), member(dcg, Caps).
+    ```
+  - **Composition via `call/N`**: Skill dispatch and composition can use `call/N`, `functor/3`, and `=..` — the same mechanisms used for any Prolog goal — making skill orchestration a first-class Prolog program rather than a harness side-channel.
+  - **Tooling consistency**: Programs in the toolkit that process or generate Prolog source SHOULD be written in Prolog itself (ISO core + flat engine shims), consistent with the homoiconicity principle. See Guideline 16 in [prolog-conventions](.agents/skills/prolog-conventions/SKILL.md).
 
 
 ## Multi-Engine Dialect Selection & Rules

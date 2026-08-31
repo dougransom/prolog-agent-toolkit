@@ -69,6 +69,20 @@ While the module loading directive (e.g. `:- use_module(library(clpz)).` in Scry
 14. **Library Steering vs Reading Source**: Rely on dialect-specific Standard Library Cheat Sheets for module header declarations and predicate exports. AI assistants MUST NOT read raw standard library implementation source files, relying instead on concise cheat sheets and pre-trained semantics to save context tokens.
 15. **Safety**: Execute code using `prolog-safe`.
 
+16. **Prolog Tooling in Prolog (ISO Core + Engine Shims)**: Programs that parse, rewrite, transform, analyze, or generate Prolog source code SHOULD themselves be implemented in Prolog, exploiting the language's homoiconicity (code = terms = data). Structure such tools using an ISO-common core with flat, engine-specific shim files:
+    - **ISO core** (`core.pl`): All term reading (`read_term/2`), DCG-based traversal and transformation, `copy_term/2`, `functor/3`, `=..`, and CLP(Z) constraints. This layer MUST NOT use engine-specific predicates or library paths.
+    - **Flat shim files** (`scryer_shim.pl`, `swi_shim.pl`, `trealla_shim.pl`, etc.): Each shim defines only what differs per engine — module load paths, flag names, engine-specific built-ins — and exports a uniform interface consumed by the core.
+    - **Entry point** (`run.pl`): Selects and loads the appropriate shim (e.g. via `PROLOG_ENGINE` flag or conditional compilation), then loads `core.pl`.
+    ```
+    tool/
+      core.pl          % ISO common logic — read_term, DCG transforms, copy_term, CLP(Z)
+      scryer_shim.pl   % Scryer-specific: library paths, flags, use_module headers
+      swi_shim.pl      % SWI-specific: pack paths, string interop, module conventions
+      trealla_shim.pl  % Trealla-specific: WASM bindings, standard library differences
+      run.pl           % entry point: loads engine shim + core.pl
+    ```
+    This mirrors how Lisp macros process Lisp ASTs — the tool and the artifact share the same term language, so the full power of unification, DCGs, and constraints applies to the source being processed.
+
 ## Common ISO Punctuation & Syntax Diagnostics
 
 | Invalid / Non-ISO Syntax | Correct ISO / Scryer Syntax | Fix Rationale |
