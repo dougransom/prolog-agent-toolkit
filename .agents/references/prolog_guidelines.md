@@ -66,6 +66,23 @@ is_zero_bool(X, Truth) :-
     =(X, 0, Truth).
 ```
 
+### Aggressively Prefer `cond_t` over `if_` / `->` (DRY Principle)
+
+When choosing between two values or goals based on a test condition, aggressively prefer `cond_t` over `if_` or soft cuts (`->`):
+
+- **Avoid Duplicating Target Variables (DRY Principle)**: In `if_(G, Val = 'yes', Val = 'no')`, the variable assignment `Val =` is repeated in both clauses. Prefer `cond_t` to isolate the condition and avoid repeating variable unification across branches.
+- **Eliminate Soft Cuts (`->`)**: Replace procedural `(Condition -> Then ; Else)` with pure declarative `cond_t(Condition_1, Then, Else)`.
+
+```prolog
+% BAD: Repeating variable assignment in both branches of if_
+status_name(Code, Status) :-
+    if_(Code = 0, Status = "ok", Status = "error").
+
+% GOOD: Aggressively use cond_t to specify condition and branches cleanly
+status_name(Code, Status) :-
+    cond_t(=(Code, 0), Status = "ok", Status = "error").
+```
+
 ### Higher-Order Programming & Partial Goals (`call/N`, `call//N`, `library(lambda)`)
 
 Prefer higher-order predicates and closures over primitive recursive list traversals or duplicating predicate clauses:

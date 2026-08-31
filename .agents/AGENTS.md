@@ -34,8 +34,8 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
     - **Consistent DCG Threading Pairs**: Use standard conventions for threaded state pairs, such as `L0, L1, ..., L` for character streams and `S0, S1, ..., S` for general state accumulators.
   - Prefer pure efficiency: first-argument indexing, reified `zcompare/3` arithmetic comparison, and early constraint pruning (`dif/2`, [`CLP(Z)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/clpz.pl)).
   - Prefer coroutining (`freeze/2`, `when/2`) to suspend goals until variables are instantiated, preferring [`CLP(Z)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/clpz.pl)/`dif/2` over manual coroutining where specialized constraints apply.
-  - When relating conditions to values, isolate the test-value relation (e.g. `if_(G, A="A", A="B"), write(A)`).
   - **Direct Reification over `if_/3` for Booleans**: Always prefer direct reified predicates (e.g. `=(X, Y, Truth)`, `memberd_t/3`, `tpartition/4`) over wrapping boolean assignments inside `if_/3` (e.g. use `=(X, Y, Truth)` instead of `if_(X = Y, Truth = true, Truth = false)`). Reserve `if_/3` strictly for selecting non-boolean values (`if_(G, Val = 'yes', Val = 'no')`) or executing conditional branches with distinct control paths.
+  - **Prefer `cond_t` over `if_` / `->` (DRY Principle)**: Aggressively prefer `cond_t` over `if_` and `->` when choosing between choices or values based on a test. Use `cond_t` to avoid repeating the same variable or assignment in both the true and false clauses of `if_` (Don't Repeat Yourself principle).
 - **Declarative AI Workflow**: [.agents/skills/prolog-declarative-workflow/SKILL.md](.agents/skills/prolog-declarative-workflow/SKILL.md)
   - Use declarative reasoning based on unification, constraints, and backtracking (never imperative thinking).
   - Specify mode (`+`/`-`), determinism (`det`, `semidet`, `nondet`), and choice-point expectations.
