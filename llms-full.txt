@@ -1,18 +1,77 @@
-# Prolog Agent Toolkit — Full Context (`llms-full.txt`)
+# Prolog Agent Framework & Skills System — Full Context (`llms-full.txt`)
 
-> Comprehensive, consolidated machine-readable context for AI coding assistants and LLMs building Prolog agents, MCP servers, and pure ISO Prolog applications.
+> Comprehensive, consolidated machine-readable context for AI coding assistants, LLMs, and developers building Prolog agents, MCP servers, skills systems, and pure ISO Prolog applications.
+
+```yaml
+Library: prolog-agent-toolkit
+Version: 0.0.1.dev21
+Category: Prolog Agent Framework / Prolog Skills System / Prolog MCP Server / Prolog LLM Integration
+Prolog Engines: Scryer Prolog (Default), SWI-Prolog, Trealla Prolog, Tau Prolog, ISO Prolog
+Format Standard: Open Markdown / JSON Frontmatter (.agents/)
+
+Search Keywords:
+  - Prolog agent framework
+  - Prolog skills system
+  - Prolog MCP server
+  - Prolog LLM integration
+  - Prolog neurosymbolic reasoning
+  - Pure ISO Prolog DCGs and CLP(Z)
+  - Sandboxed Prolog execution
+  - Homoiconic agent architecture
+
+Predicate Manifest:
+  agent_skills_dispatch:
+    - agent_register_skill/2: Register capability bundle for an agent dynamically
+    - agent_dispatch/3: Dispatch structured request term to registered skill handler
+    - agent_skill/2: Homoiconic fact declaring skill capabilities: skill(Name, [Cap1, Cap2])
+    - run_demo/0: Execute agent skill dispatch demonstration
+  prolog_mcp_server:
+    - mcp_list_tools/1: Enumerate registered Model Context Protocol tools and schemas
+    - mcp_call_tool/3: Execute MCP tool with arguments and produce structured response
+    - mcp_handle_request/2: Top-level JSON-RPC / MCP request term dispatcher
+    - run_demo/0: Execute Model Context Protocol server demonstration
+  neurosymbolic_reasoner:
+    - verify_fact/2: Validate relational LLM claims against ground-truth knowledge base
+    - verify_schedule/3: Solve & verify task constraints with CLP(Z) integer arithmetic
+    - run_demo/0: Execute neurosymbolic proof and constraint verification demo
+  skills:
+    - skill/2: Query skill registry facts: skill(SkillName, CapabilitiesList)
+    - skill_path/2: Resolve relative path to skill definition markdown
+    - skill_capability/2: Query whether a skill provides a capability atom
+    - find_skills_by_capability/2: Retrieve all skills matching a capability tag
+  purity_core:
+    - if_/3: Pure truth-reified conditional from library(reif)
+    - dif/2: Pure term inequality constraint
+    - cond_t/3: DRY reified conditional avoiding branch variable duplication
+
+Idioms & Principles:
+  - Homoiconic Skills: Skills and tool capabilities are pure Prolog facts: skill(Name, Caps).
+  - Purity First: Use if_/3, dif/2, and pure DCGs instead of cuts (!) or soft cuts (->).
+  - Strings as Chars: All strings are strictly lists of characters (chars).
+  - Safe Type Inspection: Use library(si) (atom_si/1, list_si/1, integer_si/1).
+  - Sandboxed Safety: Run all goals under resource-capped runners (scryer-safe, swi-safe, prolog-safe).
+
+Message Flow:
+  User / LLM Prompt
+    → MCP Request Term: request(id(Id), method(Method), params(Name, Args))
+    → mcp_handle_request/2
+    → mcp_call_tool/3 / agent_dispatch/3
+    → Pure Prolog Goal Execution (with CLP(Z) / dif/2)
+    → Structured Response Term: response(id(Id), result(Result))
+```
 
 ---
 
-## 1. System Overview
+## 1. System Overview & Architectural Roles
 
 The **Prolog Agent Toolkit** is a vendor-neutral, multi-engine AI agent toolkit and coding standard for Prolog (supporting Scryer Prolog, SWI-Prolog, Trealla Prolog, Tau Prolog, and standard ISO Prolog).
 
-It addresses the primary reasons LLMs struggle with Prolog:
-1. **Imperative Bias**: LLMs default to imperative loops and non-logical cuts (`!`). The toolkit provides pure declarative patterns using `library(reif)` (`if_/3`, `dif/2`), pure DCGs, and `library(si)`.
-2. **String Types**: LLMs often generate SWI-style string objects or atoms for text. The toolkit enforces ISO standard `chars` lists with `double_quotes` set to `chars`.
-3. **Execution Safety**: Unbounded queries can lock up machines or run out of memory. The toolkit provides sandboxed wrappers (`scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`, `prolog-safe`) enforcing execution timeouts and resource quotas.
-4. **Agent Homoiconicity**: Prolog terms represent both data and executable code. Agent skills, capabilities, and MCP tool definitions are represented as pure Prolog facts.
+### Core Architectural Roles:
+1. **Prolog Agent Framework**: Pure declarative agent structuring using state difference lists, message passing, and term unifications.
+2. **Prolog Skills System**: Open Markdown (`.agents/skills/`) and homoiconic Prolog term registries (`skill(Name, Caps)`) for dynamic skill discovery.
+3. **Prolog MCP Server**: Standard Model Context Protocol implementations providing JSON-RPC tool endpoints for external AI harnesses.
+4. **Prolog LLM Integration**: Neurosymbolic pipelines pairing LLM natural-language heuristics with Prolog's ground-truth verification and `CLP(Z)` constraint reasoning.
+5. **Execution Sandboxing**: Resource-capped safety runners (`scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`, `prolog-safe`) preventing unbounded loops.
 
 ---
 

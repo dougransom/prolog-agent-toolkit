@@ -1,21 +1,86 @@
-# Prolog Agent Toolkit
+# Prolog Agent Framework & Skills System — prolog-agent-toolkit
 
-> A vendor-neutral, multi-engine (Scryer, SWI, Trealla, Tau) AI agent framework, reusable skills system, coding standards, and sandboxed safety execution toolkit for pure ISO Prolog.
+> A vendor-neutral, multi-engine (Scryer, SWI, Trealla, Tau) AI agent framework, homoiconic skills system, Model Context Protocol (MCP) server architecture, and sandboxed safety execution toolkit for pure ISO Prolog.
 
-The Prolog Agent Toolkit equips AI coding assistants (Google Antigravity, Claude Code, Cursor, Windsurf, GitHub Copilot, Emacs AI) and human developers with pure declarative standards, homoiconic agent skills, Model Context Protocol (MCP) server patterns, CLP(Z) constraint verification, and resource-bounded interpreter runners.
+```yaml
+Library: prolog-agent-toolkit
+Version: 0.0.1.dev21
+Category: Prolog Agent Framework / Prolog Skills System / Prolog MCP Server / Prolog LLM Integration
+Prolog Engines: Scryer Prolog (Default), SWI-Prolog, Trealla Prolog, Tau Prolog, ISO Prolog
+Format Standard: Open Markdown / JSON Frontmatter (.agents/)
 
-## Quick Start & Essential Rules
+Search Keywords:
+  - Prolog agent framework
+  - Prolog skills system
+  - Prolog MCP server
+  - Prolog LLM integration
+  - Prolog neurosymbolic reasoning
+  - Pure ISO Prolog DCGs and CLP(Z)
+  - Sandboxed Prolog execution
+  - Homoiconic agent architecture
 
-- **Pure Logic & Reification**: Always prefer `if_/3` and `dif/2` (from `library(reif)`) over non-logical cuts (`!`) or soft cuts (`->`).
-- **Strings as Chars**: Always represent strings as lists of characters (`chars`). Enforce `double_quotes` as `chars`.
-- **Safe Type Testing**: Prefer `library(si)` (e.g. `atom_si/1`, `list_si/1`, `integer_si/1`) over imperative or non-pure type tests.
-- **Pure DCGs**: Use Definite Clause Grammars for text parsing, tokenization, serialization, and AST transformation. Use `Name//Arity` indicators.
-- **Safety Sandboxing**: Never execute raw Prolog interpreter binaries directly. Always use the sandboxed safety runners (`scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`, `prolog-safe`).
-- **Vendor Neutrality**: Skills and rules use open Markdown/JSON specifications in `.agents/` compatible across all IDEs and agent harnesses.
+Predicate Manifest:
+  agent_skills_dispatch:
+    - agent_register_skill/2: Register capability bundle for an agent dynamically
+    - agent_dispatch/3: Dispatch structured request term to registered skill handler
+    - agent_skill/2: Homoiconic fact declaring skill capabilities: skill(Name, [Cap1, Cap2])
+    - run_demo/0: Execute agent skill dispatch demonstration
+  prolog_mcp_server:
+    - mcp_list_tools/1: Enumerate registered Model Context Protocol tools and schemas
+    - mcp_call_tool/3: Execute MCP tool with arguments and produce structured response
+    - mcp_handle_request/2: Top-level JSON-RPC / MCP request term dispatcher
+    - run_demo/0: Execute Model Context Protocol server demonstration
+  neurosymbolic_reasoner:
+    - verify_fact/2: Validate relational LLM claims against ground-truth knowledge base
+    - verify_schedule/3: Solve & verify task constraints with CLP(Z) integer arithmetic
+    - run_demo/0: Execute neurosymbolic proof and constraint verification demo
+  skills:
+    - skill/2: Query skill registry facts: skill(SkillName, CapabilitiesList)
+    - skill_path/2: Resolve relative path to skill definition markdown
+    - skill_capability/2: Query whether a skill provides a capability atom
+    - find_skills_by_capability/2: Retrieve all skills matching a capability tag
+  purity_core:
+    - if_/3: Pure truth-reified conditional from library(reif)
+    - dif/2: Pure term inequality constraint
+    - cond_t/3: DRY reified conditional avoiding branch variable duplication
 
-## Core Navigation & Architecture
+Idioms & Principles:
+  - Homoiconic Skills: Skills and tool capabilities are pure Prolog facts: skill(Name, Caps).
+  - Purity First: Use if_/3, dif/2, and pure DCGs instead of cuts (!) or soft cuts (->).
+  - Strings as Chars: All strings are strictly lists of characters (chars).
+  - Safe Type Inspection: Use library(si) (atom_si/1, list_si/1, integer_si/1).
+  - Sandboxed Safety: Run all goals under resource-capped runners (scryer-safe, swi-safe, prolog-safe).
 
-- [AGENT_GUIDE.md](AGENT_GUIDE.md): Primary developer and AI agent onboarding blueprint with Top 10 Q&A.
+Message Flow:
+  User / LLM Prompt
+    → MCP Request Term: request(id(Id), method(Method), params(Name, Args))
+    → mcp_handle_request/2
+    → mcp_call_tool/3 / agent_dispatch/3
+    → Pure Prolog Goal Execution (with CLP(Z) / dif/2)
+    → Structured Response Term: response(id(Id), result(Result))
+```
+
+---
+
+## Semantic Discovery & Search Anchors
+
+### Prolog Agent Framework
+The toolkit provides a standardized framework for building AI agents in Prolog. Agents are structured around pure declarative modules, message dispatchers, and stateful difference lists, leveraging Prolog's homoiconic nature to manipulate rules, skills, and subagents as first-class terms.
+
+### Prolog Skills System
+Skills are modular capability packages defined in `.agents/skills/` with YAML frontmatter and Homoiconic Prolog representations in `.agents/skills/skills.pl`. Agents query `skill(Name, Capabilities)` to discover available tools and dispatch requests using `agent_dispatch/3` or `call/N`.
+
+### Prolog MCP Server
+The toolkit implements Model Context Protocol (MCP) server patterns (`examples/prolog_mcp_server.pl`). It exposes Prolog predicates, AST analyzers, and constraint engines as structured JSON-RPC tools consumable by LLMs, Claude Code, Google Antigravity, Cursor, and custom agent harnesses.
+
+### Prolog LLM Integration & Neurosymbolic Reasoning
+Combines probabilistic LLM generation with deterministic Prolog logic (`examples/neurosymbolic_reasoner.pl`). The LLM generates candidate symbolic constraints or semantic claims; Prolog verifies ground-truth consistency and solves combinatorial parameters using `library(clpz)`.
+
+---
+
+## Core File Index & Architecture
+
+- [AGENT_GUIDE.md](AGENT_GUIDE.md): Developer and AI agent onboarding blueprint with Top 10 Q&A.
 - [AGENTS.md](AGENTS.md): Authoritative universal coding guidelines, purity principles, and multi-engine conventions.
 - [AGENT_INDEX.json](AGENT_INDEX.json): Machine-readable index of repository files, entry points, and subagents.
 - [docs/skills_manifest.json](docs/skills_manifest.json): Complete machine-readable JSON manifest of all 23 agent skills.
@@ -24,9 +89,11 @@ The Prolog Agent Toolkit equips AI coding assistants (Google Antigravity, Claude
 - [docs/GLOSSARY.md](docs/GLOSSARY.md): Formal definitions of core Prolog agent and logical purity terminology.
 - [docs/ANTI_PATTERNS.md](docs/ANTI_PATTERNS.md): Catalog of prohibited imperative anti-patterns and their pure declarative alternatives.
 
+---
+
 ## Reusable Agent Skills (`.agents/skills/`)
 
-- [.agents/skills/prolog-conventions/SKILL.md](.agents/skills/prolog-conventions/SKILL.md): Canonical common ISO coding standards, variable naming, reification, and pure DCGs.
+- [.agents/skills/prolog-conventions/SKILL.md](.agents/skills/prolog-conventions/SKILL.md): Canonical ISO coding standards, variable naming, reification, and pure DCGs.
 - [.agents/skills/prolog-clp-constraints/SKILL.md](.agents/skills/prolog-clp-constraints/SKILL.md): Combinatorial optimization, scheduling, labeling, and arithmetic constraints with `library(clpz)`.
 - [.agents/skills/prolog-dcg-mastery/SKILL.md](.agents/skills/prolog-dcg-mastery/SKILL.md): Advanced DCG patterns, AST construction, pushback lookahead without cuts, and tokenizers.
 - [.agents/skills/prolog-library-discovery/SKILL.md](.agents/skills/prolog-library-discovery/SKILL.md): 7-step discovery protocol for reusing existing libraries before writing code.
@@ -38,12 +105,16 @@ The Prolog Agent Toolkit equips AI coding assistants (Google Antigravity, Claude
 - [.agents/skills/trealla-prolog-standards/SKILL.md](.agents/skills/trealla-prolog-standards/SKILL.md): Trealla Prolog standards and WASM embedded execution.
 - [.agents/skills/tau-prolog-standards/SKILL.md](.agents/skills/tau-prolog-standards/SKILL.md): Tau Prolog in-browser DOM and Node.js execution guidelines.
 
-## Canonical Examples (`examples/`)
+---
+
+## Canonical Working Examples (`examples/`)
 
 - [examples/agent_skills_dispatch.pl](examples/agent_skills_dispatch.pl): Homoiconic agent skill registration, DCG query parsing, and pure term dispatching.
 - [examples/prolog_mcp_server.pl](examples/prolog_mcp_server.pl): Model Context Protocol (MCP) tool schema definitions, validation, and JSON-RPC execution handler.
-- [examples/neurosymbolic_reasoner.pl](examples/neurosymbolic_reasoner.pl): Deterministic proof engine validating LLM claims and task schedules via CLP(Z).
+- [examples/neurosymbolic_reasoner.pl](examples/neurosymbolic_reasoner.pl): Deterministic proof engine validating LLM claims and solving schedule constraints with `library(clpz)`.
 - [examples/README.md](examples/README.md): Instructions for running all examples across Scryer, SWI, and Trealla runners.
+
+---
 
 ## CLI Safety Tools & Commands
 
