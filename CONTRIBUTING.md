@@ -99,7 +99,7 @@ Whenever adding or extending support for a new Prolog engine (e.g. GNU Prolog, C
 
 1. **Metadata & Web Annotations**:
    - `README.md`: Update OpenGraph description `<meta>`, Schema.org JSON-LD snippet `<script type="application/ld+json">`, supported engines table, CLI list, and keywords array.
-   - `schema.org.jsonld`: Update `description` and `keywords` array.
+   - `codemeta.json`: Update `description` and `keywords` array.
    - `pyproject.toml`: Add engine keyword (e.g. `"tau-prolog"`) and script entry point (e.g. `<engine>-safe`).
 2. **CLI Runner & Sandboxing**:
    - `prolog_agent_toolkit/runner.py`: Add binary mapping in `resolve_engine_binary()`.

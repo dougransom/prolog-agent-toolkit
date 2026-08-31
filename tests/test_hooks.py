@@ -18,13 +18,13 @@ def temp_project_dir():
 def test_check_versions_success(temp_project_dir):
     pyproject = os.path.join(temp_project_dir, "pyproject.toml")
     readme = os.path.join(temp_project_dir, "README.md")
-    schema = os.path.join(temp_project_dir, "schema.org.jsonld")
+    codemeta = os.path.join(temp_project_dir, "codemeta.json")
 
     with open(pyproject, "w", encoding="utf-8") as f:
         f.write('[project]\nversion = "1.2.3"\n')
     with open(readme, "w", encoding="utf-8") as f:
         f.write("# Project\n**Version**: `1.2.3`\n")
-    with open(schema, "w", encoding="utf-8") as f:
+    with open(codemeta, "w", encoding="utf-8") as f:
         f.write('{"version": "1.2.3"}\n')
 
     assert check_versions(target_dir=temp_project_dir) == 0

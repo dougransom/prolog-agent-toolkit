@@ -194,7 +194,7 @@ AI assistants provide the virtual and CLI command: `prolog-agent release [--vers
 Whenever a new Prolog engine or system is added or supported in this toolkit, all AI assistants MUST follow the interactive workflow in [.agents/skills/prolog-engine-onboarding/SKILL.md](.agents/skills/prolog-engine-onboarding/SKILL.md) and systematically update:
 1. **Metadata & Web Annotations**:
    - `README.md`: Update OpenGraph description (`<meta property="og:description">`), Schema.org snippet (`<script type="application/ld+json">`), keywords, features list, and engine support tables.
-   - `schema.org.jsonld`: Update `description` and `keywords` array.
+   - `codemeta.json`: Update `description` and `keywords` array.
    - `pyproject.toml`: Add engine tag to `keywords` and CLI entry point script.
 2. **Coding Standards & Dialect Cheat Sheets**:
    - Create `.agents/skills/<engine>-prolog-standards/SKILL.md` detailing ISO/engine compliance rules AND including a comprehensive **Standard Library Cheat Sheet** (import headers, exported predicates, and dialect autoload differences).

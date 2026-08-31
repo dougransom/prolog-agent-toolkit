@@ -59,7 +59,7 @@ def check_versions(target_dir: str = ".") -> int:
         ("scryer-manifest.pl", r"version\(['\"]([^'\"]+)['\"]\)" ),
         ("pack.pl", r"version\(['\"]([^'\"]+)['\"]\)" ),
         ("package.json", r'"version"\s*:\s*"([^"]+)"'),
-        ("schema.org.jsonld", r'"version"\s*:\s*"([^"]+)"'),
+        ("codemeta.json", r'"version"\s*:\s*"([^"]+)"'),
         ("README.md", r'\*\*Version\*\*\s*:\s*`([^`]+)`'),
     ]
 
@@ -139,9 +139,9 @@ def run_release(new_version: str = None, target_dir: str = ".") -> int:
         f'"version": "{new_version}"'
     )
 
-    # 4. Update schema.org.jsonld
+    # 4. Update codemeta.json
     sync_file_version(
-        os.path.join(target_dir, "schema.org.jsonld"),
+        os.path.join(target_dir, "codemeta.json"),
         r'"version"\s*:\s*"[^"]+"',
         f'"version": "{new_version}"'
     )

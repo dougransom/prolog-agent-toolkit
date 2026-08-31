@@ -65,7 +65,7 @@ Update metadata across the entire toolkit:
 2. **`README.md`**:
    - Update features list, CLI command table (`<engine-slug>-safe`), installation prerequisites, and compatibility tables.
    - Update OpenGraph description and Schema.org JSON-LD snippet.
-3. **`schema.org.jsonld`**:
+3. **`codemeta.json`**:
    - Update description and `keywords` list.
 
 ---

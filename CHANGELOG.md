@@ -1,13 +1,19 @@
 ## [0.0.1.dev19] - 2026-08-31
 
 ### Summary of Changes
-- Release v0.0.1.dev19 synchronized across manifest files.
+- Standardized software package metadata format by renaming `schema.org.jsonld` to `codemeta.json` adhering to the CodeMeta / Schema.org JSON-LD standard for software repositories.
+- Updated package URLs in `pyproject.toml` to point to `codemeta.json`.
+- Updated release synchronization (`prolog_agent_toolkit/release.py`) and pre-commit test assertions (`tests/test_hooks.py`) to validate `codemeta.json`.
+- Updated project documentation, file tree maps, and engine onboarding guidelines across `README.md`, `AGENT_GUIDE.md`, `CONTRIBUTING.md`, `docs/index.html`, `docs/adr/0003-pyproject-version-source-of-truth.md`, and `.agents/AGENTS.md`.
 
-### Added / Modified Predicates
-- Dialect updates and purity enhancements.
+### Added / Modified
+- `codemeta.json`: Renamed from `schema.org.jsonld` and added `"codemeta"` keyword.
+- `prolog_agent_toolkit/release.py`: Updated version check and synchronization to target `codemeta.json`.
+- `tests/test_hooks.py`: Updated hook and version parity tests.
+- `pyproject.toml`, `README.md`, `AGENT_GUIDE.md`, `CONTRIBUTING.md`, `docs/index.html`, `docs/adr/0003-pyproject-version-source-of-truth.md`, `.agents/AGENTS.md`, `.agents/skills/prolog-engine-onboarding/SKILL.md`: Updated metadata file references.
 
 ### Breaking Changes
-- None.
+- Renamed repository root metadata file `schema.org.jsonld` to `codemeta.json`.
 
 
 ## [0.0.1.dev18] - 2026-08-31

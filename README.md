@@ -4,12 +4,12 @@
 [![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](https://unlicense.org/)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](pyproject.toml)
 [![Prolog Engines](https://img.shields.io/badge/prolog-Scryer%20%7C%20SWI%20%7C%20Trealla%20%7C%20Tau-purple.svg)](AGENT_GUIDE.md)
-[![Schema.org Metadata](https://img.shields.io/badge/schema.org-JSON--LD-brightgreen.svg)](schema.org.jsonld)
+[![CodeMeta Metadata](https://img.shields.io/badge/CodeMeta-JSON--LD-brightgreen.svg)](codemeta.json)
 [![Share on LinkedIn](https://img.shields.io/badge/Share_on-LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fgithub.com%2Fdougransom%2Fprolog-agent-toolkit)
 
 **Version**: `0.0.1.dev19`  
 **Category**: AI Assistant Developer Tools / Prolog Language Tooling  
-**Metadata**: [schema.org.jsonld](schema.org.jsonld)
+**Metadata**: [codemeta.json](codemeta.json)
 
 A reusable AI agent skills, coding standards, and multi-engine (Scryer, SWI, Trealla, Tau) safety execution toolkit for Prolog.
 
@@ -407,7 +407,7 @@ The interactive workflow guides you through 6 iterative phases:
 2. **Dialect Standards & Cheat Sheet Creation**: Generates `.agents/skills/<engine>-prolog-standards/SKILL.md` containing explicit `:- use_module(library(...)).` headers, exported predicate tables, and dialect autoload rules.
 3. **Safety Runner & CLI Entry Point**: Updates `runner.py`, `cli.py`, and `pyproject.toml` to register `<engine>-safe`.
 4. **Project Initializer & Scaffolding**: Updates `prolog-agent init` and `prolog-agent template` options for `--dialect <engine>`.
-5. **Metadata & Agent Rules**: Updates `.agents/AGENTS.md`, `README.md`, `schema.org.jsonld`, and `pyproject.toml`.
+5. **Metadata & Agent Rules**: Updates `.agents/AGENTS.md`, `README.md`, `codemeta.json`, and `pyproject.toml`.
 6. **Automated Verification & Review**: Runs unit tests (`pytest`) and skill validation (`prolog-agent validate-skills`), asking clarifying questions iteratively until you confirm onboarding is complete.
 
 ---

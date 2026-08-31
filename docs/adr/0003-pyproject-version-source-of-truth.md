@@ -4,7 +4,7 @@
 - **Date**: 2026-08-28
 
 ## Context
-This project contains package manifests and documentation across multiple ecosystems: Python (`pyproject.toml`), Scryer Prolog (`bakage.toml`), SWI-Prolog (`pack.pl`), Tau Prolog (`package.json`), web metadata (`schema.org.jsonld`), and Markdown documentation (`README.md`, `CHANGELOG.md`).
+This project contains package manifests and documentation across multiple ecosystems: Python (`pyproject.toml`), Scryer Prolog (`bakage.toml`), SWI-Prolog (`pack.pl`), Tau Prolog (`package.json`), web metadata (`codemeta.json`), and Markdown documentation (`README.md`, `CHANGELOG.md`).
 
 ## Decision
 [`pyproject.toml`](../../pyproject.toml) is designated as the single canonical source of truth for the project version string.

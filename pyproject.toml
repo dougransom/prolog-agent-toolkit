@@ -53,7 +53,7 @@ Documentation = "https://github.com/dougransom/prolog-agent-toolkit/blob/main/AG
 Repository = "https://github.com/dougransom/prolog-agent-toolkit.git"
 "Issue Tracker" = "https://github.com/dougransom/prolog-agent-toolkit/issues"
 "Changelog" = "https://github.com/dougransom/prolog-agent-toolkit/blob/main/CHANGELOG.md"
-"Schema.org Metadata" = "https://github.com/dougransom/prolog-agent-toolkit/blob/main/schema.org.jsonld"
+"CodeMeta Metadata" = "https://github.com/dougransom/prolog-agent-toolkit/blob/main/codemeta.json"
 
 [project.optional-dependencies]
 dev = [

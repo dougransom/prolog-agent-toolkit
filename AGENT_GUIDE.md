@@ -81,7 +81,7 @@ prolog-agent-toolkit/
 ├── AGENTS.md                        # Universal Agent Rules & Core Guidelines
 ├── README.md                        # Human & Web Overview
 ├── pyproject.toml                   # Version Source of Truth & Package Build Spec
-├── schema.org.jsonld                # Schema.org Metadata Specification
+├── codemeta.json                    # CodeMeta / Schema.org Software Metadata
 │
 ├── docs/                            # Architectural & Machine-Readable Domain Context
 │   ├── repository_ontology.json     # Graph of Module Dependencies & File Relations
