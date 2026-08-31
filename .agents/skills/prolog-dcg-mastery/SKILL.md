@@ -18,6 +18,23 @@ Always include standard DCG libraries across engines:
   ```
 - **SWI / Trealla / Tau**: Standard syntax built-in or provided via standard library.
 
+### ISO DCG Export & Import Notation (`Name//Arity`)
+
+When defining modules or importing DCG non-terminals, always use the ISO double-slash convention (`Name//Arity` where `Arity` is the number of explicit DCG rule arguments):
+
+```prolog
+% Exporting a DCG non-terminal in a module header:
+:- module(json_parser, [
+    json_value//1,   % DCG non-terminal with 1 argument (expands to json_value/3)
+    json_object//1
+]).
+
+% Importing specific DCG non-terminals from another module:
+:- use_module(json_parser, [
+    json_value//1
+]).
+```
+
 ---
 
 ## 2. Bidirectional Parsing & Serialization

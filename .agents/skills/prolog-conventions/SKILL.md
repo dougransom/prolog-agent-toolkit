@@ -18,8 +18,12 @@ Guidelines for writing clean, portable Prolog code aiming for standard ISO compl
    double_item(X, Y) :- Y #= X * 2.
    double_all(Xs, Ys) :- maplist(double_item, Xs, Ys).
    ```
-5. **Standard & Higher-Order DCGs**: Use Definite Clause Grammars (`-->`) for sequence parsing, formatting, and tree transformations. Use `call//N` for higher-order DCG non-terminals:
+5. **Standard & Higher-Order DCGs**: Use Definite Clause Grammars (`-->`) for sequence parsing, formatting, and tree transformations. Use `call//N` for higher-order DCG non-terminals. Always use ISO `Name//Arity` indicator notation (e.g. `parse_item//1`) in `:- module/2` export lists, `:- use_module/2` import lists, and Covington predicate doc headers:
    ```prolog
+   :- module(my_parser, [
+       parse_item//1  % Exports DCG non-terminal parse_item//1 (expands to parse_item/3)
+   ]).
+
    % Parameterizing a DCG rule using call//N closure
    separated_by([], _) --> [].
    separated_by([X|Xs], Sep) -->

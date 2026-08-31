@@ -25,8 +25,8 @@ license: "Public Domain"
 
 ## 2. File & Module Organization
 - One major topic per file.  
-- Export only the predicates meant for external use.  
-- Provide a short module header describing purpose, key predicates, and assumptions.  
+- Export only the predicates meant for external use. Use `Name//Arity` notation for exporting DCG non-terminals in module declarations (e.g. `:- module(my_mod, [rule//1]).`).  
+- Provide a short module header describing purpose, key predicates/DCG non-terminals, and assumptions.  
 - Group related predicates together; avoid scattering definitions.
 
 ---

@@ -31,6 +31,7 @@ Always look for opportunities to use Definite Clause Grammars (DCGs) when workin
 - **Parsing & Tokenizing:** Use DCGs for text, string (`chars`), protocol, or AST parsing instead of string splitting or regex.
 - **Generating & Formatting Text/Code:** Use DCGs for string building, serializing terms, or printing output instead of `append/3` chains or string concatenation.
 - **Sequence Matching & Validation:** Use DCGs to inspect or match patterns over lists of any items without explicit head/tail destructuring.
+- **ISO Indicator & Module Directives (`Name//Arity`):** Use `Name//Arity` (e.g. `parse_token//1`) in `:- module/2` export lists, `:- use_module/2` import lists, Covington comments (`%% rule//Arity`), and predicate identification.
 
 When relating a condition to a value, then doing something further with that value, prefer an approach that isolates the test<->value relation (e.g. `if_(G, V = "A", V = "B"), write(V)` rather than writing `write/1` in each branch):
 
