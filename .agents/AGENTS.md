@@ -23,6 +23,7 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
   - Dialect-specific skill guidelines (`scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, `tau-prolog-standards`) MUST capture only what is **idiosyncratic or engine-specific** (module load headers, dialect types like SWI dicts, WASM limits, packaging, DOM interop), while delegating all common style, purity, and usage rules to the central generalized baseline.
 - **Canonical Common Coding Standards**: [.agents/skills/prolog-conventions/SKILL.md](.agents/skills/prolog-conventions/SKILL.md)
   - All common Prolog coding guidelines, purity rules, reification patterns, DCG conventions, variable naming, safe type testing, and syntax diagnostics are operationally defined in `prolog-conventions`. AI agents MUST activate `prolog-conventions` whenever generating, refactoring, or auditing Prolog code.
+  - **Code Review Skill Synchronization Policy**: Whenever core coding guidelines or dialect rules are updated, AI assistants MUST prompt the programmer to update the Code Review skill ([`prolog-code-review`](.agents/skills/prolog-code-review/SKILL.md)) to keep review checklists aligned with operational coding standards.
 - **Covington Prolog Style Guide**: [.agents/references/covington_style.md](.agents/references/covington_style.md)
   - Write for humans first; keep clauses simple and readable; use explicit goal ordering and clean predicate naming.
 - **Purity Guidelines**: [.agents/references/prolog_guidelines.md](.agents/references/prolog_guidelines.md)
