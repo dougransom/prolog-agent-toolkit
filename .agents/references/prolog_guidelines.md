@@ -48,6 +48,24 @@ print_status(X) :-
     write(Status).
 ```
 
+### Prefer Direct Reified Predicates over Wrapping Booleans in `if_/3`
+
+When working with `library(reif)`, always prefer direct reified predicates over wrapping boolean assignments inside `if_/3`:
+
+- **Use Reified Equality (`=(X, Y, Truth)`)**: Use `=(X, Y, Truth)` (or `X = Y`) directly instead of `if_(X = Y, Truth = true, Truth = false)`.
+- **Use Reified Predicates Directly**: Use reified predicates (e.g. `=/3`, `memberd_t/3`, `tpartition/4`) directly whenever a variable is being bound to boolean `true`/`false` based on a test.
+- **Reserve `if_/3` for Non-Boolean Values & Control Flow**: Reserve `if_/3` strictly for selecting non-boolean values (`if_(G, Val = 'yes', Val = 'no')`) or executing conditional branches with different control paths.
+
+```prolog
+% BAD: Wrapping boolean assignment inside if_/3
+is_zero_bool(X, Truth) :-
+    if_(X = 0, Truth = true, Truth = false).
+
+% GOOD: Use reified equality predicate directly
+is_zero_bool(X, Truth) :-
+    =(X, 0, Truth).
+```
+
 ### Higher-Order Programming & Partial Goals (`call/N`, `call//N`, `library(lambda)`)
 
 Prefer higher-order predicates and closures over primitive recursive list traversals or duplicating predicate clauses:
