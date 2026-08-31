@@ -71,7 +71,7 @@ wheels = [
 
 [[package]]
 name = "prolog-agent-toolkit"
-version = "0.0.1.dev18"
+version = "0.0.1.dev19"
 source = { editable = "." }
 dependencies = [
     { name = "psutil" },

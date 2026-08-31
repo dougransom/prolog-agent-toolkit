@@ -2,7 +2,7 @@
   "@context": "https://schema.org",
   "@type": ["SoftwareSourceCode", "SoftwareApplication"],
   "name": "Prolog Agent Toolkit",
-  "version": "0.0.1.dev18",
+  "version": "0.0.1.dev19",
   "description": "Reusable AI agent skills, coding standards, and multi-engine (Scryer, SWI, Trealla, Tau) safety execution toolkit for Prolog. Compatible with Google Antigravity, Claude Code, GitHub Copilot, Cursor, and Emacs AI tools.",
   "codeRepository": "https://github.com/dougransom/prolog-agent-toolkit",
   "url": "https://github.com/dougransom/prolog-agent-toolkit",

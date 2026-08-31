@@ -7,7 +7,7 @@
 [![Schema.org Metadata](https://img.shields.io/badge/schema.org-JSON--LD-brightgreen.svg)](schema.org.jsonld)
 [![Share on LinkedIn](https://img.shields.io/badge/Share_on-LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fgithub.com%2Fdougransom%2Fprolog-agent-toolkit)
 
-**Version**: `0.0.1.dev18`  
+**Version**: `0.0.1.dev19`  
 **Category**: AI Assistant Developer Tools / Prolog Language Tooling  
 **Metadata**: [schema.org.jsonld](schema.org.jsonld)
 
