@@ -14,8 +14,10 @@
 A reusable AI agent skills, coding standards, and multi-engine (Scryer, SWI, Trealla, Tau) safety execution toolkit for Prolog.
 
 > [!NOTE]
-> **Project Status: Active Development**  
+> **Project Status: Active Development & AI-Driven Origin**  
 > This toolkit is fully usable today for sandboxed Prolog execution, project scaffolding, library discovery, and guiding AI assistants. However, it remains under **active development**.
+>
+> **AI-Driven Development**: This entire project—including all source code, Python CLI tools, Prolog modules, test suites, documentation, agent skills ([`.agents/skills/`](.agents/skills/)), autonomous subagents ([`.agents/agents/`](.agents/agents/)), rules, and metadata manifests—was developed by prompting AI agents with human architectural steering, review, and automated verification.
 >
 > This project is currently hosted in the original Architect's GitHub repository. If there is sufficient interest to build a community of users, it likely will be moved to a [GitHub Organization](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/about-organizations) so the project is not dependent on one person reviewing Pull Requests.
 >
@@ -68,6 +70,7 @@ A reusable AI agent skills, coding standards, and multi-engine (Scryer, SWI, Tre
   - **Prolog Systems & String Types**: Enforcing ISO `chars` lists vs SWI string objects, and explicit module declarations across Scryer, SWI, Trealla, and Tau Prolog.
   - **Sandboxed Interpreter Safety**: Preventing infinite search loops or system resource starvation via resource-capped safety runners (`scryer-safe`, `swi-safe`, `trealla-safe`, `prolog-safe`).
   - **Open Standard `.agents/` Interoperability**: Built on standard Markdown and JSON frontmatter so general IDE skills and Prolog skills coexist without collision.
+- **AI-Driven Development & Provenance**: This entire project—including its Python CLI tools, safety wrappers, Prolog modules, unit tests, documentation, agent skills ([`.agents/skills/`](.agents/skills/)), autonomous subagent definitions ([`.agents/agents/`](.agents/agents/)), schema metadata, and Git hooks—was developed through prompting AI agents (pair programming with AI coding assistants such as Google Antigravity and Claude Code). The human developer steered the system architecture, declarative requirements, prompt design, and empirical test verification.
 
 ---
 
