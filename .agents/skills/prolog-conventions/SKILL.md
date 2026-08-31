@@ -22,16 +22,31 @@ While the module loading directive (e.g. `:- use_module(library(clpz)).` in Scry
 
 ## Core Guidelines
 
-1. **Logical Purity & Impure Construct Restrictions**: Prefer pure predicates (`dif/2`, `if_/3`). NEVER introduce cuts (`!`), negation-as-failure (`\+/1`), or soft cuts (`->`) for performance optimization. If an impure construct (`!`, `\+/1`, `->`) must be introduced for *correctness* (when pure constructs `if_/3` or `dif/2` cannot express the logic), write an explicit inline comment justifying why pure logic constructs were insufficient. Prefer `dif(X, Y)` over `\+ (X = Y)` for sound term inequality.
+1. **Logical Purity & Term Inequality (`dif/2`, `dif/3`)**: Prefer pure predicates (`dif/2`, `dif/3`, `if_/3`). NEVER introduce cuts (`!`), negation-as-failure (`\+/1`), or soft cuts (`->`) for performance optimization. If an impure construct (`!`, `\+/1`, `->`) must be introduced for *correctness* (when pure constructs `if_/3` or `dif/2` cannot express the logic), write an explicit inline comment justifying why pure logic constructs were insufficient.
+   - Prefer `dif(X, Y)` over `\+ (X = Y)` for sound term inequality constraints.
+   - Use `dif(X, Y, Truth)` to reify term inequality into boolean `Truth` (`true` when terms are different, `false` when unified).
+   - Pass partial closure `dif(Val)` to `tfilter/3` for pure higher-order list filtering:
+     ```prolog
+     % Remove all occurrences of 'a' deterministically without cuts
+     remove_a(List, Filtered) :-
+         tfilter(dif(a), List, Filtered).
+     ```
 2. **Strings as Character Lists (`chars`)**: Represent strings and text as lists of characters (`chars`). `double_quotes` must always be set to `chars`.
 3. **Safe Type Testing**: Prefer pure, safe type tests (e.g. `library(si)`: `list_si/1`, `atom_si/1`, `chars_si/1`, `integer_si/1`) over impure non-monotonic type checks (`is_list/1`).
 4. **Descriptive & Idiomatic Variable Naming**: Prefer meaningful, domain-descriptive names (`Tree`, `TokenStream`, `Result`, `Acc`) for public predicate parameters and complex clauses, avoiding arbitrary placeholders (`Arg1`, `P2`). Short, standard names (`X`, `Y`, `Xs`, `Ys`, `N`) remain encouraged in tight list traversals, mathematical constraints, and local closures. For dual-mode/polymorphic predicates, use clear parameter names (`InputOrMatch`, `RestOrState`). Use `L0, L1, ..., L` for character stream pairs and `S0, S1, ..., S` for state accumulator pairs.
-5. **Direct Reification & `cond_t` (DRY Principle)**: Prefer direct reified predicates (`=(X, Y, Truth)`, `memberd_t/3`) over wrapping boolean assignments inside `if_/3`. Aggressively prefer `cond_t` over `if_` and `->` when selecting between choices or values to avoid repeating target variable assignments across true and false branches (Don't Repeat Yourself principle).
-6. **Higher-Order Logic & Lambdas**: Prefer passing partial goals/closures to higher-order predicates (`call/N`, `maplist/N`, `foldl/N`, `tfilter/3`, `include/3`, `exclude/3`) and `library(lambda)` (`\X^...`, `\X^Y^Goal`) over writing primitive recursive list traversals:
+5. **Direct Reification & `cond_t` (DRY Principle)**: Prefer direct reified predicates (`=(X, Y, Truth)`, `memberd_t/3`, `dif/3`) over wrapping boolean assignments inside `if_/3`. Aggressively prefer `cond_t` over `if_` and `->` when selecting between choices or values to avoid repeating target variable assignments across true and false branches (Don't Repeat Yourself principle).
+6. **Higher-Order Logic, Lambdas & Reified Traversals (`tfilter/3`, `tpartition/4`)**: Prefer passing partial goals/closures to higher-order predicates (`call/N`, `maplist/N`, `foldl/N`, `tfilter/3`, `tpartition/4`) and `library(lambda)` (`\X^...`, `\X^Y^Goal`) over writing primitive recursive list traversals or non-reified `include/3`/`exclude/3`:
    ```prolog
    % Prefer maplist/N with partial goal closure over manual recursive loops
    double_item(X, Y) :- Y #= X * 2.
    double_all(Xs, Ys) :- maplist(double_item, Xs, Ys).
+
+   % Pure reified list filtering and partitioning
+   keep_zeros(Numbers, Zeros) :-
+       tfilter((=)(0), Numbers, Zeros).
+
+   partition_zeros(Numbers, Zeros, NonZeros) :-
+       tpartition((=)(0), Numbers, Zeros, NonZeros).
    ```
 7. **Standard & Higher-Order DCGs**: Use Definite Clause Grammars (`-->`) for sequence parsing, formatting, and tree transformations. Use `call//N` for higher-order DCG non-terminals. Always use ISO `Name//Arity` indicator notation (e.g. `parse_item//1`) in `:- module/2` export lists, `:- use_module/2` import lists, and Covington predicate doc headers:
    ```prolog
