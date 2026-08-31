@@ -52,7 +52,7 @@ To allow AI coding agents to safely write, test, refactor, and run pure, clean P
 - System Standards: [`.agents/skills/scryer-prolog-standards/SKILL.md`](.agents/skills/scryer-prolog-standards/SKILL.md), [`.agents/skills/swi-prolog-standards/SKILL.md`](.agents/skills/swi-prolog-standards/SKILL.md)
 
 ### Q8: Which skills already exist?
-21 declarative skills are cataloged in [`.agents/skills.json`](.agents/skills.json), spanning [`CLP(Z)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/clpz.pl), pure DCGs, tabling, web services, testing, packaging, profiling, and engine onboarding.
+23 declarative skills are cataloged in [`docs/skills_manifest.json`](docs/skills_manifest.json) and [`.agents/skills/skills.pl`](.agents/skills/skills.pl), spanning [`CLP(Z)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/clpz.pl), pure DCGs, tabling, web services, testing, packaging, profiling, and engine onboarding.
 
 ### Q9: What should not be duplicated?
 Review [`docs/ANTI_PATTERNS.md`](docs/ANTI_PATTERNS.md) before writing new code. Never re-implement syntax checking (use `prolog_agent_toolkit.syntax_checker`), hardcode version strings, or invoke raw interpreter binaries ([`scryer-prolog`](https://github.com/mthom/scryer-prolog), [`swipl`](https://www.swi-prolog.org/)) directly.
@@ -70,12 +70,35 @@ No. Scaffolding creates `tests/` and manifests (`bakage.toml`/`pack.pl`) as a be
 ### Q12: Does this toolkit conflict with general IDE skills or custom skill collections?
 No. General IDE skills handle generic software engineering (Git workflows, web frameworks, databases, general scripts). `prolog-agent-toolkit` focuses strictly on what is idiosyncratic to Prolog (logical purity, reified predicates `if_/3`, ISO `chars` lists, DCGs, multi-engine library discovery, and safe sandboxed execution). The open `.agents/` layout allows both general IDE skills and Prolog skills to load seamlessly side-by-side.
 
+### Q13: How do downstream Prolog repositories (e.g. `regexp_dcg`) consume this toolkit?
+Repositories integrate the toolkit via Git Submodule or symlinks:
+```bash
+# 1. Add as submodule:
+git submodule add https://github.com/dougransom/prolog-agent-toolkit.git .agents-toolkit
+
+# 2. Inherit toolkit skills in .agents/skills.json:
+mkdir -p .agents
+cat << 'EOF' > .agents/skills.json
+{
+  "entries": [
+    { "path": "skills" },
+    { "path": ".agents-toolkit/.agents/skills" }
+  ]
+}
+EOF
+
+# 3. Link root AGENTS.md to submodule rules:
+ln -s .agents-toolkit/.agents/AGENTS.md AGENTS.md
+```
+
 ---
 
 ## 2. Information Architecture & Key Files Map
 
 ```text
 prolog-agent-toolkit/
+├── llms.txt                         # Machine-Readable LLM Summary & Search Anchors
+├── llms-full.txt                    # Consolidated Full Context for AI Coding Agents
 ├── AGENT_GUIDE.md                   # Primary Onboarding Blueprint (This File)
 ├── AGENT_INDEX.json                 # Machine-Readable File Index & Directory Map
 ├── AGENTS.md                        # Universal Agent Rules & Core Guidelines
@@ -83,9 +106,16 @@ prolog-agent-toolkit/
 ├── pyproject.toml                   # Version Source of Truth & Package Build Spec
 ├── codemeta.json                    # CodeMeta / Schema.org Software Metadata
 │
+├── examples/                        # Canonical Runnable Agent & MCP Examples
+│   ├── README.md                    # Multi-Engine Execution Guide
+│   ├── agent_skills_dispatch.pl     # Homoiconic Skill Registry & DCG Dispatcher
+│   ├── prolog_mcp_server.pl         # Model Context Protocol (MCP) JSON-RPC Server
+│   └── neurosymbolic_reasoner.pl    # Neurosymbolic CLP(Z) & Proof Engine
+│
 ├── docs/                            # Architectural & Machine-Readable Domain Context
 │   ├── repository_ontology.json     # Graph of Module Dependencies & File Relations
 │   ├── capability_manifest.json     # Executable CLI & Subagent Tool Registry
+│   ├── skills_manifest.json         # Machine-Readable Skills Catalog (23 skills)
 │   ├── GLOSSARY.md                  # Detailed Terminology Reference
 │   ├── terminology.json             # Machine-Readable Term Dictionary
 │   ├── ANTI_PATTERNS.md             # Forbidden Coding Practices & Helper Inventory
@@ -96,7 +126,7 @@ prolog-agent-toolkit/
 │   ├── skills.json                  # Detailed Skill Metadata Catalog
 │   ├── agents/                      # 8 Autonomous Subagents
 │   ├── references/                  # Purity, Covington Style & Steering Guidelines
-│   └── skills/                      # 21 Declarative Skill Modules
+│   └── skills/                      # 23 Declarative Skill Modules & skills.pl
 │
 ├── prolog_agent_toolkit/            # Python Engine & CLI Package
 │   ├── cli.py                       # Main CLI Commands (`prolog-agent`, `prolog-safe`)
