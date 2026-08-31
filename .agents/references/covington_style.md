@@ -41,9 +41,11 @@ license: "Public Domain"
 
 ## 4. Variable Naming
 - Variables start with a capital letter.  
-- Use meaningful names: `List`, `Tree`, `Result`, `Count`.  
+- Prefer meaningful, domain-descriptive names (`List`, `Tree`, `Result`, `Acc`) for public predicate parameters and non-trivial clauses, avoiding arbitrary placeholders like `Arg1` or `P2`.  
+- Short, standard variable names (`X`, `Y`, `Xs`, `Ys`, `N`) are appropriate and encouraged in tight list processing, mathematical constraints, and local higher-order closures.  
+- For dual-mode or polymorphic predicates (e.g. direct lists vs. DCG difference-lists), use parameter names that clarify both roles (`InputOrMatch`, `RestOrState`).  
+- Follow standard conventions for threaded DCG difference-lists: `L0, L1, ..., L` for character streams and `S0, S1, ..., S` for state accumulators.  
 - Use `_` or `_Var` for intentionally unused variables.  
-- Avoid single-letter names except in tight, obvious contexts.
 
 ---
 

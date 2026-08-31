@@ -27,6 +27,11 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
   - Prefer **clean vs. defaulty data representations** where element kinds are distinguished by principal functors (e.g. `leaf(L)` vs `node(L, R)`).
   - Prefer higher-order constructs (`call/N`, `call//N`, `maplist/N`, `foldl/N`) and [`library(lambda)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/lambda.pl) (`\X^...`, `\X^Y^Goal`) to avoid duplicating predicate structures or DCG traversals.
   - **ISO DCG Indicator Convention (`Name//Arity`)**: Always use `Name//Arity` notation (e.g. `parse_item//1`) for DCG non-terminals in module export lists (`:- module(M, [rule//N]).`), import lists (`:- use_module(M, [rule//N]).`), Covington doc headers (`%% rule//N`), and predicate identification.
+  - **Variable & Indicator Naming Guidelines**:
+    - **Prefer Meaningful Variable Names**: Use domain-descriptive names (`Tree`, `TokenStream`, `Result`, `Acc`) for public predicate parameters and non-trivial clauses, avoiding arbitrary placeholders like `Arg1` or `P2`.
+    - **Idiomatic Short Names in Local Contexts**: Short, standard variable names (`X`, `Y`, `Xs`, `Ys`, `N`) are encouraged in tight list traversals, mathematical constraints, and local higher-order closures.
+    - **Clear Names for Dual-Mode & Polymorphic Predicates**: When a predicate accepts dual calling modes (e.g., direct lists vs. DCG difference-lists), use parameter names that clarify both roles (e.g., `InputOrMatch`, `RestOrState`).
+    - **Consistent DCG Threading Pairs**: Use standard conventions for threaded state pairs, such as `L0, L1, ..., L` for character streams and `S0, S1, ..., S` for general state accumulators.
   - Prefer pure efficiency: first-argument indexing, reified `zcompare/3` arithmetic comparison, and early constraint pruning (`dif/2`, [`CLP(Z)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/clpz.pl)).
   - Prefer coroutining (`freeze/2`, `when/2`) to suspend goals until variables are instantiated, preferring [`CLP(Z)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/clpz.pl)/`dif/2` over manual coroutining where specialized constraints apply.
   - When relating conditions to values, isolate the test-value relation (e.g. `if_(G, A="A", A="B"), write(A)`).
