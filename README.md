@@ -4,12 +4,13 @@
 [![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](https://unlicense.org/)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](pyproject.toml)
 [![Prolog Engines](https://img.shields.io/badge/prolog-Scryer%20%7C%20SWI%20%7C%20Trealla%20%7C%20Tau-purple.svg)](AGENT_GUIDE.md)
+[![llms.txt](https://img.shields.io/badge/llms.txt-available-orange.svg)](llms.txt)
 [![CodeMeta Metadata](https://img.shields.io/badge/CodeMeta-JSON--LD-brightgreen.svg)](codemeta.json)
 [![Share on LinkedIn](https://img.shields.io/badge/Share_on-LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fgithub.com%2Fdougransom%2Fprolog-agent-toolkit)
 
-**Version**: `0.0.1.dev20`  
+**Version**: `0.0.1.dev21`  
 **Category**: AI Assistant Developer Tools / Prolog Language Tooling  
-**Metadata**: [codemeta.json](codemeta.json)
+**Machine-Readable Context**: [llms.txt](llms.txt) | [llms-full.txt](llms-full.txt) | [codemeta.json](codemeta.json)
 
 A reusable AI agent skills, coding standards, and multi-engine (Scryer, SWI, Trealla, Tau) safety execution toolkit for Prolog.
 
@@ -28,12 +29,14 @@ A reusable AI agent skills, coding standards, and multi-engine (Scryer, SWI, Tre
 > ### 🤖 AI Agent Navigation Quick Start
 > Entering this repository as an AI agent ([Google Antigravity](https://antigravity.google), [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview), [Cursor](https://www.cursor.com/), [Windsurf](https://codeium.com/windsurf), [GitHub Copilot](https://github.com/features/copilot), or [Emacs](https://www.gnu.org/software/emacs/) AI tools)?
 > Key features: reusable agent skills ([`.agents/skills/`](.agents/skills/)), Prolog purity standards (`if_/3`, `dif/2`), library discovery (`prolog-agent discover`), and multi-engine safety execution.
+> - **LLM Machine-Readable Index**: Read [`llms.txt`](llms.txt) and [`llms-full.txt`](llms-full.txt)
 > - **Navigation Blueprint & Top 10 Q&A**: Read [`AGENT_GUIDE.md`](AGENT_GUIDE.md)
 > - **Coding & Purity Standards**: Inspect [`AGENTS.md`](AGENTS.md) and [`.agents/skills/`](.agents/skills/)
+> - **Skills & Capabilities Manifest**: Inspect [`docs/skills_manifest.json`](docs/skills_manifest.json) & [`docs/capability_manifest.json`](docs/capability_manifest.json)
+> - **Canonical Examples**: See [`examples/`](examples/) ([`agent_skills_dispatch.pl`](examples/agent_skills_dispatch.pl), [`prolog_mcp_server.pl`](examples/prolog_mcp_server.pl), [`neurosymbolic_reasoner.pl`](examples/neurosymbolic_reasoner.pl))
 > - **Library Discovery Protocol**: See `prolog-library-discovery` skill or run `prolog-agent discover`
 > - **Directory & File Map**: Inspect [`AGENT_INDEX.json`](AGENT_INDEX.json)
 > - **Component Ontology**: Inspect [`docs/repository_ontology.json`](docs/repository_ontology.json)
-> - **Capability Manifest**: Inspect [`docs/capability_manifest.json`](docs/capability_manifest.json)
 > - **Terminology & Glossary**: Read [`docs/GLOSSARY.md`](docs/GLOSSARY.md)
 > - **Anti-Patterns & Reuse**: Read [`docs/ANTI_PATTERNS.md`](docs/ANTI_PATTERNS.md)
 
@@ -55,6 +58,25 @@ A reusable AI agent skills, coding standards, and multi-engine (Scryer, SWI, Tre
 - **CLI Management Suite**: Project bootstrapping, module generator, system switcher, release manager, and skill validator via `prolog-agent`.
 - **System-Aware Standards**: Enforces Scryer, SWI, Trealla, Tau, and portable Prolog conventions automatically.
 - **Autonomous AI Subagents & Skills**: Pre-configured subagents and skills for purity auditing, automated refactoring, legacy project migration (`prolog-migrate-project`), unit test generation, benchmark running, and security scanning.
+
+---
+
+## Prolog Agent Framework — Prolog MCP, Skills, & Agent Architecture
+
+The Prolog Agent Toolkit is an end-to-end foundation for building AI agents, Model Context Protocol (MCP) servers, skill dispatchers, and neurosymbolic reasoning systems in pure ISO Prolog.
+
+### Why Build Agents in Prolog?
+- **Homoiconic Skills System**: Prolog represents code and data identically. Skills, capabilities, tool definitions, and dispatch rules are expressed directly as pure Prolog terms/facts (`skill(Name, Capabilities)` in [`.agents/skills/skills.pl`](.agents/skills/skills.pl)), enabling dynamic capability discovery, inspection, and dispatch via `call/N`.
+- **Pure Declarative Verification**: While LLMs generate probabilistic natural language and code, Prolog provides deterministic ground-truth verification via `library(reif)` (`if_/3`, `dif/2`) and `CLP(Z)` constraint solvers.
+- **Model Context Protocol (MCP) Tool Servers**: Expose Prolog knowledge bases, theorem provers, AST parsers, and constraint models as structured MCP tools callable by Claude, Antigravity, Cursor, and custom agent harnesses.
+- **Sandboxed Execution**: Safe execution runners (`scryer-safe`, `swi-safe`, `trealla-safe`, `prolog-safe`) prevent infinite loops, resource exhaustion, and memory leaks.
+
+### Canonical Agent Examples
+Explore ready-to-run examples in the [`examples/`](examples/) directory:
+- **[Agent Skill Dispatcher](examples/agent_skills_dispatch.pl)**: Homoiconic skill registration, pure DCG message tokenization, and safe goal dispatching.
+- **[Prolog MCP Server](examples/prolog_mcp_server.pl)**: Model Context Protocol (MCP) JSON-RPC tool server pattern with schema validation and structured result terms.
+- **[Neurosymbolic Reasoner](examples/neurosymbolic_reasoner.pl)**: Ground-truth verification engine proving LLM claims and solving schedule constraints with `library(clpz)`.
+- **[Examples Documentation](examples/README.md)**: Guide to running and extending the examples across Scryer, SWI, and Trealla.
 
 ---
 

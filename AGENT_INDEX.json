@@ -1,19 +1,22 @@
 {
   "name": "Prolog Agent Toolkit Repository Index",
-  "version": "0.0.1.dev11",
+  "version": "0.0.1.dev20",
   "vendor_neutral": true,
   "canonical_version_file": "pyproject.toml",
   "authoritative_rules": "AGENTS.md",
   "primary_onboarding_guide": "AGENT_GUIDE.md",
   "entry_points": {
+    "llms_manifest": "llms.txt",
+    "llms_full_manifest": "llms-full.txt",
     "agent_guide": "AGENT_GUIDE.md",
     "agent_rules": "AGENTS.md",
     "agents_dir_rules": ".agents/AGENTS.md",
     "repository_ontology": "docs/repository_ontology.json",
     "capability_manifest": "docs/capability_manifest.json",
+    "skills_manifest": "docs/skills_manifest.json",
     "glossary": "docs/GLOSSARY.md",
     "anti_patterns": "docs/ANTI_PATTERNS.md",
-    "skill_catalog": ".agents/skills.json"
+    "examples": "examples/README.md"
   },
   "modules": [
     {

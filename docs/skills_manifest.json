@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Prolog Agent Toolkit Skills Manifest",
+  "description": "Machine-readable index of agent skills and capabilities",
+  "skills": [
+    {
+      "name": "prolog-conventions",
+      "path": ".agents/skills/prolog-conventions/SKILL.md",
+      "capabilities": ["purity", "dcg", "clp", "type_testing", "strings", "iso_compliance"],
+      "description": "Coding standards and guidelines for writing portable ISO-compliant Prolog code across systems."
+    },
+    {
+      "name": "prolog-code-review",
+      "path": ".agents/skills/prolog-code-review/SKILL.md",
+      "capabilities": ["code_review", "purity", "determinism", "portability", "safety", "testing"],
+      "description": "Comprehensive guidelines and checklists for auditing Prolog code reviews."
+    },
+    {
+      "name": "prolog-clp-constraints",
+      "path": ".agents/skills/prolog-clp-constraints/SKILL.md",
+      "capabilities": ["clp", "clpz", "clpfd", "scheduling", "optimization", "labeling"],
+      "description": "Best practices for Constraint Logic Programming (CLP(Z), CLP(FD), CLP(R), CLP(Q))."
+    },
+    {
+      "name": "prolog-dcg-mastery",
+      "path": ".agents/skills/prolog-dcg-mastery/SKILL.md",
+      "capabilities": ["dcg", "parsing", "lexing", "ast", "formatting", "serialization"],
+      "description": "Definite Clause Grammar (DCG) standards and advanced parsing patterns."
+    },
+    {
+      "name": "prolog-debugging-workflow",
+      "path": ".agents/skills/prolog-debugging-workflow/SKILL.md",
+      "capabilities": ["debugging", "tracing", "spy_points", "execution_inspection"],
+      "description": "Step-by-step interactive debugging and tracing guidelines for Prolog."
+    },
+    {
+      "name": "prolog-declarative-workflow",
+      "path": ".agents/skills/prolog-declarative-workflow/SKILL.md",
+      "capabilities": ["declarative_reasoning", "test_driven", "modes", "determinism"],
+      "description": "Guidelines for AI-assisted declarative Prolog development."
+    },
+    {
+      "name": "prolog-engine-onboarding",
+      "path": ".agents/skills/prolog-engine-onboarding/SKILL.md",
+      "capabilities": ["engine_onboarding", "multi_engine", "runner_scaffolding"],
+      "description": "Interactive workflow for adding support for a new Prolog engine target."
+    },
+    {
+      "name": "prolog-ffi-wasm-embedding",
+      "path": ".agents/skills/prolog-ffi-wasm-embedding/SKILL.md",
+      "capabilities": ["ffi", "wasm", "c_interop", "rust_interop", "python_interop", "js_interop"],
+      "description": "Guidelines for embedding Prolog engines and interfacing via FFI and WebAssembly."
+    },
+    {
+      "name": "prolog-initializer",
+      "path": ".agents/skills/prolog-initializer/SKILL.md",
+      "capabilities": ["scaffolding", "project_init", "template_generation", "module_generation"],
+      "description": "System-aware Prolog project initialization, template scaffolding, and module generation."
+    },
+    {
+      "name": "prolog-library-discovery",
+      "path": ".agents/skills/prolog-library-discovery/SKILL.md",
+      "capabilities": ["library_discovery", "module_search", "dependency_resolution"],
+      "description": "Guidelines and commands for discovering and reusing existing libraries across engines."
+    },
+    {
+      "name": "prolog-linter-static-analysis",
+      "path": ".agents/skills/prolog-linter-static-analysis/SKILL.md",
+      "capabilities": ["linting", "static_analysis", "singleton_detection", "safety"],
+      "description": "Static analysis, linting, and code quality guidelines for Prolog."
+    },
+    {
+      "name": "prolog-migrate-project",
+      "path": ".agents/skills/prolog-migrate-project/SKILL.md",
+      "capabilities": ["migration", "legacy_upgrade", "refactoring", "worktree"],
+      "description": "Step-by-step guidance for migrating legacy Prolog projects to toolkit conventions."
+    },
+    {
+      "name": "prolog-neurosymbolic-agent",
+      "path": ".agents/skills/prolog-neurosymbolic-agent/SKILL.md",
+      "capabilities": ["neurosymbolic", "llm_integration", "formal_verification", "ground_truth"],
+      "description": "Neurosymbolic AI workflows integrating LLMs with Prolog constraint engines."
+    },
+    {
+      "name": "prolog-packaging",
+      "path": ".agents/skills/prolog-packaging/SKILL.md",
+      "capabilities": ["packaging", "bakage", "pack_install", "manifests"],
+      "description": "Guidelines and manifest standards for packaging and dependency management."
+    },
+    {
+      "name": "prolog-performance-profiling",
+      "path": ".agents/skills/prolog-performance-profiling/SKILL.md",
+      "capabilities": ["profiling", "indexing", "choicepoints", "tail_recursion", "reif"],
+      "description": "Performance optimization and choicepoint profiling guidelines for Prolog."
+    },
+    {
+      "name": "prolog-release",
+      "path": ".agents/skills/prolog-release/SKILL.md",
+      "capabilities": ["release_management", "versioning", "git_tagging", "manifest_sync"],
+      "description": "Release workflow for bumping version numbers across project manifests."
+    },
+    {
+      "name": "prolog-tabling",
+      "path": ".agents/skills/prolog-tabling/SKILL.md",
+      "capabilities": ["tabling", "memoization", "slg_resolution", "graphs", "datalog"],
+      "description": "Tabling, memoization, and SLG resolution for recursive graph and transitive queries."
+    },
+    {
+      "name": "prolog-testing",
+      "path": ".agents/skills/prolog-testing/SKILL.md",
+      "capabilities": ["testing", "unit_tests", "plunit", "assertions"],
+      "description": "Standardized unit testing frameworks across Prolog engines."
+    },
+    {
+      "name": "prolog-web-services",
+      "path": ".agents/skills/prolog-web-services/SKILL.md",
+      "capabilities": ["http", "web_services", "rest_api", "json", "websockets"],
+      "description": "Guidelines for building HTTP REST APIs, JSON endpoints, and WebSockets."
+    },
+    {
+      "name": "scryer-prolog-standards",
+      "path": ".agents/skills/scryer-prolog-standards/SKILL.md",
+      "capabilities": ["scryer", "modules", "reif", "si", "chars", "iso_purity"],
+      "description": "Coding standards and guidelines for pure Scryer Prolog projects."
+    },
+    {
+      "name": "swi-prolog-standards",
+      "path": ".agents/skills/swi-prolog-standards/SKILL.md",
+      "capabilities": ["swi", "swipl", "dicts", "strings", "packs", "modules"],
+      "description": "Coding standards and guidelines for SWI-Prolog applications."
+    },
+    {
+      "name": "tau-prolog-standards",
+      "path": ".agents/skills/tau-prolog-standards/SKILL.md",
+      "capabilities": ["tau", "javascript", "dom", "browser", "nodejs"],
+      "description": "Coding standards and guidelines for Tau Prolog applications and browser DOM."
+    },
+    {
+      "name": "trealla-prolog-standards",
+      "path": ".agents/skills/trealla-prolog-standards/SKILL.md",
+      "capabilities": ["trealla", "wasm", "embedded", "fast_parsing"],
+      "description": "Coding standards and guidelines for Trealla Prolog applications and WASM."
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+# Prolog Agent Toolkit
+
+> A vendor-neutral, multi-engine (Scryer, SWI, Trealla, Tau) AI agent framework, reusable skills system, coding standards, and sandboxed safety execution toolkit for pure ISO Prolog.
+
+The Prolog Agent Toolkit equips AI coding assistants (Google Antigravity, Claude Code, Cursor, Windsurf, GitHub Copilot, Emacs AI) and human developers with pure declarative standards, homoiconic agent skills, Model Context Protocol (MCP) server patterns, CLP(Z) constraint verification, and resource-bounded interpreter runners.
+
+## Quick Start & Essential Rules
+
+- **Pure Logic & Reification**: Always prefer `if_/3` and `dif/2` (from `library(reif)`) over non-logical cuts (`!`) or soft cuts (`->`).
+- **Strings as Chars**: Always represent strings as lists of characters (`chars`). Enforce `double_quotes` as `chars`.
+- **Safe Type Testing**: Prefer `library(si)` (e.g. `atom_si/1`, `list_si/1`, `integer_si/1`) over imperative or non-pure type tests.
+- **Pure DCGs**: Use Definite Clause Grammars for text parsing, tokenization, serialization, and AST transformation. Use `Name//Arity` indicators.
+- **Safety Sandboxing**: Never execute raw Prolog interpreter binaries directly. Always use the sandboxed safety runners (`scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`, `prolog-safe`).
+- **Vendor Neutrality**: Skills and rules use open Markdown/JSON specifications in `.agents/` compatible across all IDEs and agent harnesses.
+
+## Core Navigation & Architecture
+
+- [AGENT_GUIDE.md](AGENT_GUIDE.md): Primary developer and AI agent onboarding blueprint with Top 10 Q&A.
+- [AGENTS.md](AGENTS.md): Authoritative universal coding guidelines, purity principles, and multi-engine conventions.
+- [AGENT_INDEX.json](AGENT_INDEX.json): Machine-readable index of repository files, entry points, and subagents.
+- [docs/skills_manifest.json](docs/skills_manifest.json): Complete machine-readable JSON manifest of all 23 agent skills.
+- [docs/capability_manifest.json](docs/capability_manifest.json): Machine-readable catalog of CLI tools, safety runners, and engine capabilities.
+- [docs/repository_ontology.json](docs/repository_ontology.json): Structural ontology of components, contracts, and cross-cutting dependencies.
+- [docs/GLOSSARY.md](docs/GLOSSARY.md): Formal definitions of core Prolog agent and logical purity terminology.
+- [docs/ANTI_PATTERNS.md](docs/ANTI_PATTERNS.md): Catalog of prohibited imperative anti-patterns and their pure declarative alternatives.
+
+## Reusable Agent Skills (`.agents/skills/`)
+
+- [.agents/skills/prolog-conventions/SKILL.md](.agents/skills/prolog-conventions/SKILL.md): Canonical common ISO coding standards, variable naming, reification, and pure DCGs.
+- [.agents/skills/prolog-clp-constraints/SKILL.md](.agents/skills/prolog-clp-constraints/SKILL.md): Combinatorial optimization, scheduling, labeling, and arithmetic constraints with `library(clpz)`.
+- [.agents/skills/prolog-dcg-mastery/SKILL.md](.agents/skills/prolog-dcg-mastery/SKILL.md): Advanced DCG patterns, AST construction, pushback lookahead without cuts, and tokenizers.
+- [.agents/skills/prolog-library-discovery/SKILL.md](.agents/skills/prolog-library-discovery/SKILL.md): 7-step discovery protocol for reusing existing libraries before writing code.
+- [.agents/skills/prolog-neurosymbolic-agent/SKILL.md](.agents/skills/prolog-neurosymbolic-agent/SKILL.md): Neurosymbolic architecture integrating LLM generation with Prolog deterministic proof verification.
+- [.agents/skills/prolog-code-review/SKILL.md](.agents/skills/prolog-code-review/SKILL.md): Checklists for auditing PRs, verifying purity, determinism, portability, and safety.
+- [.agents/skills/prolog-testing/SKILL.md](.agents/skills/prolog-testing/SKILL.md): Scryer `testing.pl`, SWI `plunit`, and portable unit testing conventions.
+- [.agents/skills/scryer-prolog-standards/SKILL.md](.agents/skills/scryer-prolog-standards/SKILL.md): Pure Scryer Prolog standards (`library(reif)`, `library(si)`, `library(charsio)`).
+- [.agents/skills/swi-prolog-standards/SKILL.md](.agents/skills/swi-prolog-standards/SKILL.md): SWI-Prolog specific standards (modules, packs, dicts, strings).
+- [.agents/skills/trealla-prolog-standards/SKILL.md](.agents/skills/trealla-prolog-standards/SKILL.md): Trealla Prolog standards and WASM embedded execution.
+- [.agents/skills/tau-prolog-standards/SKILL.md](.agents/skills/tau-prolog-standards/SKILL.md): Tau Prolog in-browser DOM and Node.js execution guidelines.
+
+## Canonical Examples (`examples/`)
+
+- [examples/agent_skills_dispatch.pl](examples/agent_skills_dispatch.pl): Homoiconic agent skill registration, DCG query parsing, and pure term dispatching.
+- [examples/prolog_mcp_server.pl](examples/prolog_mcp_server.pl): Model Context Protocol (MCP) tool schema definitions, validation, and JSON-RPC execution handler.
+- [examples/neurosymbolic_reasoner.pl](examples/neurosymbolic_reasoner.pl): Deterministic proof engine validating LLM claims and task schedules via CLP(Z).
+- [examples/README.md](examples/README.md): Instructions for running all examples across Scryer, SWI, and Trealla runners.
+
+## CLI Safety Tools & Commands
+
+- `prolog-agent init <name> [--system scryer|swi|trealla|tau|iso]`: Scaffolds a new standard project with `src/`, `tests/`, manifests, and `.agents/`.
+- `prolog-agent discover [--engine <eng>] [--query <term>]`: Discovers built-in libraries and packs.
+- `prolog-agent validate-skills`: Validates YAML frontmatter integrity across all agent skills.
+- `prolog-agent check-version`: Verifies version parity across project manifests.
+- `scryer-safe [args...]` / `swi-safe [args...]` / `trealla-safe [args...]` / `prolog-safe [args...]`: Resource-capped Prolog runners preventing memory exhaustion and infinite loops.

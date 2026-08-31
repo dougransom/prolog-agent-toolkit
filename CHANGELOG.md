@@ -1,3 +1,28 @@
+## [0.0.1.dev21] - 2026-08-31
+
+### Summary of Changes
+- Added root `llms.txt` and `llms-full.txt` files conforming to the LLM machine-readable conditioning standard, facilitating automated discovery and usage by AI coding agents.
+- Added canonical runnable agent examples under `examples/` covering skill dispatching, Model Context Protocol (MCP) JSON-RPC tool server pattern, and neurosymbolic verification with `library(clpz)`.
+- Created structured skills manifests (`docs/skills_manifest.json` and `.agents/skills/skills.pl`) for homoiconic skill discovery and reflection.
+- Enhanced `README.md` with semantic search anchors, badges, and the "Prolog Agent Framework — Prolog MCP, Skills, & Agent Architecture" section.
+- Updated `AGENT_INDEX.json`, `docs/capability_manifest.json`, and `codemeta.json` with references to `llms.txt`, `examples/`, and skills manifests.
+
+### Added / Modified
+- `llms.txt`: Machine-readable high-density project summary, key standards, skill catalog, examples, and CLI reference.
+- `llms-full.txt`: Consolidated single-file conditioning context combining universal Prolog coding standards, Covington documentation patterns, homoiconic skills registry, full working examples, and CLI reference.
+- `examples/agent_skills_dispatch.pl`: Homoiconic Prolog agent skill registry and pure DCG request router.
+- `examples/prolog_mcp_server.pl`: Model Context Protocol (MCP) JSON-RPC tool server pattern with schema validation and structured result terms.
+- `examples/neurosymbolic_reasoner.pl`: Deterministic proof engine verifying LLM propositions and solving schedule constraints with `library(clpz)`.
+- `examples/README.md`: Documentation for running and testing all examples across Scryer, SWI, and Trealla runners.
+- `docs/skills_manifest.json`: JSON manifest mapping all 23 skills with their capabilities and trigger tags.
+- `.agents/skills/skills.pl`: Homoiconic Prolog database representing skills as `skill(Name, Capabilities)` facts.
+- `README.md`: Added `llms.txt` badge, quick-start index, and Prolog Agent Framework / MCP / Skills section.
+- `AGENT_INDEX.json`, `docs/capability_manifest.json`, `codemeta.json`: Synchronized version `0.0.1.dev21` and new entries.
+
+### Breaking Changes
+- None.
+
+
 ## [0.0.1.dev20] - 2026-08-31
 
 ### Summary of Changes

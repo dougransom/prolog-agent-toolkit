@@ -1,8 +1,11 @@
 {
   "name": "Prolog Agent Toolkit Capability Manifest",
-  "version": "0.0.1.dev19",
+  "version": "0.0.1.dev20",
   "vendor_neutral": true,
   "description": "Reusable AI agent skills, coding standards, and safety execution toolkit for Prolog",
+  "llms_manifest": "llms.txt",
+  "skills_manifest": "docs/skills_manifest.json",
+  "examples_directory": "examples/",
   "capabilities": {
     "cli_tools": [
       {
@@ -67,6 +70,6 @@
       }
     ],
     "subagents_count": 8,
-    "skills_count": 22
+    "skills_count": 23
   }
 }
