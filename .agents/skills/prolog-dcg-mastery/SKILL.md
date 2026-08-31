@@ -101,11 +101,18 @@ For complex programming languages or DSLs, split parsing into two pure DCG passe
 
 ---
 
-## 6. Higher-Order DCGs (`call//N`)
+## 6. Higher-Order DCGs (`call//N`) & Meta-Predicates
 
-Avoid duplicating DCG rules just to vary an element non-terminal or predicate. Use `call//N` to parameterize grammar rules:
+Avoid duplicating DCG rules just to vary an element non-terminal or predicate. Use `call//N` to parameterize grammar rules, and declare `:- meta_predicate` with `//` or `2` so closures resolve in the caller module context:
 
 ```prolog
+:- module(seq_combinators, [
+    seq_of//2
+]).
+
+:- meta_predicate
+    seq_of(?, //, ?, ?).
+
 % Generic DCG rule to match a list of elements using a parameter non-terminal nonterm//1
 seq_of([], _) --> [].
 seq_of([X|Xs], NonTerm) -->

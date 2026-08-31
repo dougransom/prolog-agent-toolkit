@@ -1,3 +1,22 @@
+## [0.0.1.dev18] - 2026-08-31
+
+### Summary of Changes
+- Added Meta-Predicate Declarations (`:- meta_predicate`) guidelines and standards across `prolog-conventions`, `prolog-dcg-mastery`, `prolog-code-review`, `AGENTS.md`, and `prolog_guidelines.md`.
+- Added explicit rules for caller-module expansion, closure arity specifiers (`0`, `1`..`N`, `//`), and non-callable data term markings (`+`, `-`, `?`, `*`).
+- Updated Code Review checklist to audit module encapsulation and meta-predicate declarations.
+- Synchronized version `0.0.1.dev18` across manifests and documentation.
+
+### Added / Modified
+- `.agents/skills/prolog-conventions/SKILL.md`: Added Rule 9 on Meta-Predicate Declarations.
+- `.agents/skills/prolog-code-review/SKILL.md`: Added Meta-Predicate Declarations verification row to code review checklist.
+- `.agents/skills/prolog-dcg-mastery/SKILL.md`: Added meta-predicate declarations example for higher-order DCG non-terminals.
+- `.agents/AGENTS.md`: Added meta-predicate declaration standard to Universal Prolog Style & Purity Guidelines.
+- `.agents/references/prolog_guidelines.md`: Added detailed meta-predicate reference section.
+
+### Breaking Changes
+- None.
+
+
 ## [0.0.1.dev17] - 2026-08-29
 
 ### Summary of Changes

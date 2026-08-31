@@ -108,6 +108,29 @@ Prefer higher-order predicates and closures over primitive recursive list traver
 - **Higher-Order DCGs (`call//N`)**: Parameterize DCG rules with closures or non-terminals using `call//N` (e.g. `call(Goal, Arg)` inside `-->`) to avoid writing duplicate grammar traversals.
 - **Lambda Expressions (`library(lambda)`)**: Use `:- use_module(library(lambda)).` and lambda abstractions (`\X^...`, `\X^Y^Goal`) for inline transformations, filtering, and mapping without creating single-use helper predicates.
 
+### Meta-Predicate Declarations (`meta_predicate`)
+
+When exporting or defining predicates inside a module that accept callable arguments (goals `0`, closures `1`..`N`, DCG rules `//` or `2`, dynamic goals `:`), always insert explicit `:- meta_predicate` declarations directly after the module header:
+
+- **Module Name Expansion**: Tells the module system to resolve meta-arguments in the context of the *caller module* rather than the library module, preventing runtime `existence_error` exceptions.
+- **Precise Arity Specifiers**:
+  - `0`: 0-argument goal (executed with `call(Goal)` or direct evaluation).
+  - `1`..`9`: Closures receiving $N$ additional arguments (e.g. `2` for `maplist/3`, `2` for `tfilter/3`, `3` for `foldl/4`).
+  - `//` or `2`: DCG non-terminal closures expanded with difference lists.
+  - `+`, `-`, `?`, `*`: Regular non-callable data arguments.
+- **Avoid Anti-Patterns**: Never declare `meta_predicate` on pure data predicates, and never mark data arguments as `:` or `0` (which would force unintended caller-module term wrapping).
+
+```prolog
+:- module(my_higher_order, [
+    custom_map/3,
+    delimited//3
+]).
+
+:- meta_predicate
+    custom_map(2, +, -),
+    delimited(//, //, //, ?, ?).
+```
+
 ### Use Term & Goal Expansion to Avoid Code Duplication
 
 Leverage Prolog's compile-time expansion hooks (`user:term_expansion/2` and `user:goal_expansion/2`) to eliminate repetitive code structures, redundant clause boilerplate, or macro-like patterns instead of duplicating logic across multiple rules.

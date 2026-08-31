@@ -74,16 +74,31 @@ While the module loading directive (e.g. `:- use_module(library(clpz)).` in Scry
        call(Sep, X),
        separated_by(Xs, Sep).
    ```
-9. **Explicit Library Declarations**: Always explicitly import required library modules (e.g. `:- use_module(library(reif)).`, `:- use_module(library(dcgs)).`, `:- use_module(library(charsio)).`, `:- use_module(library(lambda)).`, `:- use_module(library(clpz)).`). Do not assume SWI-style autoloading when targeting ISO or embedded engines.
-10. **Control Structures & CLP(Z) Constraints**: Use standard ISO control structures `(,)/2`, `(;)/2`. Prefer CLP(Z) constraints (`#=`, `#>`, `all_distinct/1`) and reified arithmetic (`zcompare/3`, `'#='(X, Y, Truth)`, `clpz_t/2`) over low-level evaluation (`is/2`, `>/2`). Always post domain declarations (`ins`, `in`) before posting complex relations to enable early constraint propagation. Link model flags via `#<==>` (e.g. `X #> 10 #<==> B #= 1`) and pass partial closures `(#<)(0)` to `tfilter/3`.
-11. **Coroutining & Goal Suspension**: Use `freeze/2` for single-variable activation guards (`nonvar/1`) and `when/2` for multi-variable or disjunctive activation conditions (`(nonvar(A) ; nonvar(B))`). Prefer CLP(Z)/`dif/2` over manual coroutining where domain-specific constraints apply.
-12. **Clean Data Representations**: Prefer clean data structures where element kinds are distinguished by principal functor (`leaf(L)` vs `node(L, R)`). Avoid defaulty representations that force runtime type tests (`var/1`) or procedural default branches. Convert raw input data into clean trees early.
-13. **Macro & Compile-Time Expansion**: Use Prolog's macro mechanism (`user:term_expansion/2` and `user:goal_expansion/2`) to transform clauses or rewrite inline goals at compile time to eliminate boilerplate and redundant rules. Prefer static compile-time expansion over dynamic database modification (`asserta`/`assertz`).
-14. **Avoid Non-Standard Extensions**: Do not rely on engine-specific types (e.g. SWI dicts or SWI string types) when writing standard Prolog code.
-15. **Library Steering vs Reading Source**: Rely on dialect-specific Standard Library Cheat Sheets for module header declarations and predicate exports. AI assistants MUST NOT read raw standard library implementation source files, relying instead on concise cheat sheets and pre-trained semantics to save context tokens.
-16. **Safety**: Execute code using `prolog-safe`.
+9. **Meta-Predicate Declarations (`meta_predicate`)**: When defining predicates in a module that accept callable arguments (goals `0`, closures `1`..`N`, DCG rules `//` or `2`, or module-sensitive terms `:`), ALWAYS insert a `:- meta_predicate` declaration directly after the `:- module/2` header and imports. This ensures the module system applies caller-module name expansion to meta-arguments across module boundaries:
+   ```prolog
+   :- module(my_combinators, [
+       my_maplist/3,
+       my_tfilter/3,
+       bracketed//3
+   ]).
 
-17. **Prolog Tooling in Prolog (ISO Core + Engine Shims)**: Programs that parse, rewrite, transform, analyze, or generate Prolog source code SHOULD themselves be implemented in Prolog, exploiting the language's homoiconicity (code = terms = data). Structure such tools using an ISO-common core with flat, engine-specific shim files:
+   :- meta_predicate
+       my_maplist(2, +, -),
+       my_tfilter(2, +, -),
+       bracketed(//, //, //, ?, ?).
+   ```
+   - Use exact closure arities: `0` for goals (`call(G)`), `1`..`9` for closures expecting additional arguments (`call(C, X)` -> `1`, `call(C, X, Y)` -> `2`), `//` (or `2`) for DCG rules.
+   - Use `+`, `-`, `?`, `*` for non-meta data terms. NEVER declare `meta_predicate` on first-order data predicates or mark data arguments as `:`/`0` (which would trigger unwanted module qualification wrapping).
+10. **Explicit Library Declarations**: Always explicitly import required library modules (e.g. `:- use_module(library(reif)).`, `:- use_module(library(dcgs)).`, `:- use_module(library(charsio)).`, `:- use_module(library(lambda)).`, `:- use_module(library(clpz)).`). Do not assume SWI-style autoloading when targeting ISO or embedded engines.
+11. **Control Structures & CLP(Z) Constraints**: Use standard ISO control structures `(,)/2`, `(;)/2`. Prefer CLP(Z) constraints (`#=`, `#>`, `all_distinct/1`) and reified arithmetic (`zcompare/3`, `'#='(X, Y, Truth)`, `clpz_t/2`) over low-level evaluation (`is/2`, `>/2`). Always post domain declarations (`ins`, `in`) before posting complex relations to enable early constraint propagation. Link model flags via `#<==>` (e.g. `X #> 10 #<==> B #= 1`) and pass partial closures `(#<)(0)` to `tfilter/3`.
+12. **Coroutining & Goal Suspension**: Use `freeze/2` for single-variable activation guards (`nonvar/1`) and `when/2` for multi-variable or disjunctive activation conditions (`(nonvar(A) ; nonvar(B))`). Prefer CLP(Z)/`dif/2` over manual coroutining where domain-specific constraints apply.
+13. **Clean Data Representations**: Prefer clean data structures where element kinds are distinguished by principal functor (`leaf(L)` vs `node(L, R)`). Avoid defaulty representations that force runtime type tests (`var/1`) or procedural default branches. Convert raw input data into clean trees early.
+14. **Macro & Compile-Time Expansion**: Use Prolog's macro mechanism (`user:term_expansion/2` and `user:goal_expansion/2`) to transform clauses or rewrite inline goals at compile time to eliminate boilerplate and redundant rules. Prefer static compile-time expansion over dynamic database modification (`asserta`/`assertz`).
+15. **Avoid Non-Standard Extensions**: Do not rely on engine-specific types (e.g. SWI dicts or SWI string types) when writing standard Prolog code.
+16. **Library Steering vs Reading Source**: Rely on dialect-specific Standard Library Cheat Sheets for module header declarations and predicate exports. AI assistants MUST NOT read raw standard library implementation source files, relying instead on concise cheat sheets and pre-trained semantics to save context tokens.
+17. **Safety**: Execute code using `prolog-safe`.
+
+18. **Prolog Tooling in Prolog (ISO Core + Engine Shims)**: Programs that parse, rewrite, transform, analyze, or generate Prolog source code SHOULD themselves be implemented in Prolog, exploiting the language's homoiconicity (code = terms = data). Structure such tools using an ISO-common core with flat, engine-specific shim files:
     - **ISO core** (`core.pl`): All term reading (`read_term/2`), DCG-based traversal and transformation, `copy_term/2`, `functor/3`, `=..`, and CLP(Z) constraints. This layer MUST NOT use engine-specific predicates or library paths.
     - **Flat shim files** (`scryer_shim.pl`, `swi_shim.pl`, `trealla_shim.pl`, etc.): Each shim defines only what differs per engine — module load paths, flag names, engine-specific built-ins — and exports a uniform interface consumed by the core.
     - **Entry point** (`run.pl`): Selects and loads the appropriate shim (e.g. via `PROLOG_ENGINE` flag or conditional compilation), then loads `core.pl`.
