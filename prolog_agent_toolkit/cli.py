@@ -54,9 +54,9 @@ def prolog_agent_main() -> None:
         print("Usage:")
         print("  prolog-agent query <query-term> [--engine scryer|swi|trealla|tau] [--file <file.pl>] [--timeout 20s]")
         print("  prolog-agent repl [--engine scryer|swi|trealla|tau] [--file <file.pl>] [--timeout 20s]")
-        print("  prolog-agent init <project-name> [--dialect|--engine scryer|swi|trealla|tau|iso]")
-        print("  prolog-agent template <project-name> [--dialect|--engine scryer|swi|trealla|tau|iso]")
-        print("  prolog-agent module <module-name> [--dialect|--engine scryer|swi|trealla|tau|iso]")
+        print("  prolog-agent init <project-name> [--system|--engine scryer|swi|trealla|tau|iso]")
+        print("  prolog-agent template <project-name> [--system|--engine scryer|swi|trealla|tau|iso]")
+        print("  prolog-agent module <module-name> [--system|--engine scryer|swi|trealla|tau|iso]")
         print("  prolog-agent discover [--engine scryer|swi|trealla|tau|gnu|all] [--query <keyword>] [--mode static|dynamic|hybrid] [--json]")
         print("  prolog-agent pack [--engine scryer|swi|trealla|tau|iso] [--out-dir dist]")
         print("  prolog-agent init-script")
@@ -70,14 +70,18 @@ def prolog_agent_main() -> None:
 
     cmd = args[0]
 
-    def get_dialect() -> str:
+    def get_prolog_system() -> str:
         engine = "scryer"
-        if "--dialect" in args:
-            idx = args.index("--dialect")
+        if "--system" in args:
+            idx = args.index("--system")
             if idx + 1 < len(args):
                 engine = args[idx + 1]
         elif "--engine" in args:
             idx = args.index("--engine")
+            if idx + 1 < len(args):
+                engine = args[idx + 1]
+        elif "--dialect" in args:
+            idx = args.index("--dialect")
             if idx + 1 < len(args):
                 engine = args[idx + 1]
         return engine
@@ -85,35 +89,35 @@ def prolog_agent_main() -> None:
     if cmd == "init":
         if len(args) < 2:
             sys.stderr.write("Error: Missing project name for prolog-agent init.\n")
-            sys.stderr.write("Usage: prolog-agent init <project-name> [--dialect scryer|swi|trealla]\n")
+            sys.stderr.write("Usage: prolog-agent init <project-name> [--system scryer|swi|trealla]\n")
             sys.exit(1)
         project_name = args[1]
-        engine = get_dialect()
+        engine = get_prolog_system()
         exit_code = init_project(project_name, engine=engine)
         sys.exit(exit_code)
 
     elif cmd == "template":
         if len(args) < 2:
             sys.stderr.write("Error: Missing project name for prolog-agent template.\n")
-            sys.stderr.write("Usage: prolog-agent template <project-name> [--dialect scryer|swi|trealla]\n")
+            sys.stderr.write("Usage: prolog-agent template <project-name> [--system scryer|swi|trealla]\n")
             sys.exit(1)
         project_name = args[1]
-        engine = get_dialect()
+        engine = get_prolog_system()
         exit_code = generate_template(project_name, engine=engine)
         sys.exit(exit_code)
 
     elif cmd == "module":
         if len(args) < 2:
             sys.stderr.write("Error: Missing module name for prolog-agent module.\n")
-            sys.stderr.write("Usage: prolog-agent module <module-name> [--dialect scryer|swi|trealla]\n")
+            sys.stderr.write("Usage: prolog-agent module <module-name> [--system scryer|swi|trealla]\n")
             sys.exit(1)
         module_name = args[1]
-        engine = get_dialect()
+        engine = get_prolog_system()
         exit_code = generate_module(module_name, engine=engine)
         sys.exit(exit_code)
 
     elif cmd == "discover":
-        engine = get_dialect() if ("--dialect" in args or "--engine" in args) else "all"
+        engine = get_prolog_system() if ("--system" in args or "--engine" in args or "--dialect" in args) else "all"
         query = None
         if "--query" in args:
             idx = args.index("--query")
@@ -134,7 +138,7 @@ def prolog_agent_main() -> None:
         sys.exit(0)
 
     elif cmd == "pack":
-        engine = get_dialect()
+        engine = get_prolog_system()
         out_dir = "dist"
         if "--out-dir" in args:
             idx = args.index("--out-dir")
@@ -175,7 +179,7 @@ def prolog_agent_main() -> None:
             sys.stderr.write("Usage: prolog-agent query <query-term> [--engine <engine>] [--file <file.pl>] [--timeout <timeout>]\n")
             sys.exit(1)
         query_str = args[1]
-        engine = get_dialect()
+        engine = get_prolog_system()
         file_path = None
         if "--file" in args:
             idx = args.index("--file")
@@ -195,7 +199,7 @@ def prolog_agent_main() -> None:
             sys.exit(res.exit_code or 0)
 
     elif cmd == "repl":
-        engine = get_dialect()
+        engine = get_prolog_system()
         file_path = None
         if "--file" in args:
             idx = args.index("--file")

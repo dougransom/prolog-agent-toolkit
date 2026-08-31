@@ -14,16 +14,16 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
 
 - **ISO Prolog Code Generation Goal & Engine Neutrality**:
   - AI assistants MUST attempt to produce ISO-compliant code (standard ISO/IEC 13211-1) subject to the capabilities and limitations of the target Prolog system being used.
-  - AI assistants MUST NOT describe or claim that any Prolog system (e.g. Scryer, SWI, Trealla, Tau, GNU, Ciao) is "ISO compliant" or an "ISO dialect". Systems may make their own compliance claims.
+  - AI assistants MUST NOT describe or claim that any Prolog system (e.g. Scryer, SWI, Trealla, Tau, GNU, Ciao) is "ISO compliant" or an "ISO Prolog system". Systems may make their own compliance claims.
 - **Vendor Neutrality & Open Standards**:
   - All AI agent guidelines, instructions, rules, and skills MUST remain 100% vendor-neutral and open format (`AGENTS.md`, `.agents/skills/<name>/SKILL.md`, `.agents/agents/<name>.md`).
   - Do NOT create proprietary, vendor-specific, or IDE-harness-specific configuration files or directories (such as `.claude/`, `.windsurfrule`, `.cursorrules`, `.github/copilot-instructions.md`, `.clinerules`, `.gemini/`, or harness-specific Emacs configs).
 - **Generalized Common Baseline & Engine Idiosyncrasies**:
   - The core goal of this toolkit is to declare as much as possible as a **generalized, common Prolog standard** applicable across all Prolog systems (pure logic, reification `=(X,Y,Truth)`/`cond_t`, `CLP(Z)`/`CLP(FD)` constraints, pure DCGs, `chars`, safe type testing `library(si)`, Covington layout, and efficiency).
-  - Dialect-specific skill guidelines (`scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, `tau-prolog-standards`) MUST capture only what is **idiosyncratic or engine-specific** (module load headers, dialect types like SWI dicts, WASM limits, packaging, DOM interop), while delegating all common style, purity, and usage rules to the central generalized baseline.
+  - System-specific skill guidelines (`scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, `tau-prolog-standards`) MUST capture only what is **idiosyncratic or engine-specific** (module load headers, system types like SWI dicts, WASM limits, packaging, DOM interop), while delegating all common style, purity, and usage rules to the central generalized baseline.
 - **Canonical Common Coding Standards**: [.agents/skills/prolog-conventions/SKILL.md](.agents/skills/prolog-conventions/SKILL.md)
   - All common Prolog coding guidelines, purity rules, reification patterns, DCG conventions, variable naming, safe type testing, and syntax diagnostics are operationally defined in `prolog-conventions`. AI agents MUST activate `prolog-conventions` whenever generating, refactoring, or auditing Prolog code.
-  - **Code Review Skill Synchronization Policy**: Whenever core coding guidelines or dialect rules are updated, AI assistants MUST prompt the programmer to update the Code Review skill ([`prolog-code-review`](.agents/skills/prolog-code-review/SKILL.md)) to keep review checklists aligned with operational coding standards.
+  - **Code Review Skill Synchronization Policy**: Whenever core coding guidelines or system rules are updated, AI assistants MUST prompt the programmer to update the Code Review skill ([`prolog-code-review`](.agents/skills/prolog-code-review/SKILL.md)) to keep review checklists aligned with operational coding standards.
 - **Covington Prolog Style Guide**: [.agents/references/covington_style.md](.agents/references/covington_style.md)
   - Write for humans first; keep clauses simple and readable; use explicit goal ordering and clean predicate naming.
 - **Purity Guidelines**: [.agents/references/prolog_guidelines.md](.agents/references/prolog_guidelines.md)
@@ -50,9 +50,9 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
 - **Programmer Steering Guidelines**: [.agents/references/programmer_guidelines.md](.agents/references/programmer_guidelines.md)
   - Best practices for human programmers when prompting, constraining, and steering AI coding assistants.
 - **Pre-Code-Generation Library Discovery Policy**: [.agents/skills/prolog-library-discovery/SKILL.md](.agents/skills/prolog-library-discovery/SKILL.md)
-  - BEFORE generating Prolog code, AI assistants MUST execute the 7-step discovery protocol: (1) Identify target engine; (2) Run `prolog-agent discover --engine <engine>` or inspect dialect cheat sheets / manifests; (3) Prefer discovered built-in libraries and installed packs over writing custom logic from scratch; (4) Explicitly declare `:- use_module(library(...)).` headers; (5) Document selected dependencies in headers; (6) Explain dependency selection rationale; (7) Only implement custom code when no suitable library exists.
+  - BEFORE generating Prolog code, AI assistants MUST execute the 7-step discovery protocol: (1) Identify target engine; (2) Run `prolog-agent discover --engine <engine>` or inspect system cheat sheets / manifests; (3) Prefer discovered built-in libraries and installed packs over writing custom logic from scratch; (4) Explicitly declare `:- use_module(library(...)).` headers; (5) Document selected dependencies in headers; (6) Explain dependency selection rationale; (7) Only implement custom code when no suitable library exists.
 - **Standard Library Cheat-Sheet Steering**:
-  - AI assistants MUST use dialect skill cheat sheets for `:- use_module(library(...)).` declarations and predicate signatures instead of assuming SWI-style autoloading.
+  - AI assistants MUST use system skill cheat sheets for `:- use_module(library(...)).` declarations and predicate signatures instead of assuming SWI-style autoloading.
   - AI assistants MUST NOT read raw standard library implementation source files, relying on concise cheat sheets and pre-trained semantics to conserve context window tokens.
 - **Human Editing Syntax Error Diagnostics**:
   - Whenever Prolog compilation or consult fails after human editing, AI assistants MUST scan target source files for common punctuation typos (`:` instead of `:-`, `->` instead of `-->`, `#` or `//` line comments, `!=`, `<=`, `=>`, `<>`), and report exact file, line number, column, and fix recommendations to the programmer.
@@ -80,9 +80,9 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
   - **Tooling consistency**: Programs in the toolkit that process or generate Prolog source SHOULD be written in Prolog itself (ISO core + flat engine shims), consistent with the homoiconicity principle. See Guideline 16 in [prolog-conventions](.agents/skills/prolog-conventions/SKILL.md).
 
 
-## Multi-Engine Dialect Selection & Rules
+## Multi-Engine Prolog System Selection & Rules
 
-AI assistants MUST select and follow the specific dialect standards corresponding to the target Prolog engine:
+AI assistants MUST select and follow the specific system standards corresponding to the target Prolog system / engine:
 
 - **[Scryer Prolog](https://github.com/mthom/scryer-prolog)**: [.agents/skills/scryer-prolog-standards/SKILL.md](.agents/skills/scryer-prolog-standards/SKILL.md)
   - Pure DCGs, [`library(si)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/si.pl), `chars` strings, `dif/2`, `if_/3` from [`library(reif)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/reif.pl).
@@ -121,7 +121,7 @@ AI assistants MUST select and follow the specific dialect standards correspondin
 - **Code Review**: [.agents/skills/prolog-code-review/SKILL.md](.agents/skills/prolog-code-review/SKILL.md)
   - Guidelines and checklists for auditing Prolog PRs, checking logical purity, determinism, portability, and safety.
 - **Engine Onboarding**: [.agents/skills/prolog-engine-onboarding/SKILL.md](.agents/skills/prolog-engine-onboarding/SKILL.md)
-  - Interactive, iterative workflow for onboarding new Prolog engines and dialect targets into the toolkit.
+  - Interactive, iterative workflow for onboarding new Prolog engines and system targets into the toolkit.
 - **Project Migration**: [.agents/skills/prolog-migrate-project/SKILL.md](.agents/skills/prolog-migrate-project/SKILL.md)
   - Migration workflow for upgrading legacy Prolog codebases to toolkit conventions in a safe Git branch/worktree.
 
@@ -140,9 +140,9 @@ The toolkit provides dedicated subagents for automated agentic workflows:
 ## Project Bootstrapping & Initializer Workflow
 
 AI assistants provide the virtual and CLI commands:
-- `prolog-agent init <project-name> [--dialect scryer|swi|trealla]`
-- `prolog-agent template <project-name> [--dialect scryer|swi|trealla]`
-- `prolog-agent module <module-name> [--dialect scryer|swi|trealla]`
+- `prolog-agent init <project-name> [--system scryer|swi|trealla]`
+- `prolog-agent template <project-name> [--system scryer|swi|trealla]`
+- `prolog-agent module <module-name> [--system scryer|swi|trealla]`
 - `prolog-agent init-script`
 
 When a user requests a new project or starts a new Prolog repository, AI assistants MUST execute or guide the initializer workflow:
@@ -154,8 +154,8 @@ When a user requests a new project or starts a new Prolog repository, AI assista
    - **Tau Prolog**: Create `package.json` (`name`, `version`, `tau-prolog` dependency).
 3. **Starter Module**: Create `src/<project-name>.pl` with module declaration, Covington comment block, sample pure predicate, DCG stub, and CLP(Z) stub.
 4. **Testing Scaffolding**: Create `tests/testing.pl` (Scryer/ISO/Trealla) or `tests/test_<project-name>.pl` (`plunit` for SWI).
-5. **Dialect Standards**: Include relevant dialect skills (`scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, `prolog-conventions`, `prolog-initializer`).
-6. **README.md**: Include instructions for running tests, using safe runners (`prolog-safe`, `scryer-safe`, `swi-safe`), linking agent skills, and dialect notes.
+5. **System Standards**: Include relevant system skills (`scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, `prolog-conventions`, `prolog-initializer`).
+6. **README.md**: Include instructions for running tests, using safe runners (`prolog-safe`, `scryer-safe`, `swi-safe`), linking agent skills, and system notes.
 
 
 ## Safety & Cross-Platform Execution
@@ -196,9 +196,9 @@ Whenever a new Prolog engine or system is added or supported in this toolkit, al
    - `README.md`: Update OpenGraph description (`<meta property="og:description">`), Schema.org snippet (`<script type="application/ld+json">`), keywords, features list, and engine support tables.
    - `codemeta.json`: Update `description` and `keywords` array.
    - `pyproject.toml`: Add engine tag to `keywords` and CLI entry point script.
-2. **Coding Standards & Dialect Cheat Sheets**:
-   - Create `.agents/skills/<engine>-prolog-standards/SKILL.md` detailing ISO/engine compliance rules AND including a comprehensive **Standard Library Cheat Sheet** (import headers, exported predicates, and dialect autoload differences).
-   - Register dialect skill under **Multi-Engine Dialect Selection & Rules** in `.agents/AGENTS.md`.
+2. **Coding Standards & System Cheat Sheets**:
+   - Create `.agents/skills/<engine>-prolog-standards/SKILL.md` detailing ISO/engine compliance rules AND including a comprehensive **Standard Library Cheat Sheet** (import headers, exported predicates, and system autoload differences).
+   - Register system skill under **Multi-Engine Prolog System Selection & Rules** in `.agents/AGENTS.md`.
 3. **Packaging & Dependencies**:
    - Update `.agents/skills/prolog-packaging/SKILL.md` to cover package management for the engine (e.g. `bakage`, `pack`, `npm`).
 4. **Testing Frameworks**:

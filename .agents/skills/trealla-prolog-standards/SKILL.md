@@ -18,7 +18,7 @@ Guidelines for writing idiomatic Trealla Prolog code:
 
 > **Universal Coding Standards Note**: The cheat sheet table below specifies Trealla-specific module import headers (`:- use_module(library(...)).`). All underlying coding guidelines, purity rules, reification patterns (`=(X,Y,Truth)`, `cond_t`, `if_`), integer constraints (`clpz`), DCG syntax, character I/O (`chars`), and formatting follow the **universal Prolog coding standards** defined in [`prolog-conventions`](../prolog-conventions/SKILL.md) and [`prolog_guidelines.md`](../../references/prolog_guidelines.md).
 
-| Feature / Topic | Import Header | Primary Exported Predicates | Notes / Dialect Rules |
+| Feature / Topic | Import Header | Primary Exported Predicates | Notes / System Rules |
 | :--- | :--- | :--- | :--- |
 | **DCG Parsing** | `:- use_module(library(dcgs)).` | `phrase/2`, `phrase/3` | Standard ISO DCG grammars. |
 | **Character I/O** | `:- use_module(library(charsio)).` | `read_from_chars/2`, `write_to_chars/2` | Double-quoted strings are `chars`. |

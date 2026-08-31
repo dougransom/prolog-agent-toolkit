@@ -1,9 +1,9 @@
 ---
 name: prolog-initializer
-description: Dialect-aware Prolog project initialization, module generation, template scaffolding, bash script generation, and release workflow for Scryer, SWI, and Trealla.
+description: System-aware Prolog project initialization, module generation, template scaffolding, bash script generation, and release workflow for Scryer, SWI, and Trealla.
 ---
 
-# Prolog Agent Toolkit — Dialect-Aware Project Initializer & Workflow Skill
+# Prolog Agent Toolkit — System-Aware Project Initializer & Workflow Skill
 
 This skill provides authoritative instructions and automation for initializing Prolog projects, generating modules, generating project templates, producing POSIX bash initialization scripts, and running release workflows across **Scryer Prolog**, **SWI-Prolog**, and **Trealla Prolog**.
 
@@ -11,9 +11,9 @@ This skill provides authoritative instructions and automation for initializing P
 
 ### 1. Project Initializer Tool (`prolog-agent init`)
 ```bash
-prolog-agent init <project-name> [--dialect scryer|swi|trealla]
+prolog-agent init <project-name> [--system scryer|swi|trealla]
 ```
-If dialect is omitted, default to **scryer**.
+If system is omitted, default to **scryer**.
 
 **Initializer Workflow:**
 1. **Directory Structure**: Create `<project-name>/` with `src/`, `tests/`, `README.md`, `CHANGELOG.md`, and `.agents/` symlink/copy.
@@ -25,21 +25,21 @@ If dialect is omitted, default to **scryer**.
 4. **Test Harness**:
    - **Scryer / Trealla / ISO**: Create `tests/testing.pl`.
    - **SWI**: Create `tests/test_<project-name>.pl` using `plunit`.
-5. **Dialect Standards**: Include `scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, and `prolog-conventions`.
-6. **README.md**: Create canonical onboarding README with 6 structured sections (Project Overview, Directory Layout, Dialect Selection, Safe Runners, Agent Skills, and Testing).
+5. **System Standards**: Include `scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, and `prolog-conventions`.
+6. **README.md**: Create canonical onboarding README with 6 structured sections (Project Overview, Directory Layout, Prolog System Selection, Safe Runners, Agent Skills, and Testing).
 
 ---
 
 ### 2. Project Template Generator (`prolog-agent template`)
 ```bash
-prolog-agent template <project-name> [--dialect scryer|swi|trealla]
+prolog-agent template <project-name> [--system scryer|swi|trealla]
 ```
 Generates a deterministic canonical project layout:
 ```text
 <project-name>/
   src/
     core/                  # 100% Pure ISO Prolog core
-    adapters/              # Dialect shims (scryer, swi, trealla, tau)
+    adapters/              # System shims (scryer, swi, trealla, tau)
     <project-name>.pl      # Main module entry point
   tests/
     portable/              # Pure ISO assertions
@@ -58,10 +58,10 @@ Generates a deterministic canonical project layout:
 
 ### 3. Module Generator Tool (`prolog-agent module`)
 ```bash
-prolog-agent module <module-name> [--dialect scryer|swi|trealla]
+prolog-agent module <module-name> [--system scryer|swi|trealla]
 ```
 Generates `src/<module-name>.pl` with:
-- Dialect-appropriate module declaration (Scryer `:- module(name, [...]).`, SWI `:- module(name, [...]).`, Trealla ISO clean exports).
+- System-appropriate module declaration (Scryer `:- module(name, [...]).`, SWI `:- module(name, [...]).`, Trealla ISO clean exports).
 - Covington comment header (mode, determinism, purity).
 - Deterministic pure predicate stubs.
 - Pure DCG grammar example (`library(dcgs)`).
@@ -94,16 +94,16 @@ When a user asks how to start a new Prolog project:
 2. **Link Agent Toolkit Architecture**:
    - **Recommended (Submodule for Team Repositories)**: `git submodule add https://github.com/dougransom/prolog-agent-toolkit.git .agents-toolkit` and configure `.agents/skills.json`.
    - **Local Dev Alternative (Symlink)**: `ln -s ~/code/prolog-agent-toolkit/.agents .agents`
-3. Choose dialect: Scryer (default), SWI, or Trealla.
-4. Execute `prolog-agent init myproj --dialect <dialect>` or run `scripts/prolog_agent_init.sh myproj <dialect>`.
+3. Choose system: Scryer (default), SWI, or Trealla.
+4. Execute `prolog-agent init myproj --system <system>` or run `scripts/prolog_agent_init.sh myproj <system>`.
 5. Run tests with `scryer-safe tests/testing.pl` or `swi-safe -g "run_tests,halt" tests/test_myproj.pl`.
 
 ---
 
 ## Agent Behavior Rules
 - Always generate deterministic, reproducible project structures.
-- Never mix Prolog dialects unless explicitly instructed.
+- Never mix Prolog systems unless explicitly instructed.
 - Always use safe runners (`prolog-safe`, `scryer-safe`, `swi-safe`, `trealla-safe`).
 - Always follow the initializer workflow and release workflow exactly.
 - Prefer pure predicates, DCGs, and CLP(Z) constraints.
-- Default dialect is Scryer.
+- Default system is Scryer.

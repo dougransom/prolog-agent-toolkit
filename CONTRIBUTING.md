@@ -24,7 +24,7 @@ The toolkit consists of two primary layers:
    - Entry points: `prolog-safe`, `scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`.
 2. **AI Agent Customizations** (`.agents/`):
    - Rules (`.agents/AGENTS.md`, `.agents/references/`) defining Prolog coding standards and portable ISO code targets. `.agents/AGENTS.md` (symlinked as `AGENTS.md` at root) is the **vendor-agnostic single source of truth** across all AI tools.
-   - Skills (`.agents/skills/`) for dialect standards, unit testing (`testing.pl`), package management (`bakage`), and version releases.
+   - Skills (`.agents/skills/`) for system standards, unit testing (`testing.pl`), package management (`bakage`), and version releases.
 
 ### Vendor Neutrality & Agent Configuration Rules
 All AI agent instructions, rules, and skills MUST remain **100% vendor-neutral** and open-format:
@@ -106,8 +106,8 @@ Whenever adding or extending support for a new Prolog engine (e.g. GNU Prolog, C
    - `prolog_agent_toolkit/cli.py`: Add entry point function (e.g. `<engine>_safe_main()`).
    - `tests/test_runner.py`: Add unit test assertions verifying binary resolution.
 3. **Coding Rules & Standards**:
-   - Create `.agents/skills/<engine>-prolog-standards/SKILL.md` detailing dialect syntax, modules, string types, and constraints.
-   - `.agents/AGENTS.md`: Add standard entry under **Multi-Engine Dialect Selection & Rules**.
+   - Create `.agents/skills/<engine>-prolog-standards/SKILL.md` detailing system syntax, modules, string types, and constraints.
+   - `.agents/AGENTS.md`: Add standard entry under **Multi-Engine Prolog System Selection & Rules**.
 4. **Packaging Frameworks**:
    - `.agents/skills/prolog-packaging/SKILL.md`: Document engine package manager conventions (e.g. `bakage`, `pack`, `npm`).
 5. **Testing Frameworks**:

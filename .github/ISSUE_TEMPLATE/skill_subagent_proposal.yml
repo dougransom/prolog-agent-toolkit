@@ -29,11 +29,11 @@ body:
       required: true
 
   - type: dropdown
-    id: dialect_scope
+    id: system_scope
     attributes:
-      label: Target Dialect Scope
+      label: Target Prolog System Scope
       options:
-        - "All Dialects (Portable ISO Prolog)"
+        - "All Prolog Systems (Portable ISO Prolog)"
         - "ISO Scryer Prolog"
         - "SWI-Prolog"
         - "Trealla Prolog"

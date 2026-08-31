@@ -24,7 +24,7 @@
     {
       "path": "prolog_agent_toolkit/cli.py",
       "type": "python",
-      "description": "CLI entrypoints for prolog-agent, prolog-safe, and dialect runners"
+      "description": "CLI entrypoints for prolog-agent, prolog-safe, and engine runners"
     },
     {
       "path": "prolog_agent_toolkit/project.py",

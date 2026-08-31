@@ -8,17 +8,17 @@
       {
         "name": "prolog-agent init",
         "description": "Scaffold new Prolog project with src/, tests/, bakage.toml, and .agents/",
-        "args": ["<project-name>", "[--dialect scryer|swi|trealla|tau|iso]"]
+        "args": ["<project-name>", "[--system scryer|swi|trealla|tau|iso]"]
       },
       {
         "name": "prolog-agent template",
         "description": "Generate starter project template",
-        "args": ["<project-name>", "[--dialect scryer|swi|trealla|tau|iso]"]
+        "args": ["<project-name>", "[--system scryer|swi|trealla|tau|iso]"]
       },
       {
         "name": "prolog-agent module",
         "description": "Generate a pure Prolog module file with Covington header and stub predicate",
-        "args": ["<module-name>", "[--dialect scryer|swi|trealla|tau|iso]"]
+        "args": ["<module-name>", "[--system scryer|swi|trealla|tau|iso]"]
       },
       {
         "name": "prolog-agent release",

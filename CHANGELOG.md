@@ -1,3 +1,23 @@
+## [0.0.1.dev20] - 2026-08-31
+
+### Summary of Changes
+- Refactored all `DIALECT` / `dialect` terminology across the entire repository to `PROLOG_SYSTEM` / `system` / `engine`, adhering to Prolog community standards.
+- Updated Python CLI & project tools (`prolog_agent_toolkit/project.py`, `prolog_agent_toolkit/cli.py`, `prolog_agent_toolkit/release.py`) to use `system_names`, `system_descriptions`, `system_skills`, `get_prolog_system()`, and prioritized `--system` / `--engine` flags (retaining `--dialect` as a backwards-compatible alias).
+- Updated POSIX initializer script (`scripts/prolog_agent_init.sh`) to use `PROLOG_SYSTEM` and support `--system|-s`.
+- Updated all `.agents/` guidelines, skills, subagents, and Prolog initializer modules (`.agents/AGENTS.md`, `prolog-initializer/SKILL.md`, `prolog-initializer/initializer.pl`, `prolog-engine-onboarding/SKILL.md`, `scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, `tau-prolog-standards`, `prolog-conventions`, `prolog-declarative-workflow`, `prolog-library-discovery`, `prolog-migrate-project`, `prolog-benchmark-runner-agent`, `prolog-portability-reviewer-agent`).
+- Updated root documentation, metadata, ontology, and GitHub issue templates (`README.md`, `AGENT_GUIDE.md`, `CONTRIBUTING.md`, `docs/GLOSSARY.md`, `docs/repository_ontology.json`, `docs/capability_manifest.json`, `docs/adr/0001-scryer-as-primary-iso-engine.md`, `.github/ISSUE_TEMPLATE/`).
+
+### Added / Modified
+- `prolog_agent_toolkit/`: Renamed `dialect_*` dictionary lookups and functions to `system_*`, updated CLI argument handling.
+- `scripts/prolog_agent_init.sh`: Replaced `DIALECT` with `PROLOG_SYSTEM` and added `--system|-s` flag.
+- `.agents/AGENTS.md`: Renamed section to `## Multi-Engine Prolog System Selection & Rules`.
+- `.agents/skills/prolog-initializer/initializer.pl`: Updated predicate signatures and rules from `Dialect` to `System`.
+- `README.md`, `AGENT_GUIDE.md`, `CONTRIBUTING.md`: Updated multi-system architecture, quickstart commands, and documentation.
+
+### Breaking Changes
+- None (CLI retains `--dialect` alias for backwards compatibility).
+
+
 ## [0.0.1.dev19] - 2026-08-31
 
 ### Summary of Changes

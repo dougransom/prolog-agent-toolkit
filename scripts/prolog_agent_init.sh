@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# PROLOG AGENT TOOLKIT — DIALECT-AWARE PROJECT INITIALIZER SCRIPT
+# PROLOG AGENT TOOLKIT — SYSTEM-AWARE PROJECT INITIALIZER SCRIPT
 # POSIX-compliant bash script for scaffolding Scryer, SWI, or Trealla Prolog projects.
 
 set -euo pipefail
 
 usage() {
-    echo "Usage: $0 <project-name> [--dialect scryer|swi|trealla]"
+    echo "Usage: $0 <project-name> [--system|--engine scryer|swi|trealla]"
     exit 1
 }
 
@@ -16,15 +16,15 @@ fi
 PROJECT_NAME="$1"
 shift
 
-DIALECT="scryer"
+PROLOG_SYSTEM="scryer"
 while [ "$#" -gt 0 ]; do
     case "$1" in
-        --dialect|-d)
-            DIALECT="$2"
+        --system|-s|--engine|-e|--dialect|-d)
+            PROLOG_SYSTEM="$2"
             shift 2
             ;;
         scryer|swi|trealla)
-            DIALECT="$1"
+            PROLOG_SYSTEM="$1"
             shift
             ;;
         *)
@@ -35,7 +35,7 @@ while [ "$#" -gt 0 ]; do
 done
 
 echo "====================================================================="
-echo "Initializing Prolog Project: '${PROJECT_NAME}' (Dialect: ${DIALECT})"
+echo "Initializing Prolog Project: '${PROJECT_NAME}' (System: ${PROLOG_SYSTEM})"
 echo "====================================================================="
 
 # 1. Create directories
@@ -48,8 +48,8 @@ if [ -d "${TOOLKIT_AGENTS}" ]; then
     echo "Linked .agents -> ${TOOLKIT_AGENTS}"
 fi
 
-# 3. Dialect packaging
-if [ "${DIALECT}" = "scryer" ]; then
+# 3. Prolog system packaging
+if [ "${PROLOG_SYSTEM}" = "scryer" ]; then
     cat << EOF > "${PROJECT_NAME}/bakage.toml"
 name = "${PROJECT_NAME}"
 version = "0.1.0"
@@ -62,7 +62,7 @@ version('0.1.0').
 title('${PROJECT_NAME} Prolog library').
 author('Developer').
 EOF
-elif [ "${DIALECT}" = "swi" ]; then
+elif [ "${PROLOG_SYSTEM}" = "swi" ]; then
     cat << EOF > "${PROJECT_NAME}/pack.pl"
 name('${PROJECT_NAME}').
 version('0.1.0').
@@ -71,12 +71,12 @@ author('Developer', 'dev@example.com').
 home('https://example.com').
 requires([]).
 EOF
-elif [ "${DIALECT}" = "trealla" ]; then
-    echo "Trealla Prolog dialect selected: skipping package manifest (no package manager)."
+elif [ "${PROLOG_SYSTEM}" = "trealla" ]; then
+    echo "Trealla Prolog system selected: skipping package manifest (no package manager)."
 fi
 
 # 4. Starter module src/<project-name>.pl
-if [ "${DIALECT}" = "swi" ]; then
+if [ "${PROLOG_SYSTEM}" = "swi" ]; then
     cat << EOF > "${PROJECT_NAME}/src/${PROJECT_NAME}.pl"
 :- module(${PROJECT_NAME}, [
     hello/1,
@@ -102,7 +102,7 @@ solve_range(N, X) :-
     X #=< N,
     X #= N - 1.
 EOF
-elif [ "${DIALECT}" = "trealla" ]; then
+elif [ "${PROLOG_SYSTEM}" = "trealla" ]; then
     cat << EOF > "${PROJECT_NAME}/src/${PROJECT_NAME}.pl"
 % Trealla Prolog Module: ${PROJECT_NAME}
 
@@ -151,7 +151,7 @@ EOF
 fi
 
 # 5. Testing scaffolding
-if [ "${DIALECT}" = "swi" ]; then
+if [ "${PROLOG_SYSTEM}" = "swi" ]; then
     cat << EOF > "${PROJECT_NAME}/tests/test_${PROJECT_NAME}.pl"
 :- use_module(library(plunit)).
 :- use_module('../src/${PROJECT_NAME}.pl').
@@ -200,22 +200,22 @@ MANIFEST_FILE="bakage.toml"
 TEST_FILE="testing.pl"
 RUNNER_CMD="scryer-safe -g \"use_module('src/${PROJECT_NAME}.pl'), hello(M), write(M), nl, halt.\""
 TEST_CMD="scryer-safe tests/testing.pl"
-DIALECT_NAME="Scryer Prolog"
+PROLOG_SYSTEM_NAME="Scryer Prolog"
 SKILL_REF="\`.agents/skills/scryer-prolog-standards/SKILL.md\` and \`.agents/skills/prolog-conventions/SKILL.md\`"
 
-if [ "${DIALECT}" = "swi" ]; then
+if [ "${PROLOG_SYSTEM}" = "swi" ]; then
     MANIFEST_FILE="pack.pl"
     TEST_FILE="test_${PROJECT_NAME}.pl"
     RUNNER_CMD="swi-safe -g \"use_module('src/${PROJECT_NAME}.pl'), hello(M), writeln(M), halt.\""
     TEST_CMD="swi-safe -g \"run_tests,halt\" tests/test_${PROJECT_NAME}.pl"
-    DIALECT_NAME="SWI-Prolog"
+    PROLOG_SYSTEM_NAME="SWI-Prolog"
     SKILL_REF="\`.agents/skills/swi-prolog-standards/SKILL.md\` and \`.agents/skills/prolog-conventions/SKILL.md\`"
-elif [ "${DIALECT}" = "trealla" ]; then
+elif [ "${PROLOG_SYSTEM}" = "trealla" ]; then
     MANIFEST_FILE="pack.pl"
     TEST_FILE="testing.pl"
     RUNNER_CMD="trealla-safe -g \"use_module('src/${PROJECT_NAME}.pl'), hello(M), write(M), nl, halt.\""
     TEST_CMD="trealla-safe tests/testing.pl"
-    DIALECT_NAME="Trealla Prolog"
+    PROLOG_SYSTEM_NAME="Trealla Prolog"
     SKILL_REF="\`.agents/skills/trealla-prolog-standards/SKILL.md\` and \`.agents/skills/prolog-conventions/SKILL.md\`"
 fi
 
@@ -235,9 +235,9 @@ This project uses **\`prolog-agent-toolkit\` (v0.0.1.dev6)**.
 The \`prolog-agent-toolkit\` provides a standardized development environment for writing safe, pure, high-quality Prolog software. Its primary capabilities include:
 
 - **Deterministic Safe Runners**: Cross-platform command-line entry points (\`scryer-safe\`, \`swi-safe\`, \`trealla-safe\`, \`tau-safe\`, \`prolog-safe\`) that run Prolog execution under strict CPU and memory resource limits.
-- **Dialect Standards & Purity**: Enforced coding guidelines, Covington style standards, reified logical predicates (\`if_/3\`, \`dif/2\`), pure DCGs, and CLP constraint logic.
+- **Prolog System Standards & Purity**: Enforced coding guidelines, Covington style standards, reified logical predicates (\`if_/3\`, \`dif/2\`), pure DCGs, and CLP constraint logic.
 - **Agent Skill Architecture**: Integrated \`.agents/\` directory providing structured skills and linting rules so AI assistants (e.g. Gemini, Cursor, Claude, Copilot) generate pure, idiomatic code.
-- **Multi-Engine Support**: Seamless portability across Prolog engines (Scryer Prolog, SWI-Prolog, Trealla Prolog, Tau Prolog).
+- **Multi-Engine Support**: Seamless portability across Prolog systems (Scryer Prolog, SWI-Prolog, Trealla Prolog, Tau Prolog).
 
 ---
 
@@ -261,22 +261,22 @@ ${PROJECT_NAME}/
 
 - **\`src/\`**: Houses application and library Prolog source files. Modules explicitly declare exports and follow pure ISO standards.
 - **\`tests/\`**: Contains unit test harnesses and test cases.
-- **\`.agents/\`**: Workspace symlink pointing to the shared \`prolog-agent-toolkit/.agents\` directory. Gives AI coding agents immediate access to project guidelines, dialect rules, refactoring subagents, and linter specifications.
+- **\`.agents/\`**: Workspace symlink pointing to the shared \`prolog-agent-toolkit/.agents\` directory. Gives AI coding agents immediate access to project guidelines, Prolog system rules, refactoring subagents, and linter specifications.
 - **\`${MANIFEST_FILE}\`**: Packaging manifest file.
 - **\`README.md\`**: Canonical onboarding document for developers and AI agents.
 
 ---
 
-## 3. Dialect Selection
+## 3. Prolog System Selection
 
-This project is configured to use **${DIALECT_NAME}**.
+This project is configured to use **${PROLOG_SYSTEM_NAME}**.
 
-### Dialect Overview
+### System Overview
 Adheres to engine standards and logical purity conventions.
 
-### Dialect Standards Reference
-When writing code or directing AI agents, consult the dialect standards provided by the toolkit:
-- **Primary Dialect Skill**: ${SKILL_REF}
+### System Standards Reference
+When writing code or directing AI agents, consult the system standards provided by the toolkit:
+- **Primary System Skill**: ${SKILL_REF}
 - **Universal Style Guide**: \`.agents/references/covington_style.md\`
 - **Purity Guidelines**: \`.agents/references/prolog_guidelines.md\`
 
@@ -293,7 +293,7 @@ All Prolog executions **MUST** use the safe runner entry points provided by \`pr
 ${RUNNER_CMD}
 
 # Run using generic wrapper (select engine via environment variable):
-export PROLOG_ENGINE=${DIALECT}
+export PROLOG_ENGINE=${PROLOG_SYSTEM}
 prolog-safe -g "hello(M), write(M), nl, halt." src/${PROJECT_NAME}.pl
 \`\`\`
 

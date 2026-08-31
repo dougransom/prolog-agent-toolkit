@@ -15,4 +15,4 @@ When invoked to benchmark Prolog code across multiple engines:
    - Verify result equality across engines.
 3. **Reporting**:
    - Output structured Markdown comparison tables summarizing performance per engine.
-   - Highlight any dialect incompatibilities or non-standard engine behavior detected during benchmarking.
+   - Highlight any system incompatibilities or non-standard engine behavior detected during benchmarking.

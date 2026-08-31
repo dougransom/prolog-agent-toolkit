@@ -18,7 +18,7 @@ The programming standards, purity principles, and predicate usage guidelines doc
 
 are **universal Prolog coding standards** for ANY Prolog engine supporting those capabilities.
 
-While the module loading directive (e.g. `:- use_module(library(clpz)).` in Scryer/Trealla vs `:- use_module(library(clpfd)).` in SWI) may be dialect-specific or idiosyncratic to a particular engine, dialect skills document that loading header while referencing these universal Prolog coding standards for code style, purity, and predicate contracts.
+While the module loading directive (e.g. `:- use_module(library(clpz)).` in Scryer/Trealla vs `:- use_module(library(clpfd)).` in SWI) may be system-specific or idiosyncratic to a particular engine, system skills document that loading header while referencing these universal Prolog coding standards for code style, purity, and predicate contracts.
 
 ## Core Guidelines
 
@@ -95,7 +95,7 @@ While the module loading directive (e.g. `:- use_module(library(clpz)).` in Scry
 13. **Clean Data Representations**: Prefer clean data structures where element kinds are distinguished by principal functor (`leaf(L)` vs `node(L, R)`). Avoid defaulty representations that force runtime type tests (`var/1`) or procedural default branches. Convert raw input data into clean trees early.
 14. **Macro & Compile-Time Expansion**: Use Prolog's macro mechanism (`user:term_expansion/2` and `user:goal_expansion/2`) to transform clauses or rewrite inline goals at compile time to eliminate boilerplate and redundant rules. Prefer static compile-time expansion over dynamic database modification (`asserta`/`assertz`).
 15. **Avoid Non-Standard Extensions**: Do not rely on engine-specific types (e.g. SWI dicts or SWI string types) when writing standard Prolog code.
-16. **Library Steering vs Reading Source**: Rely on dialect-specific Standard Library Cheat Sheets for module header declarations and predicate exports. AI assistants MUST NOT read raw standard library implementation source files, relying instead on concise cheat sheets and pre-trained semantics to save context tokens.
+16. **Library Steering vs Reading Source**: Rely on system-specific Standard Library Cheat Sheets for module header declarations and predicate exports. AI assistants MUST NOT read raw standard library implementation source files, relying instead on concise cheat sheets and pre-trained semantics to save context tokens.
 17. **Safety**: Execute code using `prolog-safe`.
 
 18. **Prolog Tooling in Prolog (ISO Core + Engine Shims)**: Programs that parse, rewrite, transform, analyze, or generate Prolog source code SHOULD themselves be implemented in Prolog, exploiting the language's homoiconicity (code = terms = data). Structure such tools using an ISO-common core with flat, engine-specific shim files:

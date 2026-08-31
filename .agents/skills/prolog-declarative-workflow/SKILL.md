@@ -18,7 +18,7 @@ LLMs naturally default to imperative thinking (treating Prolog like Python or Ja
 
 Before generating Prolog code for any task, AI assistants **MUST** execute the 7-step library discovery protocol:
 1. **Target Engine**: Identify target Prolog engine (`scryer`, `swi`, `trealla`, `tau`, `gnu`, `iso`).
-2. **Capability Discovery**: Run `prolog-agent discover --engine <engine>` or consult dialect cheat-sheets and manifests (`bakage.toml`, `pack.pl`).
+2. **Capability Discovery**: Run `prolog-agent discover --engine <engine>` or consult system cheat-sheets and manifests (`bakage.toml`, `pack.pl`).
 3. **Prefer Built-Ins**: Reuse built-in standard libraries or installed packages instead of re-implementing functionality.
 4. **Explicit Imports**: Always add explicit `:- use_module(library(...)).` headers.
 5. **Document Dependencies**: Detail all imported modules in Covington predicate and file headers.

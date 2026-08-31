@@ -17,9 +17,9 @@ Guidelines for writing idiomatic SWI-Prolog code:
 
 ## SWI-Prolog Standard Library Cheat Sheet
 
-> **Universal Coding Standards Note**: The cheat sheet table below specifies SWI-specific module import headers (`:- use_module(library(...)).`) and built-ins. While SWI has dialect-specific module names (e.g. `library(clpfd)`, `library(yall)`), all underlying coding guidelines, purity rules, reification patterns (`=(X,Y,Truth)`, `cond_t`, `if_`), DCG syntax, safe type testing, and formatted output follow the **universal Prolog coding standards** defined in [`prolog-conventions`](../prolog-conventions/SKILL.md) and [`prolog_guidelines.md`](../../references/prolog_guidelines.md).
+> **Universal Coding Standards Note**: The cheat sheet table below specifies SWI-specific module import headers (`:- use_module(library(...)).`) and built-ins. While SWI has system-specific module names (e.g. `library(clpfd)`, `library(yall)`), all underlying coding guidelines, purity rules, reification patterns (`=(X,Y,Truth)`, `cond_t`, `if_`), DCG syntax, safe type testing, and formatted output follow the **universal Prolog coding standards** defined in [`prolog-conventions`](../prolog-conventions/SKILL.md) and [`prolog_guidelines.md`](../../references/prolog_guidelines.md).
 
-| Feature / Topic | Import Header | Primary Exported Predicates | Notes / Dialect Rules |
+| Feature / Topic | Import Header | Primary Exported Predicates | Notes / System Rules |
 | :--- | :--- | :--- | :--- |
 | **CLP(FD) Constraints**| `:- use_module(library(clpfd)).` | `(#=)/2`, `in/2`, `label/1`, `labeling/2` | Integer constraints in SWI (SWI uses `clpfd`). |
 | **Higher-Order Lambdas**| `:- use_module(library(yall)).` | `[X]>>...`, `[X,Y]>>Goal` | SWI built-in lambda syntax (`yall`). |

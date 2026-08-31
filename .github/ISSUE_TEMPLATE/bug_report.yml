@@ -18,10 +18,10 @@ body:
       required: true
 
   - type: dropdown
-    id: dialect
+    id: prolog_system
     attributes:
-      label: Target Prolog Engine / Dialect
-      description: Select the Prolog engine or dialect involved in this issue.
+      label: Target Prolog Engine / System
+      description: Select the Prolog engine or system involved in this issue.
       options:
         - "ISO Scryer Prolog (scryer-safe)"
         - "SWI-Prolog (swi-safe)"

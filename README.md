@@ -7,7 +7,7 @@
 [![CodeMeta Metadata](https://img.shields.io/badge/CodeMeta-JSON--LD-brightgreen.svg)](codemeta.json)
 [![Share on LinkedIn](https://img.shields.io/badge/Share_on-LinkedIn-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fgithub.com%2Fdougransom%2Fprolog-agent-toolkit)
 
-**Version**: `0.0.1.dev19`  
+**Version**: `0.0.1.dev20`  
 **Category**: AI Assistant Developer Tools / Prolog Language Tooling  
 **Metadata**: [codemeta.json](codemeta.json)
 
@@ -50,8 +50,8 @@ A reusable AI agent skills, coding standards, and multi-engine (Scryer, SWI, Tre
 ## Features
 
 - **Cross-Platform Safety Wrappers**: Runs Prolog engines safely with execution timeouts, low CPU priority, and memory limits across Linux, macOS, BSD, and Windows.
-- **CLI Management Suite**: Project bootstrapping, module generator, dialect switcher, release manager, and skill validator via `prolog-agent`.
-- **Dialect-Aware Standards**: Enforces Scryer, SWI, Trealla, Tau, and portable Prolog conventions automatically.
+- **CLI Management Suite**: Project bootstrapping, module generator, system switcher, release manager, and skill validator via `prolog-agent`.
+- **System-Aware Standards**: Enforces Scryer, SWI, Trealla, Tau, and portable Prolog conventions automatically.
 - **Autonomous AI Subagents & Skills**: Pre-configured subagents and skills for purity auditing, automated refactoring, legacy project migration (`prolog-migrate-project`), unit test generation, benchmark running, and security scanning.
 
 ---
@@ -65,7 +65,7 @@ A reusable AI agent skills, coding standards, and multi-engine (Scryer, SWI, Tre
 - **Where `prolog-agent-toolkit` fits:**  
   General LLMs often fail on Prolog because training data skews toward imperative coding patterns and non-logical cuts (`!`). This toolkit steps in specifically where Prolog requires domain expertise:
   - **Logical Purity**: Pure reified conditionals (`if_/3`), sound term inequality (`dif/2`), and pure DCGs.
-  - **Engine Dialects & String Types**: Enforcing ISO `chars` lists vs SWI string objects, and explicit module declarations across Scryer, SWI, Trealla, and Tau Prolog.
+  - **Prolog Systems & String Types**: Enforcing ISO `chars` lists vs SWI string objects, and explicit module declarations across Scryer, SWI, Trealla, and Tau Prolog.
   - **Sandboxed Interpreter Safety**: Preventing infinite search loops or system resource starvation via resource-capped safety runners (`scryer-safe`, `swi-safe`, `trealla-safe`, `prolog-safe`).
   - **Open Standard `.agents/` Interoperability**: Built on standard Markdown and JSON frontmatter so general IDE skills and Prolog skills coexist without collision.
 
@@ -75,9 +75,9 @@ A reusable AI agent skills, coding standards, and multi-engine (Scryer, SWI, Tre
 
 | Command | Purpose |
 |---|---|
-| `prolog-agent init <name> [--dialect scryer\|swi\|trealla\|tau\|iso]` | Scaffolds a new project with `src/`, `tests/`, manifests (`bakage.toml`/`pack.pl`), and starter module. |
-| `prolog-agent template <name> [--dialect ...]` | Generates a project template for specified dialect. |
-| `prolog-agent module <name> [--dialect ...]` | Scaffolds a single pure Prolog module with Covington doc headers. |
+| `prolog-agent init <name> [--system scryer\|swi\|trealla\|tau\|iso]` | Scaffolds a new project with `src/`, `tests/`, manifests (`bakage.toml`/`pack.pl`), and starter module. |
+| `prolog-agent template <name> [--system ...]` | Generates a project template for specified system. |
+| `prolog-agent module <name> [--system ...]` | Scaffolds a single pure Prolog module with Covington doc headers. |
 | `prolog-agent init-script` | Generates shell environment configuration script. |
 | `prolog-agent release [--version X.Y.Z]` | Synchronizes versions across project manifests and creates release tags. |
 | `prolog-agent check-version` | Audits version parity across manifest files (`pyproject.toml`, `bakage.toml`, `pack.pl`, `README.md`). |
@@ -185,23 +185,23 @@ Follow this guide to create and develop a brand new Prolog project with AI assis
 Run `prolog-agent init` specifying your project name and target Prolog engine (default is `scryer`):
 
 ```bash
-prolog-agent init my_parser --dialect scryer
+prolog-agent init my_parser --system scryer
 cd my_parser
 ```
 
 ### Step 2: Project Layout Overview
-The project is bootstrapped with a clean structure, multi-dialect adapter support, standard testing framework, package manifests, and AI rules:
+The project is bootstrapped with a clean structure, multi-system adapter support, standard testing framework, package manifests, and AI rules:
 
 ```text
 my_parser/
 ├── bakage.toml          # Scryer Prolog manifest
 ├── pack.pl              # SWI manifest & Scryer fallback
 ├── package.json         # Tau Prolog / npm manifest (optional)
-├── AGENTS.md            # AI assistant rules & dialect guidelines
+├── AGENTS.md            # AI assistant rules & system guidelines
 ├── src/
-│   ├── core/            # Portable Prolog core (dialect-agnostic ISO target)
+│   ├── core/            # Portable Prolog core (system-agnostic ISO target)
 │   │   └── logic.pl
-│   ├── adapters/        # Dialect compatibility shims (scryer, swi, trealla, tau)
+│   ├── adapters/        # System compatibility shims (scryer, swi, trealla, tau)
 │   └── my_parser.pl     # Starter module with Covington doc block & DCG/CLP(Z) stubs
 └── tests/
     ├── portable/        # Engine-agnostic unit tests
@@ -242,7 +242,7 @@ ln -s /path/to/prolog-agent-toolkit/.agents .agents
 ln -s .agents/AGENTS.md AGENTS.md
 ```
 
-### Step 2: Select the Target Engine Dialect
+### Step 2: Select the Target Engine / System
 Set the target engine environment variable for your terminal and safety runners:
 
 ```bash
@@ -318,20 +318,20 @@ If you scaffold a project using `prolog-agent init my_app`, you can safely delet
 
 ---
 
-## Standard Prolog Folder Architecture & Multi-Dialect Layout
+## Standard Prolog Folder Architecture & Multi-System Layout
 
-When organizing Prolog software—especially repositories supporting multiple package managers (`bakage`, `pack_install`, `npm`) or multiple dialects (Scryer, SWI, Trealla, Tau)—adhere to the following canonical layout:
+When organizing Prolog software—especially repositories supporting multiple package managers (`bakage`, `pack_install`, `npm`) or multiple systems (Scryer, SWI, Trealla, Tau)—adhere to the following canonical layout:
 
 ```text
 my_prolog_project/
 ├── .agents/                        # AI Assistant rules & skill references (symlink or dir)
-│   ├── AGENTS.md                   # Project rules & dialect conventions
+│   ├── AGENTS.md                   # Project rules & system conventions
 │   └── skills/                     # Engine & tool skills
 ├── src/                            # Source Code Directory
-│   ├── core/                       # Portable Prolog Core (dialect-agnostic ISO target)
+│   ├── core/                       # Portable Prolog Core (system-agnostic ISO target)
 │   │   ├── logic.pl                # Pure DCGs, term relations, CLP constraints
 │   │   └── types.pl                # Functor data representations
-│   ├── adapters/                   # Dialect Shims & Library Normalization
+│   ├── adapters/                   # System Shims & Library Normalization
 │   │   ├── scryer/compat.pl        # Imports library(charsio), library(reif), library(clpz)
 │   │   ├── swi/compat.pl           # Imports library(clpfd), plunit, SWI shims
 │   │   ├── trealla/compat.pl       # Trealla compatibility shims & FFI
@@ -360,7 +360,7 @@ my_prolog_project/
 1. **Multi-Manifest Co-existence**: Package manifests (`bakage.toml`, `pack.pl`, `package.json`, `pyproject.toml`) have distinct filenames and co-exist at the repository root without conflict. This allows publishing the project across multiple ecosystems simultaneously.
 2. **Core vs. Adapter Decoupling**:
    - `src/core/`: Contains portable Prolog logic aiming for ISO compliance (pure DCGs, `dif/2`, reified `if_/3`). Free of engine-specific imports or extensions.
-   - `src/adapters/`: Contains thin engine-specific compatibility shims that normalize dialect variations (`library(clpz)` vs `library(clpfd)`).
+   - `src/adapters/`: Contains thin engine-specific compatibility shims that normalize system variations (`library(clpz)` vs `library(clpfd)`).
 3. **Multi-Runner Test Hierarchy**:
    - `tests/portable/`: Goal assertions executable on any conforming Prolog engine.
    - `tests/scryer/`: Scryer unit tests using `library(testing)`.
@@ -389,7 +389,7 @@ PROLOG_ENGINE=trealla prolog-safe -g "write('Hello Trealla'), nl, halt."
 
 ## Onboarding an Additional Prolog System
 
-To add support for a new Prolog engine or dialect target (such as GNU Prolog, Ciao, ECLiPSe, B-Prolog, Ichiban, or YAP) to the toolkit, use the interactive **Engine Onboarding Workflow**:
+To add support for a new Prolog engine or system target (such as GNU Prolog, Ciao, ECLiPSe, B-Prolog, Ichiban, or YAP) to the toolkit, use the interactive **Engine Onboarding Workflow**:
 
 ```text
 .agents/skills/prolog-engine-onboarding/SKILL.md
@@ -404,9 +404,9 @@ Prompt your AI assistant to start the interactive onboarding process:
 The interactive workflow guides you through 6 iterative phases:
 
 1. **Information Gathering**: Collects CLI binary names (`gprolog`, `ciao`, `yap`), supported standard features, string representations (`chars`/`codes`/`string`), import syntax, and runner flags.
-2. **Dialect Standards & Cheat Sheet Creation**: Generates `.agents/skills/<engine>-prolog-standards/SKILL.md` containing explicit `:- use_module(library(...)).` headers, exported predicate tables, and dialect autoload rules.
+2. **System Standards & Cheat Sheet Creation**: Generates `.agents/skills/<engine>-prolog-standards/SKILL.md` containing explicit `:- use_module(library(...)).` headers, exported predicate tables, and system autoload rules.
 3. **Safety Runner & CLI Entry Point**: Updates `runner.py`, `cli.py`, and `pyproject.toml` to register `<engine>-safe`.
-4. **Project Initializer & Scaffolding**: Updates `prolog-agent init` and `prolog-agent template` options for `--dialect <engine>`.
+4. **Project Initializer & Scaffolding**: Updates `prolog-agent init` and `prolog-agent template` options for `--system <engine>`.
 5. **Metadata & Agent Rules**: Updates `.agents/AGENTS.md`, `README.md`, `codemeta.json`, and `pyproject.toml`.
 6. **Automated Verification & Review**: Runs unit tests (`pytest`) and skill validation (`prolog-agent validate-skills`), asking clarifying questions iteratively until you confirm onboarding is complete.
 
@@ -484,7 +484,7 @@ flowchart TD
 2. **Pre-Code-Generation Discovery Layer (`<lang>-agent discover`)**:
    - A CLI/API mechanism that queries installed modules, standard libraries, and package manifests before code generation so AI assistants reuse built-in capabilities instead of writing custom code.
 3. **Declarative Rules & Skills Layer (`.agents/`)**:
-   - A vendor-neutral `.agents/` folder containing root `AGENTS.md` steering rules, language dialect cheat sheets, and subagent workflow guidelines compatible across any AI coding assistant.
+   - A vendor-neutral `.agents/` folder containing root `AGENTS.md` steering rules, system cheat sheets, and subagent workflow guidelines compatible across any AI coding assistant.
 4. **Automated Verification & Diagnostics Layer**:
    - Automated syntax checkers, linters, and test runners (`testing.pl`, `pytest`, `cargo check`, `hlint`) that provide immediate empirical feedback to the AI assistant to confirm code correctness.
 

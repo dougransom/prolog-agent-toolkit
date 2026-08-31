@@ -5,16 +5,16 @@
 ## Documentation & AI Agent Rules
 
 - **`README.md`**: Human-facing project overview, architecture, and setup instructions.
-- **`AGENTS.md`**: AI assistant rules, dialect standards, and safe runner constraints.
+- **`AGENTS.md`**: AI assistant rules, Prolog system standards, and safe runner constraints.
 
 ## Project Structure
 
-Recommended canonical project layout supporting single or multi-dialect development:
+Recommended canonical project layout supporting single or multi-system development:
 
 ```text
 starter_project/
 ├── src/                            # Source code directory
-│   ├── core/                       # Portable Prolog core (dialect-agnostic ISO target)
+│   ├── core/                       # Portable Prolog core (system-agnostic ISO target)
 │   │   └── logic.pl
 │   ├── adapters/                   # Engine shims & compatibility layers
 │   │   ├── scryer/compat.pl        # Scryer imports (charsio, reif, clpz)
@@ -27,7 +27,7 @@ starter_project/
 │   ├── scryer/                     # Scryer testing.pl harness
 │   ├── swi/                        # SWI plunit test suite
 │   └── testing.pl                  # Default test harness
-├── AGENTS.md                       # AI assistant rules & dialect guidelines
+├── AGENTS.md                       # AI assistant rules & system guidelines
 ├── bakage.toml                     # Scryer Prolog bakage manifest
 ├── pack.pl                         # SWI-Prolog pack manifest & Scryer fallback
 ├── package.json                    # Tau Prolog / npm manifest (optional for Node/DOM)

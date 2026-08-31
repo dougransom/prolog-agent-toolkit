@@ -93,13 +93,13 @@ Connect the project to the central Prolog Agent Toolkit skills, subagents, and g
 
 ## Phase 4: Restructuring Folder Layout
 
-Upgrade the repository structure to the canonical multi-dialect layout:
+Upgrade the repository structure to the canonical multi-system layout:
 
 ```text
 <project-name>/
 ├── src/
 │   ├── core/                  # 100% Pure ISO Prolog logic (engine-agnostic)
-│   ├── adapters/              # Dialect shims (Scryer, SWI, Trealla, Tau)
+│   ├── adapters/              # System shims (Scryer, SWI, Trealla, Tau)
 │   └── <project-name>.pl      # Main module entry point
 ├── tests/
 │   ├── portable/              # ISO-compliant unit test assertions
@@ -117,7 +117,7 @@ Upgrade the repository structure to the canonical multi-dialect layout:
 ### CLI Scaffolding Helper
 To quickly generate missing layout boilerplate and manifests:
 ```bash
-prolog-agent template <project-name> --dialect scryer
+prolog-agent template <project-name> --system scryer
 ```
 Then move existing `.pl` source files into `src/` (or `src/core/`) and test scripts into `tests/`.
 
@@ -132,7 +132,7 @@ Refactor existing Prolog logic according to toolkit guidelines:
    - Use pure DCGs (`library(dcgs)`) for text/token parsing.
    - Use `library(clpz)` or `library(clpfd)` for integer constraints.
 2. **Explicit Standard Library Imports**:
-   - Add explicit headers to all Prolog files instead of relying on dialect autoloading:
+   - Add explicit headers to all Prolog files instead of relying on system autoloading:
      ```prolog
      :- use_module(library(dcgs)).
      :- use_module(library(charsio)).

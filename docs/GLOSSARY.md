@@ -1,6 +1,6 @@
 # Prolog Agent Toolkit Glossary & Terminology Index
 
-This glossary provides authoritative definitions for key Prolog concepts, dialect rules, purity guidelines, and safety constructs used throughout `prolog-agent-toolkit`.
+This glossary provides authoritative definitions for key Prolog concepts, Prolog system rules, purity guidelines, and safety constructs used throughout `prolog-agent-toolkit`.
 
 ---
 
@@ -25,7 +25,7 @@ Pure rule-based parsing and generation syntax using `-->`. DCGs build ASTs, pars
 
 ---
 
-## 2. Dialect & Engine Terminology
+## 2. Prolog Systems & Engines
 
 ### [Scryer Prolog](https://github.com/mthom/scryer-prolog)
 A Prolog engine written in Rust emphasizing purity, module safety, [`CLP(Z)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/clpz.pl), pure DCGs, and `chars` string representations.

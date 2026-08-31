@@ -11,7 +11,7 @@ Use this skill whenever an AI agent needs to analyze requirements, identify targ
 
 Before generating Prolog code for any module, predicate, or solution, AI assistants **MUST** execute the 7-step pre-code-generation protocol:
 
-1. **Identify Target Engine**: Determine the target engine (`scryer`, `swi`, `trealla`, `tau`, `gnu`, `iso`) from `AGENTS.md`, CLI flags (`--engine`/`--dialect`), or environment variables (`PROLOG_ENGINE`).
+1. **Identify Target Engine**: Determine the target engine (`scryer`, `swi`, `trealla`, `tau`, `gnu`, `iso`) from `AGENTS.md`, CLI flags (`--engine`/`--system`), or environment variables (`PROLOG_ENGINE`).
 2. **Discover Available Capabilities**: Run `prolog-agent discover --engine <engine>` or consult static cheat sheets and local manifests (`bakage.toml`, `pack.pl`, `package.json`).
 3. **Prefer Installed Capabilities**: Reuse built-in standard libraries or installed packages instead of implementing functionality from scratch.
 4. **Explicitly Import Dependencies**: Always declare explicit module imports (e.g., `:- use_module(library(clpz)).`, `:- use_module(library(dcgs)).`). Do NOT rely on implicit autoloading.

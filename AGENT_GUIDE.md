@@ -18,7 +18,7 @@ A multi-engine, cross-platform Prolog safety runner, project scaffolding tool, r
 To allow AI coding agents to safely write, test, refactor, and run pure, clean Prolog code (aiming for ISO compliance subject to engine capabilities) without causing infinite loops, crashing operating system resources, or producing unsound/defaulty logic.
 
 > [!NOTE]
-> **Core Architectural Goal**: Declare as much as possible as a **generalized, common baseline** for all Prolog systems (pure logic, reification, integer constraints, DCGs, `chars`, safe type testing, layout, and efficiency), reserving engine dialect skills (`scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, `tau-prolog-standards`) strictly to capture engine-specific **idiosyncrasies** (load headers, dialect types like SWI dicts, WASM limits, packaging, and JS/DOM interop).
+> **Core Architectural Goal**: Declare as much as possible as a **generalized, common baseline** for all Prolog systems (pure logic, reification, integer constraints, DCGs, `chars`, safe type testing, layout, and efficiency), reserving system-specific skills (`scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, `tau-prolog-standards`) strictly to capture engine-specific **idiosyncrasies** (load headers, system types like SWI dicts, WASM limits, packaging, and JS/DOM interop).
 
 ### Q3: What are its major components?
 1. **Python Toolkit Package** ([`prolog_agent_toolkit/`](prolog_agent_toolkit)): Safety runners (`prolog-safe`, `scryer-safe`), CLI initializer (`prolog-agent init`), syntax diagnostic checker, skill frontmatter validator, and release sync manager.
@@ -49,7 +49,7 @@ To allow AI coding agents to safely write, test, refactor, and run pure, clean P
 ### Q7: Which standards apply?
 - Universal Prolog Style & Purity: [`.agents/references/prolog_guidelines.md`](.agents/references/prolog_guidelines.md)
 - Covington Prolog Style Guide: [`.agents/references/covington_style.md`](.agents/references/covington_style.md)
-- Dialect Standards: [`.agents/skills/scryer-prolog-standards/SKILL.md`](.agents/skills/scryer-prolog-standards/SKILL.md), [`.agents/skills/swi-prolog-standards/SKILL.md`](.agents/skills/swi-prolog-standards/SKILL.md)
+- System Standards: [`.agents/skills/scryer-prolog-standards/SKILL.md`](.agents/skills/scryer-prolog-standards/SKILL.md), [`.agents/skills/swi-prolog-standards/SKILL.md`](.agents/skills/swi-prolog-standards/SKILL.md)
 
 ### Q8: Which skills already exist?
 21 declarative skills are cataloged in [`.agents/skills.json`](.agents/skills.json), spanning [`CLP(Z)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/clpz.pl), pure DCGs, tabling, web services, testing, packaging, profiling, and engine onboarding.

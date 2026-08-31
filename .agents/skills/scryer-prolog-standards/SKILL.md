@@ -21,7 +21,7 @@ Scryer Prolog guidelines emphasize pure Prolog conventions and standard ISO-comp
 
 > **Universal Coding Standards Note**: The cheat sheet table below specifies Scryer-specific module import headers (`:- use_module(library(...)).`). The underlying coding guidelines, purity rules, reification patterns (`=(X,Y,Truth)`, `cond_t`, `if_`), integer constraints (`clpz`), DCGs, safe type testing (`library(si)`), higher-order lambdas, and formatted output follow the **universal Prolog coding standards** defined in [`prolog-conventions`](../prolog-conventions/SKILL.md) and [`prolog_guidelines.md`](../../references/prolog_guidelines.md).
 
-| Feature / Topic | Import Header | Primary Exported Predicates | Notes / Dialect Rules |
+| Feature / Topic | Import Header | Primary Exported Predicates | Notes / System Rules |
 | :--- | :--- | :--- | :--- |
 | **DCG Parsing** | `:- use_module(`[`library(dcgs)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/dcgs.pl)`).` | `phrase/2`, `phrase/3`, `seq//1`, `seq_with//2` | Mandatory for any `-->` grammars. |
 | **Character I/O** | `:- use_module(`[`library(charsio)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/charsio.pl)`).` | `read_from_chars/2`, `write_to_chars/2`, `get_single_char/1` | All strings in Scryer are `chars`. |

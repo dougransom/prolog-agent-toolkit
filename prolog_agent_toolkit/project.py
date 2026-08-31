@@ -150,20 +150,20 @@ When writing, refactoring, or reviewing Prolog code in this project, all AI assi
 
 Before generating Prolog code, AI assistants MUST follow the 7-step discovery protocol:
 1. **Identify Target Engine**: Target engine for this repository is **{engine.upper()} Prolog**.
-2. **Discover Available Capabilities**: Run `prolog-agent discover --engine {engine}` or inspect dialect library cheat sheets and project manifests (`scryer-manifest.pl`, `pack.pl`, `package.json`).
+2. **Discover Available Capabilities**: Run `prolog-agent discover --engine {engine}` or inspect system library cheat sheets and project manifests (`scryer-manifest.pl`, `pack.pl`, `package.json`).
 3. **Prefer Installed Capabilities**: Always reuse built-in standard libraries or installed packages instead of implementing custom code from scratch.
 4. **Explicit Imports**: Always declare explicit `:- use_module(library(...)).` headers.
 5. **Document Dependencies**: Detail all selected library modules in Covington module headers.
 6. **Explain Rationale**: Document why a selected library was chosen in predicate comments.
 7. **Pure ISO Fallback**: Only implement custom predicates when no suitable library exists.
 
-## Dialect & Safety Standards ({engine.upper()})
+## Prolog System & Safety Standards ({engine.upper()})
 
 - **Target Engine**: {engine.capitalize()} Prolog
 - **Safety Runner**: Always execute code using `{safe_runner}` CLI entry point rather than raw interpreter binaries.
 - **Purity & Logic**: Prefer logical purity (`if_/3`, `dif/2`, pure DCGs); avoid non-logical cuts (`!`) and side effects.
 - **Covington Style**: Keep clauses readable, use explicit goal ordering, and clean predicate naming.
-- **Strings**: Use standard double-quoted `chars` character lists (for Scryer/ISO) or dialect-native string primitives.
+- **Strings**: Use standard double-quoted `chars` character lists (for Scryer/ISO) or system-native string primitives.
 
 ## Discovery & Verification
 ```bash
@@ -183,32 +183,32 @@ def generate_readme_content(project_name: str, engine: str = "scryer", version: 
     engine = (engine or "scryer").lower()
     test_file_name = f"test_{project_name}.pl" if engine == "swi" else "testing.pl"
 
-    dialect_names = {
+    system_names = {
         "scryer": "Scryer Prolog",
         "swi": "SWI-Prolog",
         "trealla": "Trealla Prolog",
         "tau": "Tau Prolog",
         "iso": "ISO Standard Prolog (Portable Target)",
     }
-    dialect_name = dialect_names.get(engine, f"{engine.capitalize()} Prolog")
+    system_name = system_names.get(engine, f"{engine.capitalize()} Prolog")
 
-    dialect_descriptions = {
+    system_descriptions = {
         "scryer": "Emphasizes pure Prolog logic, `chars` double-quoted strings, pure reified logic (`library(reif)`), pure DCGs (`library(dcgs)`), integer constraints (`library(clpz)`), and side-effect-free type inspection (`library(si)`).",
         "swi": "Features extensive developer tooling, module system, SWI dicts and string types, unit testing via `plunit`, and integer constraints (`library(clpfd)`).",
         "trealla": "High-performance Prolog engine designed for fast parsing, modularity, dynamic foreign function interfaces, and WebAssembly (WASM) embedding.",
         "tau": "Prolog engine written in JavaScript for seamless browser DOM integration (`library(dom)`), Node.js scripting, and web application embedding.",
         "iso": "Engine-agnostic standard ISO Prolog baseline target, aiming for ISO-compliant code across Prolog systems subject to engine limitations.",
     }
-    dialect_desc = dialect_descriptions.get(engine, "Standard Prolog dialect.")
+    system_desc = system_descriptions.get(engine, "Standard Prolog system.")
 
-    dialect_skills = {
+    system_skills = {
         "scryer": "`.agents/skills/scryer-prolog-standards/SKILL.md` and `.agents/skills/prolog-conventions/SKILL.md`",
         "swi": "`.agents/skills/swi-prolog-standards/SKILL.md` and `.agents/skills/prolog-conventions/SKILL.md`",
         "trealla": "`.agents/skills/trealla-prolog-standards/SKILL.md` and `.agents/skills/prolog-conventions/SKILL.md`",
         "tau": "`.agents/skills/tau-prolog-standards/SKILL.md` and `.agents/skills/prolog-conventions/SKILL.md`",
         "iso": "`.agents/skills/prolog-conventions/SKILL.md`",
     }
-    skill_ref = dialect_skills.get(engine, "`.agents/skills/prolog-conventions/SKILL.md`")
+    skill_ref = system_skills.get(engine, "`.agents/skills/prolog-conventions/SKILL.md`")
 
     safe_runner_cmd = {
         "scryer": f"scryer-safe -g \"use_module('src/{project_name}.pl'), hello(M), write(M), nl, halt.\"",
@@ -268,7 +268,7 @@ run_tests :-
 
     return f"""# {project_name}
 
-> **{dialect_name} Project** scaffolded via [`prolog-agent-toolkit`](https://github.com/dougransom/prolog-agent-toolkit) **v{version}**.
+> **{system_name} Project** scaffolded via [`prolog-agent-toolkit`](https://github.com/dougransom/prolog-agent-toolkit) **v{version}**.
 
 ## 1. Project Overview
 
@@ -277,7 +277,7 @@ This project uses **`prolog-agent-toolkit` (v{version})**.
 The `prolog-agent-toolkit` provides a standardized development environment for writing safe, pure, high-quality Prolog software. Its primary capabilities include:
 
 - **Deterministic Safe Runners**: Cross-platform command-line entry points (`scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`, `prolog-safe`) that run Prolog execution under strict CPU and memory resource limits.
-- **Dialect Standards & Purity**: Enforced coding guidelines, Covington style standards, reified logical predicates (`if_/3`, `dif/2`), pure DCGs, and CLP constraint logic.
+- **Prolog System Standards & Purity**: Enforced coding guidelines, Covington style standards, reified logical predicates (`if_/3`, `dif/2`), pure DCGs, and CLP constraint logic.
 - **Agent Skill Architecture**: Integrated `.agents/` directory providing structured skills and linting rules so AI assistants (e.g. Gemini, Cursor, Claude, Copilot) generate pure, idiomatic code.
 - **Multi-Engine Support**: Seamless portability across Prolog engines (Scryer Prolog, SWI-Prolog, Trealla Prolog, Tau Prolog).
 
@@ -285,12 +285,12 @@ The `prolog-agent-toolkit` provides a standardized development environment for w
 
 ## 2. Directory Layout
 
-Recommended canonical project structure supporting single or multi-dialect development:
+Recommended canonical project structure supporting single or multi-system development:
 
 ```text
 {project_name}/
 ├── src/                            # Source code directory
-│   ├── core/                       # Portable Prolog core (dialect-agnostic ISO target)
+│   ├── core/                       # Portable Prolog core (system-agnostic ISO target)
 │   │   └── logic.pl
 │   ├── adapters/                   # Engine shims & compatibility layers
 │   │   ├── scryer/compat.pl        # Scryer imports (charsio, reif, clpz)
@@ -303,7 +303,7 @@ Recommended canonical project structure supporting single or multi-dialect devel
 │   ├── scryer/                     # Scryer testing.pl harness
 │   ├── swi/                        # SWI plunit test suite
 │   └── {test_file_name}            # Default unit test file
-├── AGENTS.md                       # AI assistant rules & dialect guidelines
+├── AGENTS.md                       # AI assistant rules & system guidelines
 ├── scryer-manifest.pl                     # Scryer Prolog bakage manifest
 ├── pack.pl                         # SWI-Prolog pack manifest & Scryer fallback
 ├── package.json                    # Tau Prolog / npm manifest (optional for Node/DOM)
@@ -311,27 +311,27 @@ Recommended canonical project structure supporting single or multi-dialect devel
 └── README.md                       # Human-facing project documentation
 ```
 
-### Directory Roles & Multi-Dialect Architecture
+### Directory Roles & Multi-System Architecture
 
 - **`src/core/`**: Houses portable Prolog logic aiming for standard ISO compliance (pure DCGs, `dif/2`, reified `if_/3`). Free of engine-specific extensions.
-- **`src/adapters/`**: Houses dialect compatibility shims normalizing module imports (`library(clpz)` vs `library(clpfd)`), strings, and FFI interfaces per engine.
+- **`src/adapters/`**: Houses system compatibility shims normalizing module imports (`library(clpz)` vs `library(clpfd)`), strings, and FFI interfaces per engine.
 - **`tests/`**: Organizes unit tests by portability scope: `portable/` for pure ISO assertions, `scryer/` for Scryer `testing.pl`, `swi/` for SWI `plunit`.
 - **Root Manifests**: `scryer-manifest.pl`, `pack.pl`, and `package.json` co-exist at the root without conflict, allowing the codebase to be published to `bakage`, `pack_install`, and `npm` simultaneously.
-- **`AGENTS.md`**: AI assistant guidelines, dialect rules, and safe execution constraints.
+- **`AGENTS.md`**: AI assistant guidelines, system rules, and safe execution constraints.
 - **`README.md`**: Human-facing developer documentation, architectural overview, and setup guide.
 
 ---
 
-## 3. Dialect Selection
+## 3. Prolog System Selection
 
-This project is configured to use **{dialect_name}**.
+This project is configured to use **{system_name}**.
 
-### Dialect Overview
-{dialect_desc}
+### System Overview
+{system_desc}
 
-### Dialect Standards Reference
-When writing code or directing AI agents, consult the dialect standards provided by the toolkit:
-- **Primary Dialect Skill**: {skill_ref}
+### System Standards Reference
+When writing code or directing AI agents, consult the system standards provided by the toolkit:
+- **Primary System Skill**: {skill_ref}
 - **Universal Style Guide**: `.agents/references/covington_style.md`
 - **Purity Guidelines**: `.agents/references/prolog_guidelines.md`
 
@@ -392,7 +392,7 @@ Execute the unit test suite using the appropriate safe runner:
 
 def generate_module(module_name: str, engine: str = "scryer", output_dir: str = "src") -> int:
     """
-    Generate a new dialect-aware Prolog module stub with Covington headers, DCGs, and CLP constraints.
+    Generate a new system-aware Prolog module stub with Covington headers, DCGs, and CLP constraints.
     """
     engine = (engine or "scryer").lower()
     os.makedirs(output_dir, exist_ok=True)

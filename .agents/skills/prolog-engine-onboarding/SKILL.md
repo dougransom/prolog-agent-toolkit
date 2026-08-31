@@ -5,13 +5,13 @@ description: Interactive, iterative process for adding support for a new Prolog 
 
 # Prolog Engine Onboarding Workflow
 
-Use this skill whenever adding a new Prolog engine or dialect target to the toolkit.
+Use this skill whenever adding a new Prolog engine or system target to the toolkit.
 
 The onboarding process is **interactive and iterative**: at each phase, ask clarifying questions to gather exact requirements, create or modify files incrementally, run tests/validations, and seek user feedback before proceeding to the next step until the human programmer explicitly confirms that onboarding is complete.
 
 ---
 
-## Phase 1: Information Gathering & Dialect Assessment
+## Phase 1: Information Gathering & System Assessment
 
 Ask the human programmer (or inspect engine documentation/CLI):
 1. **Engine Identification**: Full name (e.g., `GNU Prolog`, `Ciao Prolog`), CLI binary name (e.g. `gprolog`, `ciao`), and short slug (e.g. `gprolog`, `ciao`).
@@ -23,12 +23,12 @@ Ask the human programmer (or inspect engine documentation/CLI):
 
 ---
 
-## Phase 2: Dialect Standards & Standard Library Cheat Sheet Creation
+## Phase 2: System Standards & Standard Library Cheat Sheet Creation
 
 Create `.agents/skills/<engine-slug>-prolog-standards/SKILL.md`:
 1. **Core Guidelines**: Engine guidelines, ISO code generation target rules, string representation, memory limits, and explicit `use_module/1` declarations.
 2. **Standard Library Cheat Sheet**:
-   - Table containing: Topic/Feature, Import Header (`:- use_module(library(X)).`), Exported Predicates, Dialect Notes.
+   - Table containing: Topic/Feature, Import Header (`:- use_module(library(X)).`), Exported Predicates, System Notes.
    - Explicit directive prohibiting AI agents from reading raw OS standard library source files, mandating reliance on the cheat sheet.
 3. **Cross-references**: Link to [Portable ISO Prolog Conventions](../prolog-conventions/SKILL.md), [Covington Prolog Style Guide](../../references/covington_style.md), and [Prolog Purity Guidelines](../../references/prolog_guidelines.md).
 
@@ -49,7 +49,7 @@ Create `.agents/skills/<engine-slug>-prolog-standards/SKILL.md`:
 ## Phase 4: Initializer & Scaffolding Updates
 
 1. **`prolog_agent_toolkit/initializer.py`**:
-   - Add `<engine-slug>` option to `prolog-agent init <name> --dialect <engine-slug>`.
+   - Add `<engine-slug>` option to `prolog-agent init <name> --system <engine-slug>`.
    - Update starter module generator and package manifest defaults (`bakage.toml`, `pack.pl`, `package.json`, etc.).
 2. **`templates/starter_project/`**:
    - Ensure scaffolding works cleanly for the new engine.
@@ -60,7 +60,7 @@ Create `.agents/skills/<engine-slug>-prolog-standards/SKILL.md`:
 
 Update metadata across the entire toolkit:
 1. **`.agents/AGENTS.md`**:
-   - Register the new dialect under **Multi-Engine Dialect Selection & Rules**.
+   - Register the new system under **Multi-Engine Prolog System Selection & Rules**.
    - Add reference under **Future Engine Expansion & Metadata Protocol**.
 2. **`README.md`**:
    - Update features list, CLI command table (`<engine-slug>-safe`), installation prerequisites, and compatibility tables.
@@ -78,5 +78,5 @@ Update metadata across the entire toolkit:
    - Execute `PYTHONDONTWRITEBYTECODE=1 uv run prolog-agent validate-skills`.
 3. **Human Confirmation & Checkpoint**:
    - Summarize all changes made across files.
-   - Ask the human programmer: *"Are there any additional dialect rules, standard libraries, or safety runner flags needed for `<engine>`, or are we finished?"*
+   - Ask the human programmer: *"Are there any additional system rules, standard libraries, or safety runner flags needed for `<engine>`, or are we finished?"*
    - Continue iterating on any requested additions until the human explicitly confirms completion.

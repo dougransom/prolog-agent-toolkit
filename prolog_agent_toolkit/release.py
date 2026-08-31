@@ -164,7 +164,7 @@ def run_release(new_version: str = None, target_dir: str = ".") -> int:
     changelog_entry = (
         f"## [{new_version}] - {today}\n\n"
         f"### Summary of Changes\n- Release v{new_version} synchronized across manifest files.\n\n"
-        f"### Added / Modified Predicates\n- Dialect updates and purity enhancements.\n\n"
+        f"### Added / Modified Predicates\n- System updates and purity enhancements.\n\n"
         f"### Breaking Changes\n- None.\n\n"
     )
 

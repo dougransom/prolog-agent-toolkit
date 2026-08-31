@@ -14,7 +14,7 @@
       "id": "AGENTS.md",
       "type": "rules",
       "category": "steering",
-      "description": "Universal Prolog purity, dialect selection, and agent steering rules"
+      "description": "Universal Prolog purity, Prolog system selection, and agent steering rules"
     },
     {
       "id": "AGENT_GUIDE.md",

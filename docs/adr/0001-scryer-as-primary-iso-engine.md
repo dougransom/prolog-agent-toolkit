@@ -4,10 +4,10 @@
 - **Date**: 2026-08-28
 
 ## Context
-Prolog implementations vary significantly in their dialect features, handling of strings (`chars` vs strings vs lists of codes), constraint solver integration (`CLP(Z)` vs `CLP(FD)`), and logical purity (`library(reif)` reification vs non-logical cuts).
+Prolog implementations vary significantly in their system features, handling of strings (`chars` vs strings vs lists of codes), constraint solver integration (`CLP(Z)` vs `CLP(FD)`), and logical purity (`library(reif)` reification vs non-logical cuts).
 
 ## Decision
-We choose **Scryer Prolog** as the primary default target engine and baseline dialect for this toolkit.
+We choose **Scryer Prolog** as the primary default target engine and baseline Prolog system for this toolkit.
 
 ## Rationale
 1. **Purity & Modern Design**: Scryer Prolog emphasizes standard term semantics without non-standard default autoloading or mutable global state.
@@ -16,4 +16,4 @@ We choose **Scryer Prolog** as the primary default target engine and baseline di
 
 ## Consequences
 - All standard module templates created by `prolog-agent init` default to Scryer Prolog (`bakage.toml` manifest, `library(charsio)`, `library(dcgs)`).
-- Dialect standards for SWI, Trealla, and Tau remain supported as explicit opt-in target dialects.
+- Standards for SWI, Trealla, and Tau remain supported as explicit opt-in target Prolog systems.

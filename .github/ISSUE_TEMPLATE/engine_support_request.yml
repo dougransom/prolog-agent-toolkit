@@ -39,7 +39,7 @@ body:
       label: Suggested AI Prompt (Optional)
       description: |
         If you would like an AI agent to build support for this engine, provide a prompt to be used to create it. Skip if you plan to submit a PR yourself.
-      placeholder: "e.g., Add ciao-safe safety runner support to prolog_agent_toolkit/runner.py and update dialect skills..."
+      placeholder: "e.g., Add ciao-safe safety runner support to prolog_agent_toolkit/runner.py and update system skills..."
 
   - type: checkboxes
     id: pr_intention
