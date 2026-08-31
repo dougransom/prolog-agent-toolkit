@@ -109,10 +109,45 @@ When interfacing CLP(Z) constraints with higher-order reified logic or control f
 
 ---
 
-## 5. Execution Safety
+## 5. Choosing Between CLP(B) and CLP(Z)
+
+Use the following guidelines to select between Boolean constraint programming (`library(clpb)`) and Integer constraint programming (`library(clpz)`):
+
+| Dimension | `CLP(B)` (`library(clpb)`) | `CLP(Z)` (`library(clpz)`) |
+| :--- | :--- | :--- |
+| **Domain** | Strictly Boolean variables ($\{0, 1\}$) | Arbitrary Integer variables ($\mathbb{Z}$) |
+| **Underlying Solver** | **Binary Decision Diagrams (BDDs)** | Constraint Propagation & Domain Pruning |
+| **Primary Operations** | `sat/1`, `taut/2`, `sat_count/2`, `weighted_maximum/3` | `#=`, `#<`, `ins`, `all_distinct/1`, `labeling/2` |
+| **Solution Counting** | **$O(|BDD|)$ instant solution counting** (`sat_count/2`) | Backtracking search via `findall/3` over `labeling/2` |
+| **Tautology Proving** | **Automatic canonicalization** via BDDs | N/A (Designed for integer constraint propagation) |
+
+### When to Use `CLP(B)`
+- **Digital Circuits & Hardware Verification**: Modeling logic gates, multiplexers, and fault trees.
+- **Tautology & Logic Equivalence**: Checking if a formula is a tautology (`taut(Expr, 1)`) or verifying equivalent logic functions.
+- **Instant Solution Counting**: Computing the exact number of satisfying assignments (`sat_count/2`) without explicitly enumerating them.
+- **Pure Boolean SAT / MaxSAT**: Solving 3-SAT or finding optimal weighted boolean assignments (`weighted_maximum/3`).
+
+```prolog
+:- use_module(library(clpb)).
+
+% Verify XOR circuit equivalence tautology
+verify_xor(A, B) :-
+    taut(A # B =:= (A #\ B) * (\A # B), 1).
+```
+
+### When to Use `CLP(Z)`
+- **Quantities, Coordinates & Ranges**: Variables represent counts, positions, capacities, or dimensions (`X ins 1..100`).
+- **Combinatorial Puzzles**: Sudoku, N-Queens, Cryptarithmetic ($SEND + MORE = MONEY$), Graph Coloring.
+- **Scheduling & Timetabling**: Task start times, non-overlapping intervals (`EndA #=< StartB #\/ EndB #=< StartA`).
+- **Mixed Integer-Boolean Models**: Linking $0..1$ integer flags (`Flag in 0..1`) to integer constraints via `#<==>` (`X #> 10 #<==> Flag #= 1`).
+
+---
+
+## 6. Execution Safety
 
 Run constraint solvers with timeouts via `prolog-safe` to prevent unbounded search trees:
 
 ```bash
 PROLOG_ENGINE=scryer prolog-safe -g "n_queens(8, Qs), write(Qs), halt."
 ```
+
