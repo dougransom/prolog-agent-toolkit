@@ -17,6 +17,9 @@ A multi-engine, cross-platform Prolog safety runner, project scaffolding tool, r
 ### Q2: Why does it exist?
 To allow AI coding agents to safely write, test, refactor, and run pure, clean Prolog code (aiming for ISO compliance subject to engine capabilities) without causing infinite loops, crashing operating system resources, or producing unsound/defaulty logic.
 
+> [!NOTE]
+> **Core Architectural Goal**: Declare as much as possible as a **generalized, common baseline** for all Prolog systems (pure logic, reification, integer constraints, DCGs, `chars`, safe type testing, layout, and efficiency), reserving engine dialect skills (`scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, `tau-prolog-standards`) strictly to capture engine-specific **idiosyncrasies** (load headers, dialect types like SWI dicts, WASM limits, packaging, and JS/DOM interop).
+
 ### Q3: What are its major components?
 1. **Python Toolkit Package** ([`prolog_agent_toolkit/`](prolog_agent_toolkit)): Safety runners (`prolog-safe`, `scryer-safe`), CLI initializer (`prolog-agent init`), syntax diagnostic checker, skill frontmatter validator, and release sync manager.
 2. **Declarative Agent Layer** ([`.agents/`](.agents)): 21 declarative skills ([`.agents/skills/`](.agents/skills)), 8 autonomous subagents ([`.agents/agents/`](.agents/agents)), and purity reference guides ([`.agents/references/`](.agents/references)).
