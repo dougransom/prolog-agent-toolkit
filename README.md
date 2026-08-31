@@ -1,6 +1,10 @@
 # Prolog Agent Toolkit
 
-[![Version](https://img.shields.io/badge/version-0.0.1.dev16-informational.svg)](pyproject.toml)
+<link rel="alternate" type="text/markdown" href="llms.txt" title="LLM Conditioning Context">
+<link rel="alternate" type="text/markdown" href="llms-full.txt" title="LLM Full Conditioning Context">
+<link rel="alternate" type="application/ld+json" href="codemeta.json" title="CodeMeta / Schema.org Software Metadata">
+
+[![Version](https://img.shields.io/badge/version-0.0.1.dev21-informational.svg)](pyproject.toml)
 [![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](https://unlicense.org/)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](pyproject.toml)
 [![Prolog Engines](https://img.shields.io/badge/prolog-Scryer%20%7C%20SWI%20%7C%20Trealla%20%7C%20Tau-purple.svg)](AGENT_GUIDE.md)
