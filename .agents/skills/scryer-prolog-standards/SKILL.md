@@ -19,6 +19,8 @@ Scryer Prolog guidelines emphasize pure Prolog conventions and standard ISO-comp
 
 ## Scryer Prolog Standard Library Cheat Sheet
 
+> **Universal Coding Standards Note**: The cheat sheet table below specifies Scryer-specific module import headers (`:- use_module(library(...)).`). The underlying coding guidelines, purity rules, reification patterns (`=(X,Y,Truth)`, `cond_t`, `if_`), integer constraints (`clpz`), DCGs, safe type testing (`library(si)`), higher-order lambdas, and formatted output follow the **universal Prolog coding standards** defined in [`prolog-conventions`](../prolog-conventions/SKILL.md) and [`prolog_guidelines.md`](../../references/prolog_guidelines.md).
+
 | Feature / Topic | Import Header | Primary Exported Predicates | Notes / Dialect Rules |
 | :--- | :--- | :--- | :--- |
 | **DCG Parsing** | `:- use_module(`[`library(dcgs)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/dcgs.pl)`).` | `phrase/2`, `phrase/3`, `seq//1`, `seq_with//2` | Mandatory for any `-->` grammars. |

@@ -22,6 +22,8 @@ Guidelines for writing idiomatic Tau Prolog code:
 
 ## Tau Prolog Standard Library Cheat Sheet
 
+> **Universal Coding Standards Note**: The cheat sheet table below specifies Tau-specific module import headers (`:- use_module(library(...)).`) and JS/DOM interop modules. All underlying coding guidelines, purity rules, list manipulation, formatting, and DCG conventions follow the **universal Prolog coding standards** defined in [`prolog-conventions`](../prolog-conventions/SKILL.md) and [`prolog_guidelines.md`](../../references/prolog_guidelines.md).
+
 | Feature / Topic | Import Header | Primary Exported Predicates | Notes / Dialect Rules |
 | :--- | :--- | :--- | :--- |
 | **DOM Integration** | `:- use_module(library(dom)).` | `get_by_id/2`, `set_html/2`, `add_event_listener/3` | Browser DOM manipulation. |

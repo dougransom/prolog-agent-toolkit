@@ -5,7 +5,20 @@ description: Coding standards and guidelines for writing portable ISO-compliant 
 
 # Portable ISO Prolog Conventions
 
-Guidelines for writing clean, portable Prolog code aiming for standard ISO compliance subject to target engine limitations.
+## Universal Library Coding Standards vs Engine Loading
+
+The programming standards, purity principles, and predicate usage guidelines documented across standard library capabilities — including:
+- **Reified Logic & Conditionals**: `=(X, Y, Truth)`, `cond_t/3`, `if_/3`, `dif/2`, `memberd_t/3`
+- **Integer Constraints**: `CLP(Z)` / `CLP(FD)` (`#=`, `label/1`, `labeling/2`)
+- **Definite Clause Grammars**: pure DCG syntax (`-->`), `call//N`, ISO `Name//Arity` indicators
+- **Character I/O & Strings**: double-quoted character lists (`chars`)
+- **Safe Monotonic Type Testing**: `library(si)` (`list_si/1`, `integer_si/1`, `chars_si/1`)
+- **Higher-Order Programming**: `call/N`, closures, `library(lambda)` / `yall`
+- **Formatted Output & Utilities**: `format/2..3`, `library(lists)`, `library(assoc)`, `library(between)`
+
+are **universal Prolog coding standards** for ANY Prolog engine supporting those capabilities.
+
+While the module loading directive (e.g. `:- use_module(library(clpz)).` in Scryer/Trealla vs `:- use_module(library(clpfd)).` in SWI) may be dialect-specific or idiosyncratic to a particular engine, dialect skills document that loading header while referencing these universal Prolog coding standards for code style, purity, and predicate contracts.
 
 ## Core Guidelines
 
