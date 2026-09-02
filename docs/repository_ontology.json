@@ -17,6 +17,18 @@
       "description": "Universal Prolog purity, Prolog system selection, and agent steering rules"
     },
     {
+      "id": ".agents/rules/coding_invariants.md",
+      "type": "rules",
+      "category": "coding_standards",
+      "description": "Foundational coding invariants (chars strings, purity, dif/2, cond_t, si type testing)"
+    },
+    {
+      "id": ".agents/rules/safety.md",
+      "type": "rules",
+      "category": "execution_safety",
+      "description": "Process sandboxing, execution limits, and safe runner requirements"
+    },
+    {
       "id": "AGENT_GUIDE.md",
       "type": "documentation",
       "category": "onboarding",

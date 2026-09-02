@@ -11,6 +11,8 @@
     "agent_guide": "AGENT_GUIDE.md",
     "agent_rules": "AGENTS.md",
     "agents_dir_rules": ".agents/AGENTS.md",
+    "rules_coding_invariants": ".agents/rules/coding_invariants.md",
+    "rules_safety": ".agents/rules/safety.md",
     "repository_ontology": "docs/repository_ontology.json",
     "capability_manifest": "docs/capability_manifest.json",
     "skills_manifest": "docs/skills_manifest.json",

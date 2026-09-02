@@ -21,8 +21,8 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
 - **Generalized Common Baseline & Engine Idiosyncrasies**:
   - The core goal of this toolkit is to declare as much as possible as a **generalized, common Prolog standard** applicable across all Prolog systems (pure logic, reification `=(X,Y,Truth)`/`cond_t`, `CLP(Z)`/`CLP(FD)` constraints, pure DCGs, `chars`, safe type testing `library(si)`, Covington layout, and efficiency).
   - System-specific skill guidelines (`scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, `tau-prolog-standards`) MUST capture only what is **idiosyncratic or engine-specific** (module load headers, system types like SWI dicts, WASM limits, packaging, DOM interop), while delegating all common style, purity, and usage rules to the central generalized baseline.
-- **Canonical Common Coding Standards**: [.agents/skills/prolog-conventions/SKILL.md](.agents/skills/prolog-conventions/SKILL.md)
-  - All common Prolog coding guidelines, purity rules, reification patterns, DCG conventions, variable naming, safe type testing, and syntax diagnostics are operationally defined in `prolog-conventions`. AI agents MUST activate `prolog-conventions` whenever generating, refactoring, or auditing Prolog code.
+- **Canonical Common Coding Standards & Persistent Rules**: [.agents/rules/coding_invariants.md](.agents/rules/coding_invariants.md) | [.agents/skills/prolog-conventions/SKILL.md](.agents/skills/prolog-conventions/SKILL.md)
+  - Foundational, non-negotiable coding invariants (strings as `chars`, logical purity, `dif/2`, reification, `cond_t`, safe type testing `library(si)`, clean data modeling) are authoritatively declared in [.agents/rules/coding_invariants.md](.agents/rules/coding_invariants.md) and are permanently active. Detailed procedural workflows and conventions are in `prolog-conventions`. AI agents MUST activate `prolog-conventions` whenever generating, refactoring, or auditing Prolog code.
   - **Code Review Skill Synchronization Policy**: Whenever core coding guidelines or system rules are updated, AI assistants MUST prompt the programmer to update the Code Review skill ([`prolog-code-review`](.agents/skills/prolog-code-review/SKILL.md)) to keep review checklists aligned with operational coding standards.
 - **Covington Prolog Style Guide**: [.agents/references/covington_style.md](.agents/references/covington_style.md)
   - Write for humans first; keep clauses simple and readable; use explicit goal ordering and clean predicate naming.
@@ -41,7 +41,7 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
   - Prefer pure efficiency: first-argument indexing, reified `zcompare/3` arithmetic comparison, and early constraint pruning (`dif/2`, [`CLP(Z)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/clpz.pl)).
   - Prefer coroutining (`freeze/2`, `when/2`) to suspend goals until variables are instantiated, preferring [`CLP(Z)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/clpz.pl)/`dif/2` over manual coroutining where specialized constraints apply.
   - **Direct Reification over `if_/3` for Booleans**: Always prefer direct reified predicates (e.g. `=(X, Y, Truth)`, `memberd_t/3`, `tpartition/4`) over wrapping boolean assignments inside `if_/3` (e.g. use `=(X, Y, Truth)` instead of `if_(X = Y, Truth = true, Truth = false)`). Reserve `if_/3` strictly for selecting non-boolean values (`if_(G, Val = 'yes', Val = 'no')`) or executing conditional branches with distinct control paths.
-  - **Prefer `cond_t` over `if_` / `->` (DRY Principle)**: Aggressively prefer `cond_t` over `if_` and `->` when choosing between choices or values based on a test. Use `cond_t` to avoid repeating the same variable or assignment in both the true and false clauses of `if_` (Don't Repeat Yourself principle).
+  - **Prefer `cond_t` over `if_` / `->` (DRY Principle)**: Aggressively prefer `cond_t` over `if_` and `->` when choosing between choices or values based on a test. Use `cond_t` to avoid repeating the same variable or assignment in both the true and false clauses of `if_` (Don't Repeat Yourself principle). When testing and then generating a value, then using the value, prefer to test and generate the value in the condition and use the value after the condition (i.e. `if_(G, A="A", A="B"), write(A)` rather than writing `A` in each branch).
   - **Meta-Predicate Declarations (`meta_predicate`)**: When defining module-level predicates that accept callable goals (`0`), closures (`1`..`N`), DCG non-terminals (`//` or `2`), or module-sensitive terms (`:`), always insert explicit `:- meta_predicate` declarations directly below the module header. Use exact closure arities for higher-order arguments and standard specifiers (`+`, `-`, `?`, `*`) for non-callable data arguments to prevent unwanted caller module expansion.
 - **Declarative AI Workflow**: [.agents/skills/prolog-declarative-workflow/SKILL.md](.agents/skills/prolog-declarative-workflow/SKILL.md)
   - Use declarative reasoning based on unification, constraints, and backtracking (never imperative thinking).
@@ -159,6 +159,8 @@ When a user requests a new project or starts a new Prolog repository, AI assista
 
 
 ## Safety & Cross-Platform Execution
+
+> **Persistent Rule Reference**: [.agents/rules/safety.md](.agents/rules/safety.md) defines the non-negotiable process sandboxing and execution safety invariants.
 
 - **CLI Entry Points**: ALL Prolog code executions MUST use the cross-platform CLI safety entry points (`prolog-agent`, `prolog-safe`, `scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`).
 - **Interactive Top-Level Sessions**:
