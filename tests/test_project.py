@@ -59,6 +59,24 @@ def test_init_project_tau(temp_project_dir):
     assert '"tau-prolog"' in content
 
 
+def test_init_project_trealla(temp_project_dir):
+    res = init_project("my_trealla_app", engine="trealla", base_dir=temp_project_dir)
+    assert res == 0
+
+    proj_dir = os.path.join(temp_project_dir, "my_trealla_app")
+    assert os.path.exists(os.path.join(proj_dir, "src", "my_trealla_app.pl"))
+    assert os.path.exists(os.path.join(proj_dir, "tests", "testing.pl"))
+    assert os.path.exists(os.path.join(proj_dir, "scryer-manifest.pl"))
+    assert os.path.exists(os.path.join(proj_dir, "pack.pl"))
+
+    # If Trealla is installed on the host system, verify executing the tests with trealla-safe
+    if shutil.which("tpl"):
+        import subprocess
+        test_run = subprocess.run(["trealla-safe", "tests/testing.pl"], cwd=proj_dir, capture_output=True, text=True, timeout=10)
+        assert test_run.returncode == 0
+        assert "Test hello/1 passed" in test_run.stdout
+
+
 def test_generate_module(temp_project_dir):
     res = generate_module("parser_mod", engine="scryer", output_dir=temp_project_dir)
     assert res == 0

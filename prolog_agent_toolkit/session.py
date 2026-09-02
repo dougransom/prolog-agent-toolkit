@@ -277,6 +277,11 @@ class PrologSession:
                                 has_sentinel = True
                                 break
                         except OSError:
+                            if self.proc:
+                                try:
+                                    self.proc.wait(timeout=0.1)
+                                except Exception:
+                                    pass
                             break
                 elif self.proc and self.proc.stdout:
                     r, _, _ = select.select([self.proc.stdout], [], [], min(remaining, 0.1))
@@ -290,6 +295,11 @@ class PrologSession:
                                 has_sentinel = True
                                 break
                         except Exception:
+                            if self.proc:
+                                try:
+                                    self.proc.wait(timeout=0.1)
+                                except Exception:
+                                    pass
                             break
 
             if has_sentinel:
@@ -297,6 +307,16 @@ class PrologSession:
 
             if not self.is_alive():
                 break
+
+            # If inner read loop broke early without sentinel, check if process exited cleanly
+            if time.time() - interval_start < current_interval:
+                if self.proc:
+                    try:
+                        self.proc.wait(timeout=0.1)
+                    except Exception:
+                        pass
+                if not self.is_alive():
+                    break
 
             # Current interval timed out without sentinel: suspend process tree
             total_elapsed = time.time() - start_time
