@@ -68,3 +68,51 @@ def test_session_consult_file(scryer_engine):
     finally:
         if os.path.exists(f_path):
             os.remove(f_path)
+
+
+def test_session_interactive_prompt_kill(scryer_engine):
+    called_with = []
+
+    def mock_prompt(elapsed, next_inc):
+        called_with.append((elapsed, next_inc))
+        return False  # User declines extension, killing process
+
+    with PrologSession(
+        engine=scryer_engine,
+        timeout="0.5s",
+        interactive=True,
+        prompt_callback=mock_prompt,
+    ) as session:
+        res = session.query("repeat, fail.")
+        assert res.timed_out is True
+        assert res.status == "cancelled"
+        assert "Query terminated by user" in res.output
+        assert session.is_alive() is False
+        assert len(called_with) == 1
+        assert called_with[0][1] == 8  # Next Fibonacci number after 5 is 8
+
+
+def test_session_interactive_prompt_extend_then_kill(scryer_engine):
+    called_with = []
+
+    def mock_prompt(elapsed, next_inc):
+        called_with.append((elapsed, next_inc))
+        if len(called_with) == 1:
+            return True  # User approves 1st extension (8s)
+        return False     # User declines 2nd extension (13s)
+
+    with PrologSession(
+        engine=scryer_engine,
+        timeout="0.4s",
+        interactive=True,
+        prompt_callback=mock_prompt,
+    ) as session:
+        # Override initial interval so it suspends quickly for test
+        res = session.query("repeat, fail.", timeout="0.4s")
+        assert res.timed_out is True
+        assert res.status == "cancelled"
+        assert len(called_with) >= 2
+        # Verify sequence: first prompt proposed 8s, second prompt proposed 13s
+        assert called_with[0][1] == 8
+        assert called_with[1][1] == 13
+

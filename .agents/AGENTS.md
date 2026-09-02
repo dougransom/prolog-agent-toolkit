@@ -161,9 +161,15 @@ When a user requests a new project or starts a new Prolog repository, AI assista
 ## Safety & Cross-Platform Execution
 
 - **CLI Entry Points**: ALL Prolog code executions MUST use the cross-platform CLI safety entry points (`prolog-agent`, `prolog-safe`, `scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`).
+- **Interactive Top-Level Sessions**:
+  - Interactive top-level shells launched without batch goals (e.g. `scryer-safe` or `swi-safe` at the terminal) remain open indefinitely without idle timeouts killing the session, while remaining protected by memory limits and low CPU priority.
 - **Interactive Top-Level Queries & Persistent Sessions**:
-  - Software agents can post multiple queries successively to a running Prolog interpreter using `PrologSession` or `prolog-agent query`/`prolog-agent repl`.
-  - The Prolog interpreter process remains active across queries and is **only terminated if a posted query fails to respond within the configured timeout** (`prolog-safe` timeout, defaulting to 20s).
+  - Software agents and humans can post multiple queries successively to a running Prolog interpreter using `PrologSession` or `prolog-agent query`/`prolog-agent repl`.
+  - The Prolog interpreter process remains active across queries.
+  - **5-Second Initial Query Timeout & Suspension**: Active queries enforce a default 5.0-second safety timeout. If a query does not complete within 5 seconds, the Prolog process tree is suspended (`SIGSTOP`), freezing CPU usage to zero while preserving interpreter state in memory.
+  - **Fibonacci Continuation Progression**: In interactive mode, the user/agent is prompted whether to proceed for an additional increment of seconds corresponding to the next Fibonacci number (**8s**, then **13s**, **21s**, **34s**, etc.) or terminate the process tree. Resumption uses `SIGCONT`.
+  - **Non-Interactive Fallback**: In automated/piped environments (CI/CD, scripts), the process terminates immediately after the initial timeout to prevent runaway background execution.
+  - **Memory Limits Preserved**: Process memory limits (`MemoryMax`, `RLIMIT_AS`) remain active and enforced.
 - **Forbidden Invocations**: AI assistants MUST NEVER execute raw interpreter binaries ([`scryer-prolog`](https://github.com/mthom/scryer-prolog), [`swipl`](https://www.swi-prolog.org/), [`tpl`](https://github.com/trealla-prolog/trealla), [`tau-prolog`](http://tau-prolog.org/), [`gprolog`](http://gprolog.org/), [`ciao`](https://ciao-lang.org/)) directly without safety wrappers (`PrologSession`, `prolog-safe`, `scryer-safe`, etc.).
 
 - **Specifying Engine**: Set `PROLOG_ENGINE` environment variable (e.g., `export PROLOG_ENGINE=scryer`, `export PROLOG_ENGINE=swi`, `export PROLOG_ENGINE=trealla`, `export PROLOG_ENGINE=tau`).

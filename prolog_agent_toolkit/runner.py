@@ -32,10 +32,10 @@ def parse_memory_bytes(mem_str: str) -> Optional[int]:
         return None
 
 
-def parse_timeout_seconds(timeout_str: str) -> float:
+def parse_timeout_seconds(timeout_str: Optional[str], default: float = 20.0) -> float:
     """Parse timeout strings like '20s', '2m', '10' into seconds float."""
     if not timeout_str:
-        return 20.0
+        return default
     timeout_str = timeout_str.strip().lower()
     try:
         if timeout_str.endswith("s"):
@@ -47,7 +47,13 @@ def parse_timeout_seconds(timeout_str: str) -> float:
         else:
             return float(timeout_str)
     except ValueError:
-        return 20.0
+        return default
+
+
+def next_fibonacci_increment(prev_fib: int = 3, current_fib: int = 5) -> tuple[int, int]:
+    """Advance and return the next Fibonacci interval in sequence (e.g. (3, 5) -> (5, 8) -> (8, 13) -> (13, 21)...)."""
+    next_fib = prev_fib + current_fib
+    return current_fib, next_fib
 
 
 def resolve_engine_binary(engine_name: str) -> str:
@@ -108,6 +114,46 @@ def kill_process_tree(pid: int) -> None:
                 pass
     except psutil.NoSuchProcess:
         pass
+
+
+def suspend_process_tree(pid: int) -> None:
+    """Recursively suspend a process and all its child processes (zero CPU usage)."""
+    try:
+        parent = psutil.Process(pid)
+        children = parent.children(recursive=True)
+        for child in children:
+            try:
+                child.suspend()
+            except (psutil.NoSuchProcess, psutil.AccessDenied):
+                pass
+        parent.suspend()
+    except (psutil.NoSuchProcess, psutil.AccessDenied):
+        pass
+
+
+def resume_process_tree(pid: int) -> None:
+    """Recursively resume a suspended process and all its child processes."""
+    try:
+        parent = psutil.Process(pid)
+        children = parent.children(recursive=True)
+        for child in children:
+            try:
+                child.resume()
+            except (psutil.NoSuchProcess, psutil.AccessDenied):
+                pass
+        parent.resume()
+    except (psutil.NoSuchProcess, psutil.AccessDenied):
+        pass
+
+
+def is_interactive_toplevel(args: List[str]) -> bool:
+    """Determine if CLI invocation represents an interactive top-level session without batch goals."""
+    for arg in args:
+        if arg == "-g" or arg.startswith("-g"):
+            return False
+        if arg in ("-t", "-q") or arg.startswith("-t") or arg.startswith("-q"):
+            return False
+    return sys.stdin.isatty()
 
 
 def extract_prolog_files_from_args(args: List[str]) -> List[str]:
@@ -174,7 +220,10 @@ def run_prolog_safe(
             sys.stderr.write(f"[prolog-safe] ERROR: Prolog engine binary '{engine_bin}' not found on PATH.\n")
             return 127
 
-    timeout_sec = parse_timeout_seconds(timeout_str)
+    if is_interactive_toplevel(args) and "PROLOG_TIMEOUT" not in os.environ:
+        timeout_sec = None
+    else:
+        timeout_sec = parse_timeout_seconds(timeout_str)
     memory_bytes = parse_memory_bytes(memory_str)
     system_name = platform.system()
 
@@ -182,6 +231,7 @@ def run_prolog_safe(
 
     # On Linux, try systemd-run if available and cgroups active
     if system_name == "Linux" and shutil.which("systemd-run") and os.path.exists("/sys/fs/cgroup"):
+        timeout_prefix = ["timeout", "--foreground", f"{int(timeout_sec)}s"] if timeout_sec is not None else []
         cmd = [
             "systemd-run",
             "--user",
@@ -189,9 +239,7 @@ def run_prolog_safe(
             f"--property=MemoryMax={memory_str}",
             f"--property=CPUQuota={cpu_quota_str}",
             f"--working-directory={os.getcwd()}",
-            "timeout",
-            "--foreground",
-            f"{int(timeout_sec)}s",
+        ] + timeout_prefix + [
             "nice",
             "-n",
             "19",

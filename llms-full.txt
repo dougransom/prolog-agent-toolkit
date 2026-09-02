@@ -304,9 +304,18 @@ prolog-agent discover --engine scryer --query json
 # Validate skills and frontmatter
 prolog-agent validate-skills
 
-# Run Prolog code in a resource-capped sandbox (Scryer, SWI, Trealla)
+# Post query with 5s timeout, suspension, and interactive Fibonacci prompt
+prolog-agent query "solve_puzzle(X)." --engine scryer
+
+# Interactive REPL with per-query suspension
+prolog-agent repl --engine scryer
+
+# Run batch Prolog code in a resource-capped sandbox (Scryer, SWI, Trealla)
 scryer-safe -g "use_module('src/my_project.pl'), run, halt."
 swi-safe -g "use_module('src/my_project.pl'), run, halt."
 trealla-safe -g "use_module('src/my_project.pl'), run, halt."
 prolog-safe -g "use_module('src/my_project.pl'), run, halt."
+
+# Interactive top-level shells run indefinitely without idle timeouts:
+scryer-safe
 ```

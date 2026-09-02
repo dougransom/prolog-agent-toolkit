@@ -24,3 +24,22 @@ def test_resolve_engine_binary():
     assert resolve_engine_binary("tau") == "tau-prolog"
     assert resolve_engine_binary("gnu") == "gprolog"
     assert resolve_engine_binary("custom-bin") == "custom-bin"
+
+
+def test_next_fibonacci_increment():
+    from prolog_agent_toolkit.runner import next_fibonacci_increment
+    p1, n1 = next_fibonacci_increment(3, 5)
+    assert (p1, n1) == (5, 8)
+    p2, n2 = next_fibonacci_increment(p1, n1)
+    assert (p2, n2) == (8, 13)
+    p3, n3 = next_fibonacci_increment(p2, n2)
+    assert (p3, n3) == (13, 21)
+    p4, n4 = next_fibonacci_increment(p3, n3)
+    assert (p4, n4) == (21, 34)
+
+
+def test_is_interactive_toplevel():
+    from prolog_agent_toolkit.runner import is_interactive_toplevel
+    assert is_interactive_toplevel(["-g", "halt"]) is False
+    assert is_interactive_toplevel(["-g", "test, halt."]) is False
+    assert is_interactive_toplevel(["-t", "halt"]) is False

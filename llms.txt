@@ -119,7 +119,9 @@ Combines probabilistic LLM generation with deterministic Prolog logic (`examples
 ## CLI Safety Tools & Commands
 
 - `prolog-agent init <name> [--system scryer|swi|trealla|tau|iso]`: Scaffolds a new standard project with `src/`, `tests/`, manifests, and `.agents/`.
+- `prolog-agent query <term> [--engine <eng>] [--timeout 5s]`: Posts a query enforcing a 5s initial timeout; suspends on timeout and prompts interactively for Fibonacci extensions (8s, 13s, 21s...).
+- `prolog-agent repl [--engine <eng>]`: Interactive Prolog REPL with per-query 5s timeout and Fibonacci suspension prompt.
 - `prolog-agent discover [--engine <eng>] [--query <term>]`: Discovers built-in libraries and packs.
 - `prolog-agent validate-skills`: Validates YAML frontmatter integrity across all agent skills.
 - `prolog-agent check-version`: Verifies version parity across project manifests.
-- `scryer-safe [args...]` / `swi-safe [args...]` / `trealla-safe [args...]` / `prolog-safe [args...]`: Resource-capped Prolog runners preventing memory exhaustion and infinite loops.
+- `scryer-safe [args...]` / `swi-safe [args...]` / `trealla-safe [args...]` / `prolog-safe [args...]`: Resource-capped Prolog runners with memory limits and low CPU priority; interactive toplevels stay open indefinitely without idle timeouts.
