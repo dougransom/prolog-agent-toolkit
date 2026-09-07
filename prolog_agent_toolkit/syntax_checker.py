@@ -170,33 +170,47 @@ def check_human_syntax_errors_in_text(text: str, filename: str = "<input>") -> L
                     snippet=stripped_line,
                     suggestion="Prolog does not use '<>'. Use '=\\=' for arithmetic inequality, '\\=' for term inequality, or dif/2.",
                 )
-            )
-
+            )        # Check for invalid <= (avoid false positives on <=>, #<=, #<==>)
         if "<=" in stripped_code:
-            col = raw_line.find("<=") + 1
-            issues.append(
-                SyntaxIssue(
-                    file=filename,
-                    line=idx,
-                    column=col,
-                    issue_type="Invalid Comparison Operator (<=)",
-                    snippet=stripped_line,
-                    suggestion="Prolog uses '=<', not '<=', for less-than-or-equal comparison.",
-                )
+            le_clean = (
+                stripped_code.replace("<=>", "   ")
+                .replace("#<==>", "      ")
+                .replace("#<=", "   ")
             )
+            if "<=" in le_clean:
+                col = raw_line.find("<=") + 1
+                issues.append(
+                    SyntaxIssue(
+                        file=filename,
+                        line=idx,
+                        column=col,
+                        issue_type="Invalid Comparison Operator (<=)",
+                        snippet=stripped_line,
+                        suggestion="Prolog uses '=<', not '<=', for less-than-or-equal comparison.",
+                    )
+                )
 
-        if "=>" in stripped_code and not "-->" in stripped_code:
-            col = raw_line.find("=>") + 1
-            issues.append(
-                SyntaxIssue(
-                    file=filename,
-                    line=idx,
-                    column=col,
-                    issue_type="Invalid Comparison Operator (=>)",
-                    snippet=stripped_line,
-                    suggestion="Prolog uses '>=', not '=>', for greater-than-or-equal arithmetic comparison.",
-                )
+        # Check for invalid => (avoid false positives on -->, <=>, ==>, #==>, #<==>)
+        if "=>" in stripped_code:
+            ge_clean = (
+                stripped_code.replace("-->", "   ")
+                .replace("<=>", "   ")
+                .replace("#<==>", "      ")
+                .replace("==>", "   ")
+                .replace("#==>", "    ")
             )
+            if "=>" in ge_clean:
+                col = raw_line.find("=>") + 1
+                issues.append(
+                    SyntaxIssue(
+                        file=filename,
+                        line=idx,
+                        column=col,
+                        issue_type="Invalid Comparison Operator (=>)",
+                        snippet=stripped_line,
+                        suggestion="Prolog uses '>=', not '=>', for greater-than-or-equal arithmetic comparison.",
+                    )
+                )
 
         # 6. Check inline comment typos (# or //)
         if "#" in stripped_code and not stripped_line.startswith("#"):
@@ -243,6 +257,124 @@ def format_syntax_diagnostics(issues: List[SyntaxIssue]) -> str:
     lines = []
     lines.append("\n[prolog-safe] === HUMAN SYNTAX ERROR DIAGNOSTIC REPORT ===")
     lines.append(f"Found {len(issues)} probable human syntax editing error(s):\n")
+
+    for issue in issues:
+        lines.append(f"  --> {issue.file}:{issue.line}:{issue.column} [{issue.issue_type}]")
+        if issue.snippet:
+            lines.append(f"      Code: {issue.snippet}")
+        lines.append(f"      Fix:  {issue.suggestion}\n")
+
+    lines.append("=========================================================\n")
+    return "\n".join(lines)
+
+
+def check_purity_issues_in_text(text: str, filename: str = "<input>") -> List[SyntaxIssue]:
+    r"""Scan Prolog code for non-logical constructs (!, \+, ->) lacking justification comments.
+
+    Enforces declarative purity, dif/2, and library(reif) over imperative control flow.
+    """
+    issues = []
+    lines = text.splitlines()
+
+    for idx, raw_line in enumerate(lines, start=1):
+        stripped_line = raw_line.strip()
+        if not stripped_line or stripped_line.startswith("%"):
+            continue
+
+        # Extract code and inline comment
+        code_part = stripped_line
+        comment_part = ""
+        if "%" in stripped_line:
+            parts = stripped_line.split("%", 1)
+            code_part = parts[0].strip()
+            comment_part = parts[1].strip()
+
+        if not code_part:
+            continue
+
+        stripped_code = _strip_strings_and_comments(code_part)
+
+        # 1. Non-logical cut (!) without justification
+        if "!" in stripped_code:
+            clean_cut = stripped_code.replace("!=", "  ")
+            if re.search(r'(?:^|[,\(\[\{\s])!(?:[,\.\)\]\}\s]|$)', clean_cut):
+                has_justification = bool(
+                    re.search(r'(?i)\b(justification|cut|impure|legacy|side-effect|io)\b', comment_part)
+                )
+                if not has_justification:
+                    col = raw_line.find("!") + 1
+                    issues.append(
+                        SyntaxIssue(
+                            file=filename,
+                            line=idx,
+                            column=col,
+                            issue_type="Unjustified Non-Logical Cut (!)",
+                            snippet=stripped_line,
+                            suggestion=(
+                                "Avoid non-logical cut (!). Prefer pure declarative logic (dif/2, if_/3 from "
+                                "library(reif)) to preserve bidirectionality. If required for correctness, "
+                                "add an explicit '% Justification: ...' comment."
+                            ),
+                        )
+                    )
+
+        # 2. Soft cut / if-then (->) without justification (excluding DCG -->)
+        if "->" in stripped_code:
+            clean_arrow = stripped_code.replace("-->", "   ")
+            if "->" in clean_arrow:
+                has_justification = bool(
+                    re.search(r'(?i)\b(justification|soft cut|impure|legacy)\b', comment_part)
+                )
+                if not has_justification:
+                    col = raw_line.find("->") + 1
+                    issues.append(
+                        SyntaxIssue(
+                            file=filename,
+                            line=idx,
+                            column=col,
+                            issue_type="Unjustified Soft Cut (->)",
+                            snippet=stripped_line,
+                            suggestion=(
+                                "Avoid soft cut (->). Prefer if_/3 or cond_t from library(reif) for sound, "
+                                "bidirectional branching without discarding choice points."
+                            ),
+                        )
+                    )
+
+        # 3. Negation-as-failure used for inequality: \+ (X = Y) or \+ X = Y
+        if r"\+" in stripped_code and "=" in stripped_code:
+            has_justification = bool(
+                re.search(r'(?i)\b(justification|legacy|impure)\b', comment_part)
+            )
+            if not has_justification:
+                col = raw_line.find(r"\+") + 1
+                if col == 0:
+                    col = raw_line.find("+") + 1
+                issues.append(
+                    SyntaxIssue(
+                        file=filename,
+                        line=idx,
+                        column=col,
+                        issue_type="Negation-as-Failure for Inequality",
+                        snippet=stripped_line,
+                        suggestion=(
+                            "Avoid '\\+ (X = Y)'. Use pure 'dif(X, Y)' from library(reif) to ensure sound, "
+                            "monotonic inequality constraints that succeed or suspend correctly across all modes."
+                        ),
+                    )
+                )
+
+    return issues
+
+
+def format_purity_diagnostics(issues: List[SyntaxIssue]) -> str:
+    """Format purity issues into a declarative quality report."""
+    if not issues:
+        return ""
+
+    lines = []
+    lines.append("\n[prolog-safe] === DECLARATIVE PURITY AUDIT REPORT ===")
+    lines.append(f"Found {len(issues)} imperative / impure construct(s) needing reification or justification:\n")
 
     for issue in issues:
         lines.append(f"  --> {issue.file}:{issue.line}:{issue.column} [{issue.issue_type}]")

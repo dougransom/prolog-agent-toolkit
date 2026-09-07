@@ -34,6 +34,9 @@ PROLOG_ENGINE=scryer prolog-safe -g "consult('src/target.pl'), halt."
 
 # Run SWI-Prolog cross-reference and check utility
 PROLOG_ENGINE=swi prolog-safe -g "consult('src/target.pl'), check, halt."
+
+# Run Declarative Purity & Reification Audit (detects unjustified !, \+, ->)
+python3 -c "from prolog_agent_toolkit.syntax_checker import check_purity_issues_in_text, format_purity_diagnostics; issues = check_purity_issues_in_text(open('src/target.pl').read(), 'src/target.pl'); print(format_purity_diagnostics(issues)) if issues else print('Purity audit passed: 100% pure declarative code.')"
 ```
 
 ---

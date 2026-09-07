@@ -18,7 +18,37 @@ This document specifies **forbidden practices** and **anti-patterns** that AI co
 
 ---
 
-## 2. Reusable Helper & Utility Inventory
+## 2. The Imperative Control Flow Bias in LLMs vs. Declarative Pure Prolog
+
+### Why LLMs Default to `!`, `\+`, `->` (Context for Humans & Machines)
+
+AI coding assistants have a profound statistical and conceptual bias toward imperative Prolog control flow:
+1. **1000:1 Historical Training Imbalance**: Over 99% of open-source Prolog code created between 1980 and 2012 relied on green/red cuts (`!`), soft cuts (`->`), and negation-as-failure (`\+`). Ulrich Neumerkel's reification framework (`library(reif)`) was introduced in 2014 and only recently became standard across ISO systems like Scryer and Trealla. LLM token predictions naturally reproduce legacy patterns unless strictly constrained.
+2. **Imperative Control Flow Transfer**: LLMs generalize patterns from Python, C, and JavaScript. An if-statement like `if cond: return A else: return B` is reflexively mapped to `( Cond -> A ; B )` and `!`. In Prolog, however, `->` and `!` are *destructive cuts* that commit irreversibly, prune choice points, and render predicates unidirectional (failing on variable inputs).
+
+### The 5 Reification Compiler Traps & How to Solve Them
+
+When an LLM attempts pure reification, it frequently trips over these 5 compiler traps and regresses to `!`. The table below provides the failure modes and correct pure patterns:
+
+| Compiler Trap | Broken Anti-Pattern | Pure Recipe (Correct) | Rationale |
+| :--- | :--- | :--- | :--- |
+| **1. Compound Condition in `if_/3`** | `if_((A, B), Then, Else)` | `if_(A, if_(B, Then, Else), Else)` | `library(reif)` reifies each condition by appending a boolean argument. `','/3` does not exist. Nest the `if_/3` calls. |
+| **2. DCG Macro Expansion** | `phrase --> if_(C, T, E).` | `{ if_(C, T, E) }` or clause dispatch with `dif/2` | The DCG preprocessor adds two stream arguments to every goal in the body, turning `if_/3` into `if_/5`. Wrap in `{ ... }` or use separate DCG clauses. |
+| **3. Arity Mismatch on Engine Builtins** | `if_(char_type(C, lower), T, E)` | `char_type_lower_t(C, Truth)` wrapper or `memberd_t(C, LowerChars, Truth)` | `char_type/3` is not a truth-reifying predicate. Provide a 2-argument reified wrapper or use `memberd_t/3`. |
+| **4. Partial Unification in `if_/3`** | `if_(Rest = ['*'\|_], T, E)` | `Rest = [C\|Cs], if_(C = '*', T, E)` or separate clauses | `=(Rest, ['*'\|_], Truth)` cannot reify equality on an uninstantiated tail variable. Match the head first. |
+| **5. Option & Map Lookups** | `member(Key(Val), Opts) -> ... ; Val = Def` | `lookup_option/4` using `Opt =.. [K, V]` and `if_(K = Key, ...)` | Soft cuts prune valid alternatives. A pure helper preserves bidirectionality and backtracking. |
+
+### Mandatory Post-Generation Self-Audit Checklist
+
+Every AI agent must self-audit code before presenting or committing:
+- [ ] **No Unjustified Cuts (`!`)**: Replace with `dif/2` or `if_/3`. If required for engine side-effects, foreign I/O, or interactive CLI prompts, format with `% Justification: <reason>`.
+- [ ] **No Soft Cuts (`->`)**: Replace with `if_/3` or `cond_t`.
+- [ ] **No Unsound Inequality (`\+ (X = Y)`)**: Replace with `dif(X, Y)`.
+- [ ] **No Impure Membership in Conditionals**: Replace `member(X, Xs)` inside branching conditions with `memberd_t(X, Xs, Truth)`.
+
+---
+
+## 3. Reusable Helper & Utility Inventory
 
 Before implementing new code, verify whether the required functionality already exists in the repository:
 

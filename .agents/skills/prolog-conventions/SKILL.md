@@ -45,6 +45,17 @@ While the module loading directive (e.g. `:- use_module(library(clpz)).` in Scry
      remove_a(List, Filtered) :-
          tfilter(dif(a), List, Filtered).
      ```
+   - **AI Cognitive Traps (Why LLMs Default to `!`, `\+`, `->`)**:
+     - *1000:1 Historical Imbalance*: Over 99% of legacy Prolog corpora (1980–2010 textbooks, Rosetta Code) relies on `!`, `\+`, and `->`. LLMs reflexively predict these tokens unless explicitly instructed.
+     - *Imperative Transfer*: LLMs map imperative `if/else` directly to `( Cond -> Then ; Else )` without realizing that in Prolog, soft cuts commit irreversibly, prune alternative solutions, and destroy bidirectionality.
+   - **The 5 Safe Reification Recipes**:
+     1. *Compound conditions*: `if_((A, B), T, E)` fails (`','/3` missing). *Fix*: Nest: `if_(A, if_(B, T, E), E)`.
+     2. *DCG rule bodies*: `if_/3` inside a DCG expands to `if_/5`. *Fix*: Wrap in curly braces `{ if_(C, T, E) }` or use separate DCG clauses with `dif/2`.
+     3. *Engine builtins*: `if_(char_type(C, lower), T, E)` fails (`char_type/3` missing). *Fix*: Define a binary truth wrapper `char_type_lower_t(C, Truth)` or use `memberd_t/3`.
+     4. *Partial list unification*: `if_(Rest = ['*'|_], T, E)` fails macro expansion. *Fix*: Match head first (`Rest = [C|Cs], if_(C = '*', T, E)`).
+     5. *Option lookups*: Avoid `member(Key(Val), Opts) -> ... ; Val = Def`. *Fix*: Use pure `lookup_option/4` with `if_(K = Key, ...)`.
+   - **Mandatory Post-Generation Self-Audit**:
+     Search generated code for `!`, `\+`, and `->`. Replace with `dif/2`, `if_/3`, or `cond_t`. If an impure construct is mandatory for correctness (e.g. legacy foreign FFI, side-effect interactive prompt), document with `% Justification: <reason>`.
 3. **Strings as Character Lists (`chars`)**: Represent strings and text as lists of characters (`chars`). `double_quotes` must always be set to `chars`.
 4. **Safe Type Testing**: Prefer pure, safe type tests (e.g. `library(si)`: `list_si/1`, `atom_si/1`, `chars_si/1`, `integer_si/1`) over impure non-monotonic type checks (`is_list/1`).
 5. **Descriptive & Idiomatic Variable Naming**: Prefer meaningful, domain-descriptive names (`Tree`, `TokenStream`, `Result`, `Acc`) for public predicate parameters and complex clauses, avoiding arbitrary placeholders (`Arg1`, `P2`). Short, standard names (`X`, `Y`, `Xs`, `Ys`, `N`) remain encouraged in tight list traversals, mathematical constraints, and local closures. For dual-mode/polymorphic predicates, use clear parameter names (`InputOrMatch`, `RestOrState`). Use `L0, L1, ..., L` for character stream pairs and `S0, S1, ..., S` for state accumulator pairs.
