@@ -21,7 +21,7 @@ To allow AI coding agents to safely write, test, refactor, and run pure, clean P
 > **Core Architectural Goal**: Declare as much as possible as a **generalized, common baseline** for all Prolog systems (pure logic, reification, integer constraints, DCGs, `chars`, safe type testing, layout, and efficiency), reserving system-specific skills (`scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, `tau-prolog-standards`) strictly to capture engine-specific **idiosyncrasies** (load headers, system types like SWI dicts, WASM limits, packaging, and JS/DOM interop).
 
 ### Q3: What are its major components?
-1. **Python Toolkit Package** ([`prolog_agent_toolkit/`](prolog_agent_toolkit)): Safety runners (`prolog-safe`, `scryer-safe`), CLI initializer (`prolog-agent init`), syntax diagnostic checker, skill frontmatter validator, and release sync manager.
+1. **Python Toolkit Package** ([`prolog_agent_toolkit/`](prolog_agent_toolkit)): Safety runners (`prolog-safe`, `scryer-safe`), CLI initializer (`prolog-agent init`), declarative purity auditor (`prolog-audit`), syntax diagnostic checker, skill frontmatter validator, and release sync manager.
 2. **Declarative Agent Layer** ([`.agents/`](.agents)): 21 declarative skills ([`.agents/skills/`](.agents/skills)), 8 autonomous subagents ([`.agents/agents/`](.agents/agents)), and purity reference guides ([`.agents/references/`](.agents/references)).
 3. **Repository Architecture & Metadata** ([`docs/`](docs)): Human-readable ontology ([`docs/ONTOLOGY.md`](docs/ONTOLOGY.md)), machine-readable ontology graph ([`docs/repository_ontology.json`](docs/repository_ontology.json)), capability manifests ([`docs/capability_manifest.json`](docs/capability_manifest.json)), glossary ([`docs/GLOSSARY.md`](docs/GLOSSARY.md)), and Architecture Decision Records ([`docs/adr/`](docs/adr)).
 4. **Scaffolding Templates** ([`templates/`](templates)): Starter projects and pure Prolog module templates.
@@ -149,6 +149,8 @@ AI agents **MUST ALWAYS** use safety entry points instead of raw interpreter bin
 - `prolog-safe "consult('module.pl'), test_goal."`
 - `scryer-safe "-g test_goal module.pl"`
 - `swi-safe "-g test_goal module.pl"`
+- `prolog-audit src/module.pl` (audits declarative purity: flags un-commented `!`, `\+`, `->`)
+- `prolog-safe --audit-purity src/module.pl` (standalone purity audit)
 
 ### Clean Workspace Requirement
 All Python scripts and tests **MUST NOT** write `__pycache__` artifacts into source trees:

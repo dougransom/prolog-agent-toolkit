@@ -69,6 +69,7 @@ swi-safe = "prolog_agent_toolkit.cli:swi_safe_main"
 trealla-safe = "prolog_agent_toolkit.cli:trealla_safe_main"
 tau-safe = "prolog_agent_toolkit.cli:tau_safe_main"
 prolog-validate-skills = "prolog_agent_toolkit.cli:validate_skills_main"
+prolog-audit = "prolog_agent_toolkit.cli:prolog_audit_main"
 
 
 [tool.hatch.build.targets.wheel]

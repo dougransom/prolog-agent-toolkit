@@ -54,6 +54,8 @@ def prolog_agent_main() -> None:
         print("Usage:")
         print("  prolog-agent query <query-term> [--engine scryer|swi|trealla|tau] [--file <file.pl>] [--timeout 5s]")
         print("  prolog-agent repl [--engine scryer|swi|trealla|tau] [--file <file.pl>] [--timeout 5s]")
+        print("  prolog-agent audit-purity <file.pl>... [--purity-only] [--syntax-only]")
+        print("  prolog-agent lint <file.pl>... [--purity-only] [--syntax-only]")
         print("  prolog-agent init <project-name> [--system|--engine scryer|swi|trealla|tau|iso]")
         print("  prolog-agent template <project-name> [--system|--engine scryer|swi|trealla|tau|iso]")
         print("  prolog-agent module <module-name> [--system|--engine scryer|swi|trealla|tau|iso]")
@@ -241,10 +243,71 @@ def prolog_agent_main() -> None:
         exit_code = validate_skills_cli()
         sys.exit(exit_code)
 
+    elif cmd in ("audit", "audit-purity", "lint"):
+        target_args = args[1:]
+        if not target_args or target_args[0] in ("-h", "--help"):
+            print(f"Usage: prolog-agent {cmd} <file.pl>... [--purity-only] [--syntax-only]")
+            sys.exit(0)
+        sys.argv = ["prolog-audit"] + target_args
+        prolog_audit_main()
+
     else:
         sys.stderr.write(f"Unknown command: {cmd}\n")
         sys.exit(1)
 
+
+
+def prolog_audit_main() -> None:
+    """CLI entry point for prolog-audit (declarative purity and syntax audit)."""
+    args = sys.argv[1:]
+    if not args or args[0] in ("-h", "--help", "help"):
+        print("Prolog Agent Toolkit Audit Tool (prolog-audit)")
+        print("Usage:")
+        print("  prolog-audit <file.pl>... [--purity-only] [--syntax-only]")
+        sys.exit(0)
+
+    purity_only = "--purity-only" in args
+    syntax_only = "--syntax-only" in args
+    files = [a for a in args if not a.startswith("-")]
+
+    if not files:
+        sys.stderr.write("Error: No Prolog files specified for audit.\n")
+        sys.exit(1)
+
+    from prolog_agent_toolkit.syntax_checker import (
+        check_human_syntax_errors_in_text,
+        format_syntax_diagnostics,
+        check_purity_issues_in_text,
+        format_purity_diagnostics,
+    )
+
+    has_errors = False
+    for file_path in files:
+        if not os.path.exists(file_path):
+            sys.stderr.write(f"Error: File '{file_path}' does not exist.\n")
+            has_errors = True
+            continue
+
+        with open(file_path, "r", encoding="utf-8", errors="replace") as f:
+            content = f.read()
+
+        if not purity_only:
+            syntax_issues = check_human_syntax_errors_in_text(content, filename=file_path)
+            if syntax_issues:
+                sys.stderr.write(format_syntax_diagnostics(syntax_issues))
+                has_errors = True
+
+        if not syntax_only:
+            purity_issues = check_purity_issues_in_text(content, filename=file_path)
+            if purity_issues:
+                sys.stderr.write(format_purity_diagnostics(purity_issues))
+                has_errors = True
+
+    if not has_errors:
+        print(f"[prolog-audit] Audit passed for {len(files)} file(s): 100% clean syntax and pure logic.")
+        sys.exit(0)
+    else:
+        sys.exit(1)
 
 
 def prolog_safe_main() -> None:

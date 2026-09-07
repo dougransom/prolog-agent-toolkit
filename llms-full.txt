@@ -304,6 +304,11 @@ prolog-agent discover --engine scryer --query json
 # Validate skills and frontmatter
 prolog-agent validate-skills
 
+# Audit Prolog source files for declarative purity (detecting unjustified !, \+, ->) and syntax
+prolog-audit src/my_module.pl
+prolog-agent audit-purity src/my_module.pl
+prolog-safe --audit-purity src/my_module.pl
+
 # Post query with 5s timeout, suspension, and interactive Fibonacci prompt
 prolog-agent query "solve_puzzle(X)." --engine scryer
 

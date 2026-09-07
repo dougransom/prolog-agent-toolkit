@@ -43,3 +43,38 @@ def test_is_interactive_toplevel():
     assert is_interactive_toplevel(["-g", "halt"]) is False
     assert is_interactive_toplevel(["-g", "test, halt."]) is False
     assert is_interactive_toplevel(["-t", "halt"]) is False
+
+
+def test_runner_audit_purity(tmp_path):
+    from prolog_agent_toolkit.runner import run_prolog_safe
+
+    pure_file = tmp_path / "pure.pl"
+    pure_file.write_text(":- module(pure, [foo/2]).\nfoo(X, Y) :- dif(X, Y).\n")
+
+    impure_file = tmp_path / "impure.pl"
+    impure_file.write_text(":- module(impure, [bar/2]).\nbar(X, Y) :- X = Y, !.\n")
+
+    assert run_prolog_safe(["--audit-purity", str(pure_file)]) == 0
+    assert run_prolog_safe(["--audit-purity", str(impure_file)]) == 1
+    assert run_prolog_safe(["--purity", str(pure_file)]) == 0
+
+
+def test_prolog_audit_main_cli(tmp_path, monkeypatch):
+    import sys
+    from prolog_agent_toolkit.cli import prolog_audit_main
+
+    pure_file = tmp_path / "pure.pl"
+    pure_file.write_text(":- module(pure, [val/1]).\nval(42).\n")
+
+    monkeypatch.setattr(sys, "argv", ["prolog-audit", str(pure_file)])
+    with pytest.raises(SystemExit) as exc:
+        prolog_audit_main()
+    assert exc.value.code == 0
+
+    impure_file = tmp_path / "impure.pl"
+    impure_file.write_text(":- module(impure, [val/1]).\nval(X) :- X = 1, !.\n")
+
+    monkeypatch.setattr(sys, "argv", ["prolog-audit", str(impure_file)])
+    with pytest.raises(SystemExit) as exc:
+        prolog_audit_main()
+    assert exc.value.code == 1

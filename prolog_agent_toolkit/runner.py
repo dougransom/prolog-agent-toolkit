@@ -200,6 +200,30 @@ def run_prolog_safe(
             sys.stdout.write("[prolog-safe] No obvious human syntax editing errors found.\n")
             return 0
 
+    # Support standalone declarative purity audit flag --audit-purity <file.pl> or --purity <file.pl>
+    if "--audit-purity" in args or "--purity" in args:
+        flag = "--audit-purity" if "--audit-purity" in args else "--purity"
+        idx = args.index(flag)
+        audit_files = args[idx + 1:] if idx + 1 < len(args) else []
+        if not audit_files:
+            audit_files = extract_prolog_files_from_args(args)
+        from prolog_agent_toolkit.syntax_checker import (
+            check_purity_issues_in_text,
+            format_purity_diagnostics,
+        )
+        all_issues = []
+        for f in audit_files:
+            if os.path.exists(f):
+                with open(f, "r", encoding="utf-8", errors="replace") as fh:
+                    content = fh.read()
+                all_issues.extend(check_purity_issues_in_text(content, filename=f))
+        if all_issues:
+            sys.stderr.write(format_purity_diagnostics(all_issues))
+            return 1
+        else:
+            sys.stdout.write("[prolog-safe] Declarative purity audit passed: 100% pure code.\n")
+            return 0
+
     engine_name = os.environ.get("PROLOG_ENGINE", default_engine)
     timeout_str = os.environ.get("PROLOG_TIMEOUT", default_timeout)
     memory_str = os.environ.get("PROLOG_MEMORY_MAX", default_memory)

@@ -124,6 +124,8 @@ Combines probabilistic LLM generation with deterministic Prolog logic (`examples
 - `prolog-agent discover [--engine <eng>] [--query <term>]`: Discovers built-in libraries and packs.
 - `prolog-agent validate-skills`: Validates YAML frontmatter integrity across all agent skills.
 - `prolog-agent check-version`: Verifies version parity across project manifests.
+- `prolog-audit <file.pl>... [--purity-only] [--syntax-only]`: Audits code for declarative purity (detecting unjustified !, \+, ->) and syntax errors.
+- `prolog-agent audit-purity <file.pl>...`: Runs declarative purity audit via prolog-agent CLI.
 - `scryer-safe [args...]` / `swi-safe [args...]` / `trealla-safe [args...]` / `prolog-safe [args...]`: Resource-capped Prolog runners with memory limits and low CPU priority; interactive toplevels stay open indefinitely without idle timeouts.
 
 ---

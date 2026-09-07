@@ -11,22 +11,33 @@
       {
         "name": "prolog-agent init",
         "description": "Scaffold new Prolog project with src/, tests/, bakage.toml, and .agents/",
-        "args": ["<project-name>", "[--system scryer|swi|trealla|tau|iso]"]
+        "args": [
+          "<project-name>",
+          "[--system scryer|swi|trealla|tau|iso]"
+        ]
       },
       {
         "name": "prolog-agent template",
         "description": "Generate starter project template",
-        "args": ["<project-name>", "[--system scryer|swi|trealla|tau|iso]"]
+        "args": [
+          "<project-name>",
+          "[--system scryer|swi|trealla|tau|iso]"
+        ]
       },
       {
         "name": "prolog-agent module",
         "description": "Generate a pure Prolog module file with Covington header and stub predicate",
-        "args": ["<module-name>", "[--system scryer|swi|trealla|tau|iso]"]
+        "args": [
+          "<module-name>",
+          "[--system scryer|swi|trealla|tau|iso]"
+        ]
       },
       {
         "name": "prolog-agent release",
         "description": "Synchronize package versions across pyproject.toml, bakage.toml, pack.pl, package.json, README.md, and CHANGELOG.md",
-        "args": ["[--version X.Y.Z]"]
+        "args": [
+          "[--version X.Y.Z]"
+        ]
       },
       {
         "name": "prolog-agent check-version",
@@ -39,7 +50,30 @@
       {
         "name": "prolog-agent discover",
         "description": "Discover available Prolog libraries, modules, and packages across static database, local project manifests, and live engines",
-        "args": ["[--engine scryer|swi|trealla|tau|gnu|all]", "[--query <keyword>]", "[--mode static|dynamic|hybrid]", "[--json]"]
+        "args": [
+          "[--engine scryer|swi|trealla|tau|gnu|all]",
+          "[--query <keyword>]",
+          "[--mode static|dynamic|hybrid]",
+          "[--json]"
+        ]
+      },
+      {
+        "name": "prolog-audit",
+        "description": "Declarative purity and syntax error audit scanning for un-commented !, \\+, ->",
+        "args": [
+          "<file.pl>...",
+          "[--purity-only]",
+          "[--syntax-only]"
+        ]
+      },
+      {
+        "name": "prolog-agent audit-purity",
+        "description": "Run declarative purity and syntax audit via prolog-agent CLI",
+        "args": [
+          "<file.pl>...",
+          "[--purity-only]",
+          "[--syntax-only]"
+        ]
       }
     ],
     "safety_runners": [

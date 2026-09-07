@@ -58,7 +58,7 @@ graph TD
 
 ### Layer 2: Capability & Subagent Registry ([`capability_manifest.json`](capability_manifest.json))
 Catalogs high-level capabilities:
-- **CLI Tools**: `prolog-agent init`, `template`, `module`, `discover`, `release`, `check-version`, `install-hooks`, `list-subagents`, `validate-skills`.
+- **CLI Tools**: `prolog-agent init`, `template`, `module`, `discover`, `audit-purity`, `release`, `check-version`, `install-hooks`, `list-subagents`, `validate-skills`, and standalone `prolog-audit`.
 - **Safety Runners**: `prolog-safe`, `scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`.
 - **Autonomous Subagents**: 8 dedicated subagents in `.agents/agents/` (Refactor, Test Generator, Benchmark Runner, Purity Reviewer, Portability Reviewer, Security Reviewer, Doc Generator, PR Reviewer).
 - **Declarative Skills**: 22 skills cataloged in `.agents/skills/`.
