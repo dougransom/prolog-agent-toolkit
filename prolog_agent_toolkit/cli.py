@@ -52,8 +52,8 @@ def prolog_agent_main() -> None:
     if not args or args[0] in ("-h", "--help", "help"):
         print("Prolog Agent Toolkit CLI")
         print("Usage:")
-        print("  prolog-agent query <query-term> [--engine scryer|swi|trealla|tau] [--file <file.pl>] [--timeout 5s]")
-        print("  prolog-agent repl [--engine scryer|swi|trealla|tau] [--file <file.pl>] [--timeout 5s]")
+        print("  prolog-agent query <query-term> [--engine scryer|swi|trealla|tau] [--file <file.pl>] [--timeout 21s]")
+        print("  prolog-agent repl [--engine scryer|swi|trealla|tau] [--file <file.pl>] [--timeout 21s]")
         print("  prolog-agent audit-purity <file.pl>... [--purity-only] [--syntax-only]")
         print("  prolog-agent lint <file.pl>... [--purity-only] [--syntax-only]")
         print("  prolog-agent init <project-name> [--system|--engine scryer|swi|trealla|tau|iso]")

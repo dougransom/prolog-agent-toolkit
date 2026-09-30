@@ -14,7 +14,7 @@ def test_parse_timeout_seconds():
     assert parse_timeout_seconds("20s") == 20.0
     assert parse_timeout_seconds("2m") == 120.0
     assert parse_timeout_seconds("10") == 10.0
-    assert parse_timeout_seconds(None) == 20.0
+    assert parse_timeout_seconds(None) == 21.0
 
 
 def test_resolve_engine_binary():

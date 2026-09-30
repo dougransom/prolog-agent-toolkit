@@ -15,8 +15,8 @@
 
 ## 2. Resource Sandboxing & Execution Guarantees
 - **CPU & Memory Bounds**: The safety runners enforce OS-level cgroups (`systemd-run`), POSIX `RLIMIT_AS`, and priority constraints (`nice -n 19`, `BELOW_NORMAL_PRIORITY_CLASS`) to ensure that runaway computations, infinite recursion, or combinatorial explosions cannot exhaust host system memory or starve CPU resources.
-- **5-Second Initial Query Timeout & Suspension**: Interactive queries enforce a default 5.0-second safety timeout. If a query does not complete within 5 seconds, the Prolog process tree is suspended (`SIGSTOP`), freezing CPU usage to zero while preserving interpreter memory.
-- **Fibonacci Continuation Progression**: In interactive sessions, resumption proceeds in Fibonacci intervals (**8s**, then **13s**, **21s**, **34s**, etc.) using `SIGCONT`, or terminates upon human/agent rejection.
+- **21-Second Initial Query Timeout & Suspension**: Interactive and non-interactive queries enforce a default 21.0-second safety timeout (if `--timeout` or `PROLOG_TIMEOUT` is not provided). If a query does not complete within 21 seconds, the Prolog process tree is suspended (`SIGSTOP`), freezing CPU usage to zero while preserving interpreter memory.
+- **Fibonacci Continuation Progression**: In interactive sessions, resumption proceeds in Fibonacci intervals (**34s**, then **55s**, **89s**, **144s**, etc.) using `SIGCONT`, or terminates upon human/agent rejection.
 - **Non-Interactive Fallback**: In automated/piped environments (CI/CD, scripts), the process terminates immediately after the initial timeout to prevent unattended runaway background tasks.
 
 ## 3. Python Invocation & Clean Workspace

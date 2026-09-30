@@ -90,8 +90,8 @@ class PrologSession:
     ):
         self.engine_name = engine or os.environ.get("PROLOG_ENGINE", "scryer")
         self.timeout_sec = parse_timeout_seconds(
-            str(timeout) if timeout is not None else os.environ.get("PROLOG_TIMEOUT", "5s"),
-            default=5.0,
+            str(timeout) if timeout is not None else os.environ.get("PROLOG_TIMEOUT", "21s"),
+            default=21.0,
         )
         self.memory_str = memory or os.environ.get("PROLOG_MEMORY_MAX", "500M")
         self.cpu_quota_str = cpu_quota or os.environ.get("PROLOG_CPU_QUOTA", "65%")
@@ -132,7 +132,7 @@ class PrologSession:
             self.master_fd, self.slave_fd = pty.openpty()
             try:
                 attrs = termios.tcgetattr(self.slave_fd)
-                attrs[3] = attrs[3] & ~termios.ECHO
+                attrs[3] = attrs[3] & ~termios.ECHO & ~termios.ECHONL
                 termios.tcsetattr(self.slave_fd, termios.TCSANOW, attrs)
             except Exception:
                 pass
@@ -159,34 +159,34 @@ class PrologSession:
             )
 
         self._is_alive = True
-        self._read_flush_initial(timeout=1.0)
+        self._read_flush_initial(timeout=0.5)
 
     def _read_flush_initial(self, timeout: float = 0.5) -> None:
         """Drain initial startup banner / prompt header."""
         start = time.time()
         while time.time() - start < timeout:
             if self.master_fd is not None:
-                r, _, _ = select.select([self.master_fd], [], [], 0.05)
+                r, _, _ = select.select([self.master_fd], [], [], 0.1)
                 if r:
                     try:
                         data = os.read(self.master_fd, 1024)
                         if not data:
                             break
+                        if b"?-" in data or b"?>" in data:
+                            break
                     except OSError:
                         break
-                else:
-                    break
             elif self.proc and self.proc.stdout:
-                r, _, _ = select.select([self.proc.stdout], [], [], 0.05)
+                r, _, _ = select.select([self.proc.stdout], [], [], 0.1)
                 if r:
                     try:
                         data = self.proc.stdout.read(1024)
                         if not data:
                             break
+                        if "?-" in str(data):
+                            break
                     except Exception:
                         break
-                else:
-                    break
 
     def is_alive(self) -> bool:
         """Check whether the Prolog process session is currently active and running."""
@@ -197,9 +197,9 @@ class PrologSession:
     def query(self, query_str: str, timeout: Optional[Union[str, float]] = None) -> QueryResult:
         """Post a query to the running Prolog top-level.
         
-        Enforces a safety timeout (default 5s). If the query does not finish within the initial
+        Enforces a safety timeout (default 21s). If the query does not finish within the initial
         timeout, the process is suspended (SIGSTOP). In interactive mode, the user is prompted
-        to proceed for additional Fibonacci intervals (8s, 13s, 21s...). If declined, the process
+        to proceed for additional Fibonacci intervals (34s, 55s, 89s...). If declined, the process
         tree is terminated.
         """
         if not self.is_alive():
@@ -252,8 +252,8 @@ class PrologSession:
         captured = []
         has_sentinel = False
         current_interval = timeout_sec
-        prev_fib = 3
-        current_fib = 5
+        prev_fib = 13
+        current_fib = 21
         prompter = self.prompt_callback or default_query_prompt
 
         while True:

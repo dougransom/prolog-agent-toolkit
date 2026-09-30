@@ -309,7 +309,7 @@ prolog-audit src/my_module.pl
 prolog-agent audit-purity src/my_module.pl
 prolog-safe --audit-purity src/my_module.pl
 
-# Post query with 5s timeout, suspension, and interactive Fibonacci prompt
+# Post query with 21s timeout, suspension, and interactive Fibonacci prompt
 prolog-agent query "solve_puzzle(X)." --engine scryer
 
 # Interactive REPL with per-query suspension

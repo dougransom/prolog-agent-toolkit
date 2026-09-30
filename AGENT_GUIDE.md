@@ -63,7 +63,7 @@ Follow the **AI Agent Contribution Protocol** in [`CONTRIBUTING.md`](CONTRIBUTIN
 ### Q11: Are unit tests or package manifests required for simple/toplevel use cases?
 No. Scaffolding creates `tests/` and manifests (`bakage.toml`/`pack.pl`) as a best practice so AI agents can perform automated test verification. However, safety runners (`scryer-safe`, `swi-safe`, `trealla-safe`, `prolog-safe`) work standalone:
 - **Interactive Top-Level Sessions**: When running `scryer-safe` or `swi-safe` directly at the terminal, the session stays open indefinitely without an idle timeout killing the prompt.
-- **Interactive Query Posting & Fibonacci Progression**: Run `prolog-agent query "<query>"` or `prolog-agent repl` (or Python `PrologSession`) to post queries to a running top-level interpreter. Queries default to a 5-second timeout; if uncompleted, the process is suspended (`SIGSTOP`), and the user is prompted to extend execution by the next Fibonacci interval (8s, 13s, 21s...) or kill the query.
+- **Interactive Query Posting & Fibonacci Progression**: Run `prolog-agent query "<query>"` or `prolog-agent repl` (or Python `PrologSession`) to post queries to a running top-level interpreter. Queries default to a 21-second timeout (if `--timeout` or `PROLOG_TIMEOUT` is not provided); if uncompleted, the process is suspended (`SIGSTOP`), and the user is prompted to extend execution by the next Fibonacci interval (34s, 55s, 89s...) or kill the query.
 - **Scratch Scripts**: Run `scryer-safe scratch.pl` to execute standalone scripts without a test suite or manifest.
 - **Minimal Codebases**: Users are free to remove `tests/` or manifest files from scaffolded projects.
 

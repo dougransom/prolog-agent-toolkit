@@ -32,8 +32,8 @@ def parse_memory_bytes(mem_str: str) -> Optional[int]:
         return None
 
 
-def parse_timeout_seconds(timeout_str: Optional[str], default: float = 20.0) -> float:
-    """Parse timeout strings like '20s', '2m', '10' into seconds float."""
+def parse_timeout_seconds(timeout_str: Optional[str], default: float = 21.0) -> float:
+    """Parse timeout strings like '21s', '2m', '10' into seconds float."""
     if not timeout_str:
         return default
     timeout_str = timeout_str.strip().lower()
@@ -50,8 +50,8 @@ def parse_timeout_seconds(timeout_str: Optional[str], default: float = 20.0) -> 
         return default
 
 
-def next_fibonacci_increment(prev_fib: int = 3, current_fib: int = 5) -> tuple[int, int]:
-    """Advance and return the next Fibonacci interval in sequence (e.g. (3, 5) -> (5, 8) -> (8, 13) -> (13, 21)...)."""
+def next_fibonacci_increment(prev_fib: int = 13, current_fib: int = 21) -> tuple[int, int]:
+    """Advance and return the next Fibonacci interval in sequence (e.g. (13, 21) -> (21, 34) -> (34, 55) -> (55, 89)...)."""
     next_fib = prev_fib + current_fib
     return current_fib, next_fib
 
@@ -77,7 +77,7 @@ def resolve_engine_binary(engine_name: str) -> str:
 
 
 def set_process_limits_posix(memory_bytes: Optional[int]) -> None:
-    """Apply POSIX resource limits (nice priority, RLIMIT_AS)."""
+    """Apply POSIX resource limits (nice priority, RLIMIT_AS with address space floor for Rust runtimes)."""
     # Lower CPU priority
     try:
         os.nice(19)
@@ -85,10 +85,12 @@ def set_process_limits_posix(memory_bytes: Optional[int]) -> None:
         pass
 
     # RLIMIT_AS for memory limit if supported
+    # Modern compiled engines (e.g. Scryer Prolog in Rust) require virtual address space for thread stacks & allocators
     if memory_bytes and memory_bytes > 0:
         try:
             import resource
-            resource.setrlimit(resource.RLIMIT_AS, (memory_bytes, memory_bytes))
+            effective_limit = max(memory_bytes, 4 * 1024 * 1024 * 1024)
+            resource.setrlimit(resource.RLIMIT_AS, (effective_limit, effective_limit))
         except Exception:
             pass
 
@@ -175,7 +177,7 @@ def extract_prolog_files_from_args(args: List[str]) -> List[str]:
 def run_prolog_safe(
     args: List[str],
     default_engine: str = "scryer",
-    default_timeout: str = "20s",
+    default_timeout: str = "21s",
     default_memory: str = "500M",
 
     default_cpu_quota: str = "65%",

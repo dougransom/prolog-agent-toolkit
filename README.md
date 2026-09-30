@@ -322,7 +322,7 @@ If you do not want a formal package structure or test suite (e.g. playing in the
 #### 1. Interactive REPL / Top-Level Queries & Persistent Sessions
 Launch interactive top-level REPLs or post successive queries safely to a running Prolog interpreter process without losing state between queries:
 ```bash
-prolog-agent query "X = 42."                       # Single query execution against top-level (5s default timeout)
+prolog-agent query "X = 42."                       # Single query execution against top-level (21s default timeout)
 prolog-agent query "test_fact(X)." --file src/main.pl # Query after consulting file
 prolog-agent repl                                  # Persistent interactive query session
 scryer-safe                                         # Interactive Scryer Prolog top-level REPL (runs indefinitely without idle timeout)
@@ -330,8 +330,8 @@ swi-safe                                            # Interactive SWI-Prolog top
 ```
 Software agents can also use Python `PrologSession` (`with PrologSession(engine="scryer") as session: session.query("...")`) to post queries to a running top-level interpreter:
 - **Indefinite Idle Sessions**: Running `scryer-safe` or `swi-safe` at the terminal sitting at `?- ` never times out while idle, protected by memory caps and low CPU priority.
-- **5s Query Timeout & Suspension**: Active queries enforce a default 5-second timeout. If a query does not respond within 5s, the process tree is suspended (`SIGSTOP`), freezing CPU usage to zero while preserving state in memory.
-- **Fibonacci Continuation Progression**: In interactive mode, the user is prompted to extend execution by the next Fibonacci interval (**8s**, then **13s**, **21s**, **34s**...) or kill the query. Resumption uses `SIGCONT`.
+- **21s Query Timeout & Suspension**: Active queries enforce a default 21-second timeout (if `--timeout` or `PROLOG_TIMEOUT` is not provided). If a query does not respond within 21s, the process tree is suspended (`SIGSTOP`), freezing CPU usage to zero while preserving state in memory.
+- **Fibonacci Continuation Progression**: In interactive mode, the user is prompted to extend execution by the next Fibonacci interval (**34s**, then **55s**, **89s**, **144s**...) or kill the query. Resumption uses `SIGCONT`.
 - **Non-Interactive Execution**: Automated runs (CI/CD, scripts) terminate immediately after the initial timeout to prevent runaway background execution.
 
 
