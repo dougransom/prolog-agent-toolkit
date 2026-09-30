@@ -75,41 +75,20 @@ The **Prolog Agent Toolkit** is a vendor-neutral, multi-engine AI agent toolkit 
 
 ---
 
-## 2. Universal Prolog Coding Guidelines
+## 2. Universal Prolog Coding Standards & Guidelines
 
-### 2.1 Purity Principles
-- **Logical Purity**: Prefer `if_/3` and `dif/2` from `library(reif)`. Avoid `->` and `!` unless required for non-logical side-effects or green cut indexing where pure constructs cannot be expressed (which must be documented).
-- **Direct Reification**: Use direct truth reification predicates (`=(X, Y, Truth)`, `memberd_t/3`, `tpartition/4`) rather than wrapping boolean assignments inside `if_/3`.
-- **Prefer `cond_t` over `if_` / `->` (DRY Principle)**: Avoid repeating the same target variable in both branches.
-- **Safe Type Testing**: Always prefer `library(si)` (`atom_si/1`, `integer_si/1`, `list_si/1`, `chars_si/1`) over imperative type checks.
-- **Strings as Chars**: All string handling is done via lists of characters (`chars`). Never use `is_list/1` or SWI string literals in portable code.
-- **DCG Indicators**: Always use `Name//Arity` in exports, documentation headers, and comments.
+> **Primary Authority**: All coding conventions, Covington formatting rules, logical purity invariants, reification guides, constraint selection matrices, and anti-patterns are authoritatively specified in **[codingstandards.md](codingstandards.md)**.
 
-### 2.2 Covington Documentation & Module Layout
-```prolog
-/** <module> module_name
- *
- * Concise description of the module's domain and purpose.
- *
- * @author Author Name
- * @license Unlicense
- */
+### Core Principles Summary:
+- **Logical Purity**: Prefer `dif/2` for sound term inequality and `if_/3` / `cond_t/3` from `library(reif)` for conditionals. Cuts (`!`), soft cuts (`->`), and negation-as-failure (`\+`) are prohibited for performance and permitted only in extremely rare, mandatory-commented cases for non-logical side-effects.
+- **Declarative Arithmetic**: Use `library(clpz)` (`#=`, `#\=`, `#>`, `#<`) for all integer relations instead of procedural `is/2`.
+- **Strings as Character Lists**: Strings are strictly character lists (`chars`) with `double_quotes` set to `chars`.
+- **Safe Type Testing**: Always use non-raising type assertions from `library(si)` (`atom_si/1`, `list_si/1`, `integer_si/1`).
+- **Higher-Order Loops (DRY)**: Prefer `maplist/N`, `foldl/N`, `tfilter/3`, `tpartition/4`, and `library(lambda)` over manual primitive recursion loops.
+- **DCG Mastery**: Prefer pure DCGs (`library(dcgs)`) for parsing, formatting, and monadic state threading, using pure semicontext pushback (`peek_char(C), [C] --> [C]`) instead of cuts.
+- **Data Modeling**: Use clean, principal-functor representations rather than defaulty fallthrough logic.
 
-:- module(module_name, [
-    public_predicate/2,
-    parse_tokens//1
-]).
-
-:- use_module(library(charsio)).
-:- use_module(library(dcgs)).
-:- use_module(library(reif)).
-:- use_module(library(si)).
-
-%% public_predicate(+Input:chars, -Output:integer) is det.
-%  Brief description of behavior and modes.
-public_predicate(Input, Output) :-
-    ...
-```
+For comprehensive examples, side-by-side legacy vs. modern comparison tables, Covington documentation headers, state threading architectures, and the full anti-pattern catalog, consult **[codingstandards.md](codingstandards.md)**.
 
 ---
 
@@ -145,150 +124,18 @@ skill(trealla_prolog_standards,      [trealla, wasm, embedded, fast_parsing]).
 
 ---
 
-## 4. Canonical Working Examples
+## 4. Canonical Working Examples (`examples/`)
 
-### 4.1 Agent Skill Dispatcher (`examples/agent_skills_dispatch.pl`)
-```prolog
-:- module(agent_skills_dispatch, [
-    agent_register_skill/2,
-    agent_dispatch/3,
-    agent_skill/2,
-    run_demo/0
-]).
+Refer to the complete, executable reference implementations in the `examples/` directory:
 
-:- use_module(library(lists), [member/2]).
-:- use_module(library(dcgs)).
-:- use_module(library(charsio), [format/2]).
-
-:- dynamic(agent_skill/2).
-
-agent_skill(calculator,   [arithmetic, evaluate, sum]).
-agent_skill(text_analyst, [count_words, token_length, dcg_parse]).
-agent_skill(validator,    [type_check, bounds_check]).
-
-agent_register_skill(SkillName, Capabilities) :-
-    assertz(agent_skill(SkillName, Capabilities)).
-
-agent_dispatch(calculator, add(X, Y), Result) :-
-    Result is X + Y.
-agent_dispatch(calculator, multiply(X, Y), Result) :-
-    Result is X * Y.
-agent_dispatch(text_analyst, word_count(Chars), Count) :-
-    phrase(count_tokens(0, Count), Chars).
-agent_dispatch(validator, in_range(Val, Min, Max), Valid) :-
-    (   Val >= Min, Val =< Max ->
-        Valid = valid
-    ;   Valid = invalid
-    ).
-
-count_tokens(Acc, Count) -->
-    " ",
-    !,
-    count_tokens(Acc, Count).
-count_tokens(Acc, Count) -->
-    [C],
-    { C \= ' ' },
-    consume_token,
-    { Acc1 is Acc + 1 },
-    count_tokens(Acc1, Count).
-count_tokens(Acc, Acc) --> [].
-
-consume_token -->
-    [C],
-    { C \= ' ' },
-    !,
-    consume_token.
-consume_token --> [].
-```
-
-### 4.2 Model Context Protocol (MCP) Server Pattern (`examples/prolog_mcp_server.pl`)
-```prolog
-:- module(prolog_mcp_server, [
-    mcp_list_tools/1,
-    mcp_call_tool/3,
-    mcp_handle_request/2,
-    run_demo/0
-]).
-
-:- use_module(library(charsio), [format/2]).
-:- use_module(library(lists), [member/2]).
-
-mcp_tool(tool(
-    name(prolog_eval),
-    description("Evaluates a pure arithmetic constraint or expression"),
-    parameters([
-        param(val1, number, "First number"),
-        param(val2, number, "Second number"),
-        param(op, atom, "Operation: add or mul")
-    ])
-)).
-
-mcp_list_tools(Tools) :-
-    findall(Tool, mcp_tool(Tool), Tools).
-
-mcp_call_tool(prolog_eval, [arg(val1, X), arg(val2, Y), arg(op, add)], result(Answer)) :-
-    Answer is X + Y.
-mcp_call_tool(prolog_eval, [arg(val1, X), arg(val2, Y), arg(op, mul)], result(Answer)) :-
-    Answer is X * Y.
-mcp_call_tool(prolog_unify, [arg(term1, T1), arg(term2, T2)], result(Status)) :-
-    (   T1 = T2 ->
-        Status = unified(T1)
-    ;   Status = failed_to_unify
-    ).
-
-mcp_handle_request(request(id(Id), method(tools_list), _), response(id(Id), result(Tools))) :-
-    mcp_list_tools(Tools).
-mcp_handle_request(request(id(Id), method(tools_call), params(Name, Args)), response(id(Id), Result)) :-
-    (   mcp_call_tool(Name, Args, Result) ->
-        true
-    ;   Result = error("Tool execution failed or invalid arguments")
-    ).
-mcp_handle_request(request(id(Id), method(Unknown), _), response(id(Id), error(unknown_method(Unknown)))).
-```
-
-### 4.3 Neurosymbolic Verification Engine (`examples/neurosymbolic_reasoner.pl`)
-```prolog
-:- module(neurosymbolic_reasoner, [
-    verify_schedule/3,
-    verify_fact/2,
-    run_demo/0
-]).
-
-:- use_module(library(clpz)).
-:- use_module(library(charsio), [format/2]).
-
-kb_parent(alice, bob).
-kb_parent(bob, charlie).
-kb_parent(bob, diana).
-
-kb_ancestor(X, Y) :- kb_parent(X, Y).
-kb_ancestor(X, Y) :- kb_parent(X, Z), kb_ancestor(Z, Y).
-
-verify_fact(ancestor(X, Y), verdict(verified, explanation(is_ancestor(X, Y)))) :-
-    kb_ancestor(X, Y),
-    !.
-verify_fact(ancestor(X, Y), verdict(refuted, explanation(no_ancestor_path(X, Y)))) :-
-    \+ kb_ancestor(X, Y).
-
-verify_schedule(MaxHours, Tasks, solution(Assignments)) :-
-    Tasks = [
-        task(design,  2, S1, E1),
-        task(code,    3, S2, E2),
-        task(test,    2, S3, E3)
-    ],
-    [S1, E1, S2, E2, S3, E3] ins 0..MaxHours,
-    E1 #= S1 + 2,
-    E2 #= S2 + 3,
-    E3 #= S3 + 2,
-    S2 #>= E1,
-    S3 #>= E2,
-    labeling([min(E3)], [S1, E1, S2, E2, S3, E3]),
-    Assignments = [
-        scheduled(design, start(S1), end(E1)),
-        scheduled(code,   start(S2), end(E2)),
-        scheduled(test,   start(S3), end(E3))
-    ].
-```
+- **[examples/agent_skills_dispatch.pl](examples/agent_skills_dispatch.pl)**:
+  - Demonstrates homoiconic skill registration (`agent_register_skill/2`), DCG query tokenization, and dynamic dispatching via `agent_dispatch/3`.
+- **[examples/prolog_mcp_server.pl](examples/prolog_mcp_server.pl)**:
+  - Demonstrates Model Context Protocol (MCP) server integration, JSON-RPC 2.0 tool definitions (`mcp_tool/1`), parameter validation, and tool execution (`mcp_call_tool/3`).
+- **[examples/neurosymbolic_reasoner.pl](examples/neurosymbolic_reasoner.pl)**:
+  - Demonstrates neurosymbolic verification architecture pairing LLM generation with deterministic knowledge-base querying and `CLP(Z)` integer constraint scheduling.
+- **[examples/README.md](examples/README.md)**:
+  - Step-by-step instructions for running all demo suites across Scryer, SWI, and Trealla runners.
 
 ---
 
@@ -327,15 +174,11 @@ scryer-safe
 
 ---
 
-## AI Coding Agent Invariants & Declarative Purity Guidelines
+## 6. Authoritative Reference Links
 
-> **Critical Directive for LLMs, Code Assistants, and Automated Agents**:
-> 1. **Declarative Purity & Reification First**: NEVER emit non-logical cuts (`!`), soft cuts (`->`), or negation-as-failure (`\+`) for term inequality or branching. Always use `dif(X, Y)` for inequality and `if_/3` / `cond_t` from `library(reif)` for conditionals.
-> 2. **Overcoming the 1000:1 Historical Training Imbalance**: Over 99% of legacy Prolog corpora (1980–2010 textbooks, forums, Rosetta Code) relies on `!`, `\+`, and `->`. Recognize that this reflects pre-standard imperative workarounds, not modern pure ISO Prolog. Resist predicting these tokens.
-> 3. **The 5 Safe Reification Recipes**:
->    - **Compound Condition**: `if_((A, B), T, E)` fails because `','/3` does not exist. *Recipe*: Nest calls: `if_(A, if_(B, T, E), E)`.
->    - **DCG Body Expansion**: `if_/3` inside a DCG expands to `if_/5`. *Recipe*: Wrap in curly braces: `{ if_(C, T, E) }`, or use clause dispatch with `dif/2`.
->    - **Engine Builtins**: `if_(char_type(C, lower), T, E)` fails (`char_type/3` missing). *Recipe*: Define binary truth wrapper `char_type_lower_t(C, Truth)` or use `memberd_t/3`.
->    - **Partial List Unification**: `if_(Rest = ['*'|_], T, E)` fails macro expansion. *Recipe*: Match head first: `Rest = [C|Cs], if_(C = '*', T, E)`.
->    - **Option & Config Lookup**: Avoid `member(Key(Val), Opts) -> ... ; Val = Default`. *Recipe*: Use pure `lookup_option/4` with `if_(K = Key, ...)`.
-> 4. **Mandatory Post-Generation Self-Audit**: Scan generated code for `!`, `\+`, and `->`. Every occurrence MUST either be refactored to `dif/2` / `if_/3` or documented with an explicit `% Justification: <reason>` comment.
+- **[codingstandards.md](codingstandards.md)**: Standalone authoritative modern ISO Prolog coding standards, Covington layout, reification & CLP guidelines, architectural patterns, and anti-patterns reference.
+- **[AGENT_GUIDE.md](AGENT_GUIDE.md)**: Developer & AI agent onboarding blueprint with Top 10 Q&A.
+- **[AGENTS.md](AGENTS.md)**: Universal repository standards, engine idiosyncrasies, and multi-engine conventions.
+- **[docs/ANTI_PATTERNS.md](docs/ANTI_PATTERNS.md)**: Catalog of prohibited imperative anti-patterns and their pure declarative alternatives.
+- **[docs/GLOSSARY.md](docs/GLOSSARY.md)**: Formal definitions of core Prolog agent and logical purity terminology.
+

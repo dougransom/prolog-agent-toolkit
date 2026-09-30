@@ -80,6 +80,7 @@ Combines probabilistic LLM generation with deterministic Prolog logic (`examples
 
 ## Core File Index & Architecture
 
+- [codingstandards.md](codingstandards.md): Standalone authoritative modern ISO Prolog coding standards, Covington formatting, reification & CLP guidelines, architectural patterns, and anti-patterns reference.
 - [AGENT_GUIDE.md](AGENT_GUIDE.md): Developer and AI agent onboarding blueprint with Top 10 Q&A.
 - [AGENTS.md](AGENTS.md): Authoritative universal coding guidelines, purity principles, and multi-engine conventions.
 - [AGENT_INDEX.json](AGENT_INDEX.json): Machine-readable index of repository files, entry points, and subagents.
@@ -130,15 +131,14 @@ Combines probabilistic LLM generation with deterministic Prolog logic (`examples
 
 ---
 
-## AI Coding Agent Invariants & Declarative Purity Guidelines
+## AI Coding Agent Invariants & Declarative Coding Standards
 
-> **Critical Directive for LLMs, Code Assistants, and Automated Agents**:
+> **Authoritative Specification**: For all coding conventions, layout rules, purity invariants, and modern replacements for legacy built-ins, consult **[codingstandards.md](codingstandards.md)**.
+> 
+> **Core Directives for LLMs & AI Code Assistants**:
 > 1. **Declarative Purity & Reification First**: NEVER emit non-logical cuts (`!`), soft cuts (`->`), or negation-as-failure (`\+`) for term inequality or branching. Always use `dif(X, Y)` for inequality and `if_/3` / `cond_t` from `library(reif)` for conditionals.
-> 2. **Overcoming the 1000:1 Historical Training Imbalance**: Over 99% of legacy Prolog corpora (1980–2010 textbooks, forums, Rosetta Code) relies on `!`, `\+`, and `->`. Recognize that this reflects pre-standard imperative workarounds, not modern pure ISO Prolog. Resist predicting these tokens.
-> 3. **The 5 Safe Reification Recipes**:
->    - **Compound Condition**: `if_((A, B), T, E)` fails because `','/3` does not exist. *Recipe*: Nest calls: `if_(A, if_(B, T, E), E)`.
->    - **DCG Body Expansion**: `if_/3` inside a DCG expands to `if_/5`. *Recipe*: Wrap in curly braces: `{ if_(C, T, E) }`, or use clause dispatch with `dif/2`.
->    - **Engine Builtins**: `if_(char_type(C, lower), T, E)` fails (`char_type/3` missing). *Recipe*: Define binary truth wrapper `char_type_lower_t(C, Truth)` or use `memberd_t/3`.
->    - **Partial List Unification**: `if_(Rest = ['*'|_], T, E)` fails macro expansion. *Recipe*: Match head first: `Rest = [C|Cs], if_(C = '*', T, E)`.
->    - **Option & Config Lookup**: Avoid `member(Key(Val), Opts) -> ... ; Val = Default`. *Recipe*: Use pure `lookup_option/4` with `if_(K = Key, ...)`.
-> 4. **Mandatory Post-Generation Self-Audit**: Scan generated code for `!`, `\+`, and `->`. Every occurrence MUST either be refactored to `dif/2` / `if_/3` or documented with an explicit `% Justification: <reason>` comment.
+> 2. **Declarative Arithmetic**: Use `library(clpz)` (`#=`, `#\=`, `#>`, `#<`) instead of `is/2` or legacy comparison operators (`=:=`, `=\=`).
+> 3. **Strings as Character Lists**: All strings are strictly lists of characters (`chars`). Set `double_quotes` to `chars`.
+> 4. **Safe Type Testing**: Always use `library(si)` (`atom_si/1`, `list_si/1`, `integer_si/1`) rather than unsafe built-ins that throw instantiation errors.
+> 5. **Consult [codingstandards.md](codingstandards.md)**: For comprehensive tables, side-by-side examples, Covington doc header formats, DCG lookahead patterns, state threading architectures, and the full anti-pattern catalog, refer to [codingstandards.md](codingstandards.md).
+
