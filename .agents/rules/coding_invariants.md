@@ -85,3 +85,20 @@ Before presenting or committing any generated Prolog code, every AI agent MUST p
 ## 10. Meta-Predicate Declarations (`meta_predicate`)
 - **Mandatory Declarations**: When defining module-level predicates that accept callable goals (`0`), closures (`1`..`N`), DCG non-terminals (`//` or `2`), or module-sensitive terms (`:`), always insert explicit `:- meta_predicate` declarations directly below the module header.
 - **Exact Arity Specification**: Specify exact closure arities for higher-order arguments (e.g. `2` for a closure taking 2 extra arguments) and standard specifiers (`+`, `-`, `?`, `*`) for non-callable data arguments. Never declare data arguments as `:` or `0`.
+
+## 11. Batch Collection Macros (`maplist/3`) over Repeated Directive Invocations (DRY)
+- **Prefer Batch `maplist/3` over Repeated Sequential Macro Invocations**: Whenever defining macro-expanded tables (character escapes, grammar keywords, opcode decoders, lookup facts), AI agents MUST generate a single batch collection macro (`maplist(ExpandItem, List, Clauses)`) rather than outputting repeated top-level single-item invocations (`f(x1). f(x2). f(x3).`).
+- **Example Pattern**:
+  ```prolog
+  % Preferred (Option C Batch Collection Macro):
+  user:term_expansion(keywords(Kws), Clauses) :-
+      maplist(\Kw^(keyword(Kw) --> Chars)^(atom_chars(Kw, Chars)), Kws, Clauses).
+
+  keywords([if, then, else, while, for, in, return]).
+
+  % Avoid (Repeated single-item invocations):
+  keyword(if)   --> "if".
+  keyword(then) --> "then".
+  keyword(else) --> "else".
+  ```
+

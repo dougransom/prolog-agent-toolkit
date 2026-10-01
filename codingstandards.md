@@ -960,61 +960,31 @@ apply_all(Items, State0, StateOut) :-
 ```
 
 ### 10.5 Macro & Term Expansion (`term_expansion/2`, `goal_expansion/2`)
-When multiple clauses or rules share identical structural logic that differs only by data constants (such as character escape tables, opcode decoders, or AST visitors), **do NOT duplicate boilerplate clauses manually**. Use compile-time macro expansion or data-driven relation tables to enforce DRY.
+When multiple clauses or rules share identical structural logic that differs only by data constants (such as character escape tables, opcode decoders, keyword lexers, or AST visitors), **do NOT duplicate boilerplate clauses manually**. Use compile-time macro expansion or data-driven relation tables to enforce DRY.
 
-#### Example: Character Escape Sequences in Parsers & Lexers
+#### The Golden Rule: Prefer Batch Collection Macros (`maplist/3`) over Sequential Single-Item Invocations
+When defining macro-expanded tables across a collection of elements, **always prefer a single batch collection macro (`maplist(Expand, Collection, Clauses)`) over repeated single-item top-level invocations (`f(x1). f(x2). f(x3). ...`)**.
 
 ```prolog
-% INCORRECT (Verbose & Repetitive: Typing out 10+ identical grammar rules manually)
-escape_sequence('\a') --> "a".
-escape_sequence('\b') --> "b".
-escape_sequence('\r') --> "r".
-escape_sequence('\n') --> "n".
-escape_sequence('\t') --> "t".
-escape_sequence('\v') --> "v".
-escape_sequence('\f') --> "f".
-escape_sequence('\'') --> "'".
-escape_sequence('\"') --> "\"".
-escape_sequence('\\') --> "\\".
+% ❌ ANTI-PATTERN: Repeated single-item macro invocations (Violates DRY)
+char_to_esc('a').
+char_to_esc('b').
+char_to_esc('r').
+char_to_esc('n').
+char_to_esc('t').
 
-% CORRECT Option A (Data-Driven Table Unification):
-% Single rule with clean separation of data mapping from grammar logic
-escape_sequence(Char) -->
-    [EscChar],
-    { char_to_esc(Char, EscChar) }.
+% ❌ ANTI-PATTERN: Repeated keyword grammar rules (Violates DRY)
+keyword(if)    --> "if".
+keyword(then)  --> "then".
+keyword(else)  --> "else".
+keyword(while) --> "while".
+```
 
-char_to_esc('\a', 'a').
-char_to_esc('\b', 'b').
-char_to_esc('\r', 'r').
-char_to_esc('\n', 'n').
-char_to_esc('\t', 't').
-char_to_esc('\v', 'v').
-char_to_esc('\f', 'f').
-char_to_esc('\'', '\'').
-char_to_esc('\"', '\"').
-char_to_esc('\\', '\\').
+#### Multi-Domain Batch Collection Macro Patterns (Option C)
 
-% CORRECT Option B (Compile-Time 1-Argument Term Expansion Macro):
-% Declare single-argument facts, and let term_expansion/2 compute the unescaped character
-% by reading the escaped string syntax at compile time:
-user:term_expansion(char_to_esc(Esc), char_to_esc(C, Esc)) :-
-    read_from_chars(['"', '\\', Esc, '"', '.'], [C]).
-
-% Author writes only the 1-argument escape code (DRY):
-char_to_esc('a').  % Expands to: char_to_esc('\a', 'a').
-char_to_esc('b').  % Expands to: char_to_esc('\b', 'b').
-char_to_esc('r').  % Expands to: char_to_esc('\r', 'r').
-char_to_esc('n').  % Expands to: char_to_esc('\n', 'n').
-char_to_esc('t').  % Expands to: char_to_esc('\t', 't').
-char_to_esc('v').  % Expands to: char_to_esc('\v', 'v').
-char_to_esc('f').  % Expands to: char_to_esc('\f', 'f').
-char_to_esc('\''). % Expands to: char_to_esc('\'', '\'').
-char_to_esc('\"'). % Expands to: char_to_esc('\"', '\"').
-char_to_esc('\\'). % Expands to: char_to_esc('\\', '\\').
-
-% CORRECT Option C (Ultra-DRY Collection Macro Expansion):
-% When the entire alphabet follows an identical transformation rule, term_expansion/2 can
-% return a list of clauses generated from a single compact string or list:
+##### Pattern 1: Character Escape Sequence Tables (`chars_to_escapes/1`)
+```prolog
+% Compile-time collection expansion:
 user:term_expansion(chars_to_escapes(Chars), Clauses) :-
     maplist(make_escape_clause, Chars, Clauses).
 
@@ -1028,14 +998,47 @@ chars_to_escapes("abrntvf'\"\\").
 escape_sequence(Char) -->
     [EscChar],
     { char_to_esc(Char, EscChar) }.
-
 ```
 
-- **When to Use Term Expansion**:
+##### Pattern 2: Programming Language Keywords & Token Tables (`keywords/1`)
+```prolog
+% Batch-generate grammar rules for an entire language keyword set:
+user:term_expansion(keywords(KwList), Clauses) :-
+    maplist(make_keyword_clause, KwList, Clauses).
+
+make_keyword_clause(Kw, (keyword(Kw) --> Chars)) :-
+    atom_chars(Kw, Chars).
+
+% Author declares all language keywords in 1 clean collection:
+keywords([if, then, else, elif, while, for, in, return, fn, let, match]).
+
+% Clean DCG token parsing:
+keyword_token(Token) -->
+    keyword(Token).
+```
+
+##### Pattern 3: Bytecode Opcode & Instruction Decoders (`opcodes/1`)
+```prolog
+% Batch-generate instruction decoding relations from Key-Value pairs:
+user:term_expansion(opcodes(Pairs), Clauses) :-
+    maplist(make_opcode_clause, Pairs, Clauses).
+
+make_opcode_clause(Byte-Name, (opcode_inst(Byte, Name) :- true)).
+
+% Author declares entire instruction table compactly:
+opcodes([
+    0x01-iadd, 0x02-isub, 0x03-imul, 0x04-idiv,
+    0x10-load, 0x11-store, 0x20-jump, 0x21-jz,
+    0xFF-halt
+]).
+```
+
+- **When to Use Batch Term Expansion**:
+  - Expanding compact closed alphabets, keyword vocabularies, or opcode lists into indexed static lookup tables.
   - Automatically synthesizing clause families from declarative schema facts or grammar tables.
   - Compiling Domain Specific Languages (DSLs) into pure Prolog difference lists.
   - Generating Extended DCG (EDCG) state-threading code for multiple hidden accumulators.
-  - Expanding compact closed alphabets (`chars_to_escapes("...")`) into indexed static lookup tables.
+
 
 
 ### 10.6 Pure Associative Dictionaries (`library(assoc)`)
