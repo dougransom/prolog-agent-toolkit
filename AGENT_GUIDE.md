@@ -47,9 +47,9 @@ To allow AI coding agents to safely write, test, refactor, and run pure, clean P
 - Architectural Decision -> [`docs/adr/`](docs/adr)
 
 ### Q7: Which standards apply?
-- Universal Prolog Style & Purity: [`.agents/references/prolog_guidelines.md`](.agents/references/prolog_guidelines.md)
-- Covington Prolog Style Guide: [`.agents/references/covington_style.md`](.agents/references/covington_style.md)
-- System Standards: [`.agents/skills/scryer-prolog-standards/SKILL.md`](.agents/skills/scryer-prolog-standards/SKILL.md), [`.agents/skills/swi-prolog-standards/SKILL.md`](.agents/skills/swi-prolog-standards/SKILL.md)
+- Canonical Coding Standards: [codingstandards.md](codingstandards.md) (single source of truth for humans & AI agents)
+- Coding Invariants: [.agents/rules/coding_invariants.md](.agents/rules/coding_invariants.md)
+- System Standards: [`.agents/skills/scryer-prolog-standards/SKILL.md`](.agents/skills/scryer-prolog-standards/SKILL.md), [`.agents/skills/swi-prolog-standards/SKILL.md`](.agents/skills/swi-prolog-standards/SKILL.md), [`.agents/skills/trealla-prolog-standards/SKILL.md`](.agents/skills/trealla-prolog-standards/SKILL.md), [`.agents/skills/tau-prolog-standards/SKILL.md`](.agents/skills/tau-prolog-standards/SKILL.md)
 
 ### Q8: Which skills already exist?
 23 declarative skills are cataloged in [`docs/skills_manifest.json`](docs/skills_manifest.json) and [`.agents/skills/skills.pl`](.agents/skills/skills.pl), spanning [`CLP(Z)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/clpz.pl), pure DCGs, tabling, web services, testing, packaging, profiling, and engine onboarding.

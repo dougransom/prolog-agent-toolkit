@@ -17,14 +17,14 @@ Thank you for contributing to the **Prolog Agent Toolkit**! We welcome contribut
 
 ## 1. Project Architecture
 
-The toolkit consists of two primary layers:
+The toolkit consists of three primary layers:
 
-1. **Python Execution Safety CLI** (`prolog_agent_toolkit/`):
-   - Cross-platform resource sandboxing, execution timeout monitoring, low-CPU scheduling, and RAM limits.
-   - Entry points: `prolog-safe`, `scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`.
-2. **AI Agent Customizations** (`.agents/`):
-   - Rules (`.agents/AGENTS.md`, `.agents/references/`) defining Prolog coding standards and portable ISO code targets. `.agents/AGENTS.md` (symlinked as `AGENTS.md` at root) is the **vendor-agnostic single source of truth** across all AI tools.
-   - Skills (`.agents/skills/`) for system standards, unit testing (`testing.pl`), package management (`bakage`), and version releases.
+1. **Authoritative Coding Standards** ([`codingstandards.md`](codingstandards.md) & [`.agents/rules/coding_invariants.md`](.agents/rules/coding_invariants.md)):
+   - The standalone, canonical standard for Prolog coding, Covington formatting, logical purity, reification, constraints, and data modeling across both human programmers and AI assistants.
+2. **AI Agent Customizations & Operational Policies** (`.agents/`):
+   - Operational policies (`.agents/AGENTS.md`, symlinked as `AGENTS.md` at root) and skills (`.agents/skills/`) for library discovery, unit testing (`testing.pl`), package management (`bakage`), and release orchestration.
+3. **Python Execution Safety CLI** (`prolog_agent_toolkit/`):
+   - Cross-platform resource sandboxing, execution timeout monitoring, low-CPU scheduling, and RAM limits (`prolog-safe`, `scryer-safe`, `swi-safe`, `trealla-safe`, `tau-safe`).
 
 ### Vendor Neutrality & Agent Configuration Rules
 All AI agent instructions, rules, and skills MUST remain **100% vendor-neutral** and open-format:

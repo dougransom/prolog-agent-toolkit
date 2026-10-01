@@ -35,7 +35,8 @@ A reusable AI agent skills, coding standards, and multi-engine (Scryer, SWI, Tre
 > Key features: reusable agent skills ([`.agents/skills/`](.agents/skills/)), Prolog purity standards (`if_/3`, `dif/2`), library discovery (`prolog-agent discover`), and multi-engine safety execution.
 > - **LLM Machine-Readable Index**: Read [`llms.txt`](llms.txt) and [`llms-full.txt`](llms-full.txt)
 > - **Navigation Blueprint & Top 10 Q&A**: Read [`AGENT_GUIDE.md`](AGENT_GUIDE.md)
-> - **Coding & Purity Standards**: Inspect [`AGENTS.md`](AGENTS.md) and [`.agents/skills/`](.agents/skills/)
+> - **Authoritative Coding Standards**: Read [codingstandards.md](codingstandards.md) (canonical standard for humans & AI agents)
+> - **Agent Steering & Operational Rules**: Inspect [`AGENTS.md`](AGENTS.md) and [`.agents/skills/`](.agents/skills/)
 > - **Skills & Capabilities Manifest**: Inspect [`docs/skills_manifest.json`](docs/skills_manifest.json) & [`docs/capability_manifest.json`](docs/capability_manifest.json)
 > - **Canonical Examples**: See [`examples/`](examples/) ([`agent_skills_dispatch.pl`](examples/agent_skills_dispatch.pl), [`prolog_mcp_server.pl`](examples/prolog_mcp_server.pl), [`neurosymbolic_reasoner.pl`](examples/neurosymbolic_reasoner.pl))
 > - **Library Discovery Protocol**: See `prolog-library-discovery` skill or run `prolog-agent discover`
@@ -62,6 +63,23 @@ A reusable AI agent skills, coding standards, and multi-engine (Scryer, SWI, Tre
 - **CLI Management Suite**: Project bootstrapping, module generator, system switcher, release manager, and skill validator via `prolog-agent`.
 - **System-Aware Standards**: Enforces Scryer, SWI, Trealla, Tau, and portable Prolog conventions automatically.
 - **Autonomous AI Subagents & Skills**: Pre-configured subagents and skills for purity auditing, automated refactoring, legacy project migration (`prolog-migrate-project`), unit test generation, benchmark running, and security scanning.
+
+---
+
+## Unified Prolog Coding Standards — For Humans and AI Agents
+
+The Prolog Agent Toolkit provides a **single canonical source of truth** for all Prolog programming standards in **[`codingstandards.md`](codingstandards.md)** (with invariant enforcement in [`.agents/rules/coding_invariants.md`](.agents/rules/coding_invariants.md)).
+
+Rather than having fragmented guidelines, this standard serves as a **shared contract** between human software engineers and AI coding assistants:
+
+| For Human Programmers 🧑‍💻 | For AI Coding Assistants 🤖 |
+|---|---|
+| **Immediate Visual Clarity**: Covington layout standards ensure clear visual distinction between predicates, clauses, and goals. | **High-Fidelity AST Generation**: Structured clause layouts and explicit functor terms eliminate ambiguity during parsing and code generation. |
+| **Elimination of Bug Traps**: Sound term inequality (`dif/2`) and reified conditionals (`if_/3`, `cond_t`) prevent subtle bugs caused by premature variable instantiation. | **Deterministic Code Contracts**: Standard Covington doc headers with explicit modes (`+`/`-`) and determinism (`det`, `semidet`, `nondet`) eliminate reasoning hallucinations. |
+| **Declarative Efficiency**: Tail-recursion accumulators (TCO) and first-argument indexing give predictable runtime performance without sacrificing logical purity. | **Sound Multi-Directional Relations**: Avoiding imperative cuts (`!`) allows generated predicates to run safely in all directions (testing, generating, back-tracking). |
+| **Seamless Pair Programming**: Reviewing and refactoring agent-generated code feels natural because both follow identical naming, formatting, and purity invariants. | **Test-Driven Scaffolding**: Living executable examples in headers and test suites (`testing.pl`, `plunit`) provide immediate empirical verification. |
+
+👉 **Read the complete guide**: **[Unified Prolog Coding Standards (`codingstandards.md`)](codingstandards.md)** (covers Covington formatting, reification, CLP constraints, pure DCGs, state threading, architectural patterns, and anti-patterns).
 
 ---
 

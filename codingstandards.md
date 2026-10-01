@@ -93,7 +93,22 @@
 
 ---
 
-## 1. Core Philosophy & Principles
+## 1. Core Philosophy & Principles: A Shared Standard for Humans & AI Agents
+
+These coding standards establish a **shared lingua franca and mutual contract** between human software engineers and AI coding assistants (e.g., Google Antigravity, Claude Code, Cursor, Copilot). Modern declarative Prolog is uniquely suited to human-agent pair programming because logical relations are declarative, compositional, and homoiconic.
+
+### 1.1 Dual Value Proposition
+
+| Dimension | Value for Human Programmers | Value for AI Coding Assistants |
+|---|---|---|
+| **Cognitive Load & Readability** | Visual Covington structure makes code immediately scannable; eliminates hidden side-effects and non-logical traps. | Structured layouts and uniform conventions yield consistent tokenization and high-fidelity AST comprehension. |
+| **Purity & Soundness (`dif/2`, `if_/3`)** | Programs work bidirectionally (generating and testing); no unexpected failure modes from premature variable instantiation. | Prevents subtle reasoning errors and hallucinations caused by imperative cuts (`!`) and non-logical negation (`\+`). |
+| **Covington Documentation Headers** | Clear contracts describing mode (`+`/`-`), determinism (`det`, `semidet`, `nondet`), and arguments at a glance. | Unambiguous behavioral constraints that guide precise test generation and choicepoint audits. |
+| **Clean Data Modeling** | Explicit functors and well-formed terms prevent defaulty logic errors and make pattern matching intuitive. | Type safety and clear data constructors eliminate ambiguous representations and simplify refactoring. |
+| **Declarative Constraints (`CLP(Z)`)** | Separates problem formulation from search heuristics; avoids low-level loop management. | Allows LLMs to formulate pure mathematical constraints while delegating combinatorial search to the solver. |
+| **Homogeneous Tooling & Homoiconicity** | Skills, ASTs, tests, and configuration are all Prolog terms, reducing conceptual context switching. | Agent skills and meta-interpreters can inspect, transform, and evaluate code as native data terms via `call/N`. |
+
+### 1.2 Core Foundational Invariants
 
 1. **Write for Humans First, Machines Second**: Code is read far more often than it is written. Layout, naming, comments, and structure must maximize immediate visual comprehension for both human maintainers and AI assistants.
 2. **Aim for Standard ISO Prolog**: Generate declarative code conforming to standard ISO/IEC 13211-1, portable across ISO-oriented Prolog systems (Scryer, Trealla, SWI, Tau, GNU, Ciao) subject to engine capabilities.
@@ -101,6 +116,7 @@
 4. **Logical Purity over Premature Optimization**: Never introduce imperative cuts (`!`), negation-as-failure (`\+`), or soft cuts (`->`) solely for performance. Pure constructs (`dif/2`, `if_/3`, first-argument indexing, CLP constraints) maintain bidirectionality and soundness.
 5. **Separation of Pure Logic and Side Effects**: Computational logic and text parsing must remain pure and free from I/O side effects. I/O should be confined to thin boundary predicates.
 6. **DRY (Don't Repeat Yourself)**: Eliminate repeated assignments and structure across conditional branches. Test and bind once, use throughout.
+7. **Pair Programming Alignment**: Ensure that code written by an AI agent is indistinguishable in quality, elegance, and idiomatic style from code written by an experienced human Prolog logician.
 
 ---
 
