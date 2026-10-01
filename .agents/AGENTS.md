@@ -1,7 +1,10 @@
 # Prolog Agent Toolkit Guidelines & Standards
 
-> **System Authority**: This document is the source of truth for all coding, architectural, and procedural standards within the Prolog Agent Toolkit.
+> **System Authority**: This document is the source of truth for operational, architectural, and procedural standards within the Prolog Agent Toolkit.  
+> **Canonical Coding Standards**: For all Prolog code generation, formatting, purity invariants, data modeling, reification, constraints, and anti-patterns, the single source of truth is **[codingstandards.md](codingstandards.md)** and **[.agents/rules/coding_invariants.md](.agents/rules/coding_invariants.md)**.
+> 
 > **Cross-Reference Index**:
+> - [Coding Standards Guide](codingstandards.md) | [Coding Invariants](.agents/rules/coding_invariants.md)
 > - [Onboarding Blueprint](AGENT_GUIDE.md) | [Directory Map](AGENT_INDEX.json)
 > - [Component Ontology](docs/repository_ontology.json) | [Glossary](docs/GLOSSARY.md) | [Anti-Patterns](docs/ANTI_PATTERNS.md)
 
@@ -10,8 +13,12 @@ When writing, refactoring, reviewing, or running Prolog code across any project 
 
 ## Universal Prolog Style & Purity Guidelines
 
-All Prolog code (regardless of target engine) MUST follow the universal style and purity principles:
+> **Single Source of Truth**: All Prolog coding, layout, purity, and structural standards are authoritatively declared in **[codingstandards.md](codingstandards.md)**. AI assistants MUST follow `codingstandards.md` directly.
 
+Key high-level policies and operational invariants include:
+
+- **Canonical Coding Standards & Invariants**:
+  - Foundational, non-negotiable coding invariants (strings as `chars`, logical purity, `dif/2`, reification, `cond_t`, safe type testing `library(si)`, batch collection macros `maplist/3`, clean data modeling) are authoritatively declared in [codingstandards.md](codingstandards.md) and [.agents/rules/coding_invariants.md](.agents/rules/coding_invariants.md). Detailed procedural workflows are in [prolog-conventions](.agents/skills/prolog-conventions/SKILL.md).
 - **ISO Prolog Code Generation Goal & Engine Neutrality**:
   - AI assistants MUST attempt to produce ISO-compliant code (standard ISO/IEC 13211-1) subject to the capabilities and limitations of the target Prolog system being used.
   - AI assistants MUST NOT describe or claim that any Prolog system (e.g. Scryer, SWI, Trealla, Tau, GNU, Ciao) is "ISO compliant" or an "ISO Prolog system". Systems may make their own compliance claims.
@@ -19,36 +26,14 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
   - All AI agent guidelines, instructions, rules, and skills MUST remain 100% vendor-neutral and open format (`AGENTS.md`, `.agents/skills/<name>/SKILL.md`, `.agents/agents/<name>.md`).
   - Do NOT create proprietary, vendor-specific, or IDE-harness-specific configuration files or directories (such as `.claude/`, `.windsurfrule`, `.cursorrules`, `.github/copilot-instructions.md`, `.clinerules`, `.gemini/`, or harness-specific Emacs configs).
 - **Generalized Common Baseline & Engine Idiosyncrasies**:
-  - The core goal of this toolkit is to declare as much as possible as a **generalized, common Prolog standard** applicable across all Prolog systems (pure logic, reification `=(X,Y,Truth)`/`cond_t`, `CLP(Z)`/`CLP(FD)` constraints, pure DCGs, `chars`, safe type testing `library(si)`, Covington layout, and efficiency).
+  - The core goal of this toolkit is to declare as much as possible as a **generalized, common Prolog standard** in [codingstandards.md](codingstandards.md).
   - System-specific skill guidelines (`scryer-prolog-standards`, `swi-prolog-standards`, `trealla-prolog-standards`, `tau-prolog-standards`) MUST capture only what is **idiosyncratic or engine-specific** (module load headers, system types like SWI dicts, WASM limits, packaging, DOM interop), while delegating all common style, purity, and usage rules to the central generalized baseline.
-- **Canonical Common Coding Standards & Persistent Rules**: [.agents/rules/coding_invariants.md](.agents/rules/coding_invariants.md) | [.agents/skills/prolog-conventions/SKILL.md](.agents/skills/prolog-conventions/SKILL.md)
-  - Foundational, non-negotiable coding invariants (strings as `chars`, logical purity, `dif/2`, reification, `cond_t`, safe type testing `library(si)`, clean data modeling) are authoritatively declared in [.agents/rules/coding_invariants.md](.agents/rules/coding_invariants.md) and are permanently active. Detailed procedural workflows and conventions are in `prolog-conventions`. AI agents MUST activate `prolog-conventions` whenever generating, refactoring, or auditing Prolog code.
-  - **Code Review Skill Synchronization Policy**: Whenever core coding guidelines or system rules are updated, AI assistants MUST prompt the programmer to update the Code Review skill ([`prolog-code-review`](.agents/skills/prolog-code-review/SKILL.md)) to keep review checklists aligned with operational coding standards.
-- **Covington Prolog Style Guide**: [.agents/references/covington_style.md](.agents/references/covington_style.md)
-  - Write for humans first; keep clauses simple and readable; use explicit goal ordering and clean predicate naming.
-- **Purity Guidelines**: [.agents/references/prolog_guidelines.md](.agents/references/prolog_guidelines.md)
-  - Prefer logical purity (`if_/3`, `dif/2`, pure DCGs); prefer `dif/2` over negation-as-failure `\+/1` for sound term inequality.
-  - **Avoid `!`, `\+/1`, `->` for Performance**: NEVER introduce cuts (`!`), negation-as-failure (`\+/1`), or soft cuts (`->`) merely for performance reasons.
-  - **Mandatory Comment Justifications for Correctness**: If cuts (`!`), `\+/1`, or `->` must be introduced for *correctness* when pure logic constructs (`if_/3`, `dif/2`) cannot achieve the required behavior, write an explicit comment in the code explaining why pure constructs were insufficient.
-  - Prefer **clean vs. defaulty data representations** where element kinds are distinguished by principal functors (e.g. `leaf(L)` vs `node(L, R)`).
-  - Prefer higher-order constructs (`call/N`, `call//N`, `maplist/N`, `foldl/N`) and [`library(lambda)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/lambda.pl) (`\X^...`, `\X^Y^Goal`) to avoid duplicating predicate structures or DCG traversals.
-  - **ISO DCG Indicator Convention (`Name//Arity`)**: Always use `Name//Arity` notation (e.g. `parse_item//1`) for DCG non-terminals in module export lists (`:- module(M, [rule//N]).`), import lists (`:- use_module(M, [rule//N]).`), Covington doc headers (`%% rule//N`), and predicate identification.
-  - **Variable & Indicator Naming Guidelines**:
-    - **Prefer Meaningful Variable Names**: Use domain-descriptive names (`Tree`, `TokenStream`, `Result`, `Acc`) for public predicate parameters and non-trivial clauses, avoiding arbitrary placeholders like `Arg1` or `P2`.
-    - **Idiomatic Short Names in Local Contexts**: Short, standard variable names (`X`, `Y`, `Xs`, `Ys`, `N`) are encouraged in tight list traversals, mathematical constraints, and local higher-order closures.
-    - **Clear Names for Dual-Mode & Polymorphic Predicates**: When a predicate accepts dual calling modes (e.g., direct lists vs. DCG difference-lists), use parameter names that clarify both roles (e.g., `InputOrMatch`, `RestOrState`).
-    - **Consistent DCG Threading Pairs**: Use standard conventions for threaded state pairs, such as `L0, L1, ..., L` for character streams and `S0, S1, ..., S` for general state accumulators.
-  - Prefer pure efficiency: first-argument indexing, reified `zcompare/3` arithmetic comparison, and early constraint pruning (`dif/2`, [`CLP(Z)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/clpz.pl)).
-  - Prefer coroutining (`freeze/2`, `when/2`) to suspend goals until variables are instantiated, preferring [`CLP(Z)`](https://github.com/mthom/scryer-prolog/blob/master/src/lib/clpz.pl)/`dif/2` over manual coroutining where specialized constraints apply.
-  - **Direct Reification over `if_/3` for Booleans**: Always prefer direct reified predicates (e.g. `=(X, Y, Truth)`, `memberd_t/3`, `tpartition/4`) over wrapping boolean assignments inside `if_/3` (e.g. use `=(X, Y, Truth)` instead of `if_(X = Y, Truth = true, Truth = false)`). Reserve `if_/3` strictly for selecting non-boolean values (`if_(G, Val = 'yes', Val = 'no')`) or executing conditional branches with distinct control paths.
-  - **Prefer `cond_t` over `if_` / `->` (DRY Principle)**: Aggressively prefer `cond_t` over `if_` and `->` when choosing between choices or values based on a test. Use `cond_t` to avoid repeating the same variable or assignment in both the true and false clauses of `if_` (Don't Repeat Yourself principle). When testing and then generating a value, then using the value, prefer to test and generate the value in the condition and use the value after the condition (i.e. `if_(G, A="A", A="B"), write(A)` rather than writing `A` in each branch).
-  - **Meta-Predicate Declarations (`meta_predicate`)**: When defining module-level predicates that accept callable goals (`0`), closures (`1`..`N`), DCG non-terminals (`//` or `2`), or module-sensitive terms (`:`), always insert explicit `:- meta_predicate` declarations directly below the module header. Use exact closure arities for higher-order arguments and standard specifiers (`+`, `-`, `?`, `*`) for non-callable data arguments to prevent unwanted caller module expansion.
+- **Code Review Skill Synchronization Policy**:
+  - Whenever core coding guidelines or system rules are updated, AI assistants MUST prompt the programmer to update the Code Review skill ([`prolog-code-review`](.agents/skills/prolog-code-review/SKILL.md)) to keep review checklists aligned with operational coding standards.
 - **Declarative AI Workflow**: [.agents/skills/prolog-declarative-workflow/SKILL.md](.agents/skills/prolog-declarative-workflow/SKILL.md)
   - Use declarative reasoning based on unification, constraints, and backtracking (never imperative thinking).
-  - Specify mode (`+`/`-`), determinism (`det`, `semidet`, `nondet`), and choice-point expectations.
+  - Specify mode (`+`/`-`), determinism (`det`, `semidet`, `nondet`), and choice-point expectations as per [codingstandards.md](codingstandards.md#4-comments-documentation--covington-headers).
   - Use test-first scaffolding (`testing.pl` / `plunit` / configured test framework) and DCG structure generation.
-- **Programmer Steering Guidelines**: [.agents/references/programmer_guidelines.md](.agents/references/programmer_guidelines.md)
-  - Best practices for human programmers when prompting, constraining, and steering AI coding assistants.
 - **Pre-Code-Generation Library Discovery Policy**: [.agents/skills/prolog-library-discovery/SKILL.md](.agents/skills/prolog-library-discovery/SKILL.md)
   - BEFORE generating Prolog code, AI assistants MUST execute the 7-step discovery protocol: (1) Identify target engine; (2) Run `prolog-agent discover --engine <engine>` or inspect system cheat sheets / manifests; (3) Prefer discovered built-in libraries and installed packs over writing custom logic from scratch; (4) Explicitly declare `:- use_module(library(...)).` headers; (5) Document selected dependencies in headers; (6) Explain dependency selection rationale; (7) Only implement custom code when no suitable library exists.
 - **Standard Library Cheat-Sheet Steering**:
@@ -58,7 +43,7 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
   - Whenever Prolog compilation or consult fails after human editing, AI assistants MUST scan target source files for common punctuation typos (`:` instead of `:-`, `->` instead of `-->`, `#` or `//` line comments, `!=`, `<=`, `=>`, `<>`), and report exact file, line number, column, and fix recommendations to the programmer.
 - **Portable Hyperlinks Policy**:
   - Avoid absolute `file://` hyperlinks on the local filesystem that break on other machines or on GitHub.
-  - When encountering or adding local file links, use portable relative Markdown links (e.g. `[AGENT_GUIDE.md](AGENT_GUIDE.md)` instead of `file:///path/to/AGENT_GUIDE.md`).
+  - When encountering or adding local file links, use portable relative Markdown links (e.g. `[codingstandards.md](codingstandards.md)` or `[AGENT_GUIDE.md](AGENT_GUIDE.md)`).
   - If a `file://` link was provided by a human programmer (rather than an AI code agent), ask the programmer if they want to fix it first before replacing it.
 - **Custom Style Overrides & Programmer Preference Precedence**:
   - Whenever a human programmer provides explicit code generation examples, AST term constructors, mode/determinism contracts, or custom style rules (in prompt text, workspace rules `.agents/AGENTS.md` / `.agents/rules/`, or custom project skills `.agents/skills/`), AI assistants MUST prioritize the programmer's explicit instructions and reference examples over toolkit default choices.
@@ -66,10 +51,10 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
 - **Homoiconicity & Skill Invocation**: Prolog is homoiconic — terms ARE the program. The agent toolkit leverages this so that skills, capabilities, and invocations are represented as Prolog terms/facts, making them simultaneously documentation, data, and executable code.
   - **Concrete skill registry format**: Declare skill capabilities as two-argument facts `skill(SkillName, Capabilities)` where `SkillName` is an atom and `Capabilities` is a list of capability atoms:
     ```prolog
-    skill(prolog_conventions,   [purity, dcg, clp, type_testing, strings]).
-    skill(prolog_code_review,   [purity, determinism, portability, safety, testing]).
+    skill(prolog_conventions,     [purity, dcg, clp, type_testing, strings]).
+    skill(prolog_code_review,     [purity, determinism, portability, safety, testing]).
     skill(prolog_clp_constraints, [clp, scheduling, optimization, labeling]).
-    skill(scryer_prolog_standards, [scryer, modules, reif, si, chars]).
+    skill(scryer_prolog_standards,[scryer, modules, reif, si, chars]).
     ```
   - **Discovery via queries**: Because skills are Prolog facts, capability lookup becomes a standard Prolog query — no string matching or external config parsing required:
     ```prolog
@@ -78,6 +63,7 @@ All Prolog code (regardless of target engine) MUST follow the universal style an
     ```
   - **Composition via `call/N`**: Skill dispatch and composition can use `call/N`, `functor/3`, and `=..` — the same mechanisms used for any Prolog goal — making skill orchestration a first-class Prolog program rather than a harness side-channel.
   - **Tooling consistency**: Programs in the toolkit that process or generate Prolog source SHOULD be written in Prolog itself (ISO core + flat engine shims), consistent with the homoiconicity principle. See Guideline 16 in [prolog-conventions](.agents/skills/prolog-conventions/SKILL.md).
+
 
 
 ## Multi-Engine Prolog System Selection & Rules
