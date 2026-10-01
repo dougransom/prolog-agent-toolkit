@@ -66,6 +66,7 @@
     - [10.4 Higher-Order State Folding (`foldl/N`)](#104-higher-order-state-folding-foldln)
     - [10.5 Macro & Term Expansion (`term_expansion/2`, `goal_expansion/2`)](#105-macro--term-expansion-term_expansion2-goal_expansion2)
     - [10.6 Pure Associative Dictionaries (`library(assoc)`)](#106-pure-associative-dictionaries-libraryassoc)
+    - [10.7 Dynamic Predicates (`assertz`/`retract`) vs. Pure State: Architectural Boundaries](#107-dynamic-predicates-assertzretract-vs-pure-state-architectural-boundaries)
 11. [Text Formatting, I/O & Separation of Concerns](#11-text-formatting-io--separation-of-concerns)
     - [11.1 Separation of Pure Computation from I/O](#111-separation-of-pure-computation-from-io)
     - [11.2 Unified Format Calls (One Call vs. Chained Calls)](#112-unified-format-calls-one-call-vs-chained-calls)
@@ -1032,6 +1033,49 @@ For dynamic symbol tables, variable environments, and key-value lookups:
 % CORRECT (Pure environment lookup and functional update)
 bind_var(Var, Val, Env0, EnvOut) :-
     put_assoc(Var, Env0, Val, EnvOut).
+```
+
+### 10.7 Dynamic Predicates (`assertz`/`retract`) vs. Pure State: Architectural Boundaries
+
+A common question in Prolog architecture is: *When should `assertz/1` and dynamic predicates be avoided, and when are they legitimate?*
+
+#### 1. Why `assertz`/`retract` is Prohibited for Local Algorithm State
+Using `assertz/1` and `retract/1` as mutable variables within algorithms, search routines, or parsing passes introduces serious architectural defects:
+
+| Problem Domain | Pure Threaded State (`library(assoc)`, DCGs, Builders) | Dynamic Database Mutation (`assertz` / `retract`) |
+| :--- | :--- | :--- |
+| **Backtracking Safety** | **Sound**: State automatically unwinds and resets upon failure or backtracking. | **Unsound**: Asserted facts persist globally after failure, corrupting subsequent search paths. |
+| **Re-entrancy & Threading** | **100% Re-entrant**: Concurrent threads or nested queries cannot interfere. | **Race Conditions**: Global mutable database collisions and lock contention. |
+| **Performance & Memory** | **Fast $O(\log N)$**: Cleanly garbage-collected on the execution stack. | **High Overhead**: Dynamic index updates, clause reallocation, and database locks. |
+| **Determinism & Reasoning** | **Referentially Transparent**: Relations are mathematical functions of their inputs. | **Hidden Dependencies**: Behavior depends invisibly on mutable global database history. |
+
+#### 2. Static Compilation vs. Dynamic `assert` in Macro Expansion
+- **Macro Expansion (`term_expansion/2`, `goal_expansion/2`) does NOT use `assert`**:
+  - When the Prolog reader encounters term expansion hooks during file loading, the generated terms are handed directly to the **static clause compiler**.
+  - The engine compiles these clauses into **immutable, heavily optimized static bytecode** (with hash-indexed jump tables and zero dynamic locking overhead).
+  - Writing compile-time term expansions is completely pure and static—it has nothing to do with dynamic `assertz/1`.
+
+#### 3. Legitimate Architectural Uses for `assertz` / Dynamic Database
+`assertz/1`, `retract/1`, and `retractall/1` are legitimate and appropriate in specific, well-defined boundaries:
+
+1. **Dynamic Plugin & Tool Registration**:
+   - Registering user-installed skills, tool capability bundles, or dynamic foreign handlers at application startup (e.g., `agent_register_skill/2`).
+2. **Interactive Deductive Knowledge Bases & Rule Learning**:
+   - Interactive knowledge-base systems where users or autonomous agents discover, verify, and store new ground facts, ontology axioms, or persistent domain rules across sessions.
+3. **Global Persistent Configuration**:
+   - Truly global application environment settings or resource descriptors that must outlive individual query lifecycles.
+4. **Implementing Tabling / Memoization Engines**:
+   - Internal engine-level SLG trie tables (though application programmers should use `:- table` declarations directly rather than writing manual `assert`-based memoization).
+
+#### 4. Summary Decision Matrix
+
+```
+Is the state needed only within a single query, transaction, or compiler pass?
+  ├── YES → Use pure threaded state (library(assoc), DCG state monad, or foldl/N).
+  └── NO  ── Are you generating boilerplate clauses at compile time?
+               ├── YES → Use term_expansion/2 (compiles to static code, not dynamic assert).
+               └── NO  ── Is it a persistent knowledge base or dynamic plugin registry?
+                            └── YES → Use assertz/1 with explicit :- dynamic declarations.
 ```
 
 ---
