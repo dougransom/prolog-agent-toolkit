@@ -1012,6 +1012,18 @@ char_to_esc('\''). % Expands to: char_to_esc('\'', '\'').
 char_to_esc('\"'). % Expands to: char_to_esc('\"', '\"').
 char_to_esc('\\'). % Expands to: char_to_esc('\\', '\\').
 
+% CORRECT Option C (Ultra-DRY Collection Macro Expansion):
+% When the entire alphabet follows an identical transformation rule, term_expansion/2 can
+% return a list of clauses generated from a single compact string or list:
+user:term_expansion(chars_to_escapes(Chars), Clauses) :-
+    maplist(make_escape_clause, Chars, Clauses).
+
+make_escape_clause(Esc, (char_to_esc(C, Esc) :- true)) :-
+    read_from_chars(['"', '\\', Esc, '"', '.'], [C]).
+
+% Author declares the entire escape table in 1 line:
+chars_to_escapes("abrntvf'\"\\").
+
 % The parser rule remains completely clean and unified:
 escape_sequence(Char) -->
     [EscChar],
@@ -1023,6 +1035,8 @@ escape_sequence(Char) -->
   - Automatically synthesizing clause families from declarative schema facts or grammar tables.
   - Compiling Domain Specific Languages (DSLs) into pure Prolog difference lists.
   - Generating Extended DCG (EDCG) state-threading code for multiple hidden accumulators.
+  - Expanding compact closed alphabets (`chars_to_escapes("...")`) into indexed static lookup tables.
+
 
 ### 10.6 Pure Associative Dictionaries (`library(assoc)`)
 For dynamic symbol tables, variable environments, and key-value lookups:
