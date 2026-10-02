@@ -123,6 +123,8 @@ While the module loading directive (e.g. `:- use_module(library(clpz)).` in Scry
     ```
     This mirrors how Lisp macros process Lisp ASTs — the tool and the artifact share the same term language, so the full power of unification, DCGs, and constraints applies to the source being processed.
 
+19. **Batch Collection Macros (`maplist/3`) over Repeated Directive Invocations (DRY)**: Whenever generating macro-expanded tables (character escapes, keywords, opcode maps), generate a single batch collection macro (`maplist(ExpandItem, List, Clauses)`) rather than outputting repeated top-level single-item declarations (`f(x1). f(x2). f(x3).`). See [codingstandards.md §10.5](../../codingstandards.md#105-macro--term-expansion-term_expansion2-goal_expansion2) and [.agents/rules/coding_invariants.md §11](../../rules/coding_invariants.md).
+
 ## Common ISO Punctuation & Syntax Diagnostics
 
 | Invalid / Non-ISO Syntax | Correct ISO / Scryer Syntax | Fix Rationale |

@@ -40,8 +40,10 @@
    - [6.4 DRY Conditional Value Generation](#64-dry-conditional-value-generation)
    - [6.5 Direct Reification for Booleans](#65-direct-reification-for-booleans)
    - [6.6 Cuts (`!`) & Mandatory Impurity Justifications](#66-cuts--mandatory-impurity-justifications)
-   - [6.7 Higher-Order Loops vs. Primitive Recursion (DRY)](#67-higher-order-loops-vs-primitive-recursion-dry)
-   - [6.8 Declarative Slicing & Failure-Slice Debugging (`false`)](#68-declarative-slicing--failure-slice-debugging-false)
+   - [6.7 The 5 `if_/3` Compiler Traps & Safe Reification Recipes](#67-the-5-if_3-compiler-traps--safe-reification-recipes)
+   - [6.8 Mandatory Post-Generation Self-Audit Checklist](#68-mandatory-post-generation-self-audit-checklist)
+   - [6.9 Higher-Order Loops vs. Primitive Recursion (DRY)](#69-higher-order-loops-vs-primitive-recursion-dry)
+   - [6.10 Declarative Slicing & Failure-Slice Debugging (`false`)](#610-declarative-slicing--failure-slice-debugging-false)
 7. [Modern Declarative Replacements for Legacy Built-ins (`clpz` & `reif`)](#7-modern-declarative-replacements-for-legacy-built-ins-clpz--reif)
    - [7.1 The Paradigm Shift: Declarative Relations vs. Procedural Built-ins](#71-the-paradigm-shift-declarative-relations-vs-procedural-built-ins)
    - [7.2 Arithmetic: Why Legacy `is/2` Fails Declarativity (The `A is 3` Counterexample)](#72-arithmetic-why-legacy-is2-fails-declarativity-the-a-is-3-counterexample)
@@ -457,7 +459,55 @@ commit_external_transaction(Handle) :-
     log_commit_success(Handle).
 ```
 
-### 6.7 Higher-Order Loops vs. Primitive Recursion (DRY)
+### 6.7 The 5 `if_/3` Compiler Traps & Safe Reification Recipes
+
+When developers or AI models transition from imperative Prolog (`!`, `->`, `\+`) to pure reification with `library(reif)`, they frequently encounter 5 common compiler and macro-expansion error signatures. Recognizing these patterns and applying standard declarative recipes ensures logical purity without compiler errors:
+
+1. **Trap 1: Compound Goals in Condition (`existence_error ','/3`)**
+   - *Problem*: Calling `if_((A, B), Then, Else)` fails because `library(reif)` expects a single callable whose final argument unifies with a boolean atom `Truth` (`call(Closure, Truth)`). The engine raises an error attempting to invoke `,/3`.
+   - *Fix*: Nest the reified conditions: `if_(A, if_(B, Then, Else), Else)`.
+
+2. **Trap 2: DCG Macro Expansion (`existence_error if_/5`)**
+   - *Problem*: Placing `if_/3` directly inside a DCG clause body (`phrase --> if_(C, T, E).`) causes the DCG preprocessor to thread stream difference-list arguments into `if_`, expanding it to `if_/5`.
+   - *Fix*: Wrap the pure conditional in DCG braces: `{ if_(C, T, E) }`, or split into pure distinct DCG clauses guarded by `dif/2`.
+
+3. **Trap 3: Arity Mismatch on Engine Builtins**
+   - *Problem*: Calling `if_(char_type(C, lower), Then, Else)` fails because `char_type/3` is not an engine-provided truth-reified predicate.
+   - *Fix*: Define a binary truth wrapper (`char_type_lower_t(C, Truth) :- ...`) or use pure list membership (`memberd_t(C, LowerChars, Truth)`).
+
+4. **Trap 4: Partial Open-Tail List Unification in `if_/3`**
+   - *Problem*: Calling `if_(Rest = ['*'|_], Then, Else)` fails during macro expansion because `=(Rest, ['*'|_], Truth)` cannot safely reify unification with an open list tail.
+   - *Fix*: Unify the head element first (`Rest = [C|Cs]`), then test `if_(C = '*', Then, Else)` or use distinct clauses.
+
+5. **Trap 5: Option / Map Lookup Fallbacks with Soft Cuts**
+   - *Problem*: Using `( member(Key(Val), Options) -> true ; Val = Default )` introduces an imperative soft cut that commits prematurely.
+   - *Fix*: Implement a pure recursive helper using `if_/3`:
+     ```prolog
+     lookup_option([], _, Default, Default).
+     lookup_option([Opt|Opts], Key, Default, Val) :-
+         Opt =.. [K, V],
+         if_(K = Key, Val = V, lookup_option(Opts, Key, Default, Val)).
+     ```
+
+### 6.8 Mandatory Post-Generation Self-Audit Checklist
+
+Before presenting or committing any generated or refactored Prolog code, every AI assistant and software engineer MUST execute this 4-step self-audit:
+
+1. **Search for Exclamation Marks (`!`)**:
+   - Does the code contain any cuts (`!`)?
+   - If yes: Can it be replaced with `dif/2`, `if_/3`, or first-argument indexing?
+   - If strictly required for correctness (e.g. low-level OS I/O, FFI boundary), is an explicit comment formatted as `% Justification: <reason>` present?
+2. **Search for Soft Cuts (`->`)**:
+   - Does the code contain `->` (excluding DCG `-->`)?
+   - If yes: Refactor to pure reification with `if_(Cond_t, Then, Else)` or `cond_t(Cond_t, Target, Choices)`.
+3. **Search for Negation-as-Failure (`\+`)**:
+   - Is `\+` used to test inequality (`\+ (X = Y)` or `X \= Y`)?
+   - If yes: Replace immediately with pure `dif(X, Y)`.
+4. **Search for `member/2` in Conditions**:
+   - Is `member/2` used inside an `if_` condition or guard?
+   - If yes: Replace with `memberd_t/3` from `library(reif)`.
+
+### 6.9 Higher-Order Loops vs. Primitive Recursion (DRY)
 In adherence to the **Don't Repeat Yourself (DRY)** principle, prefer higher-order predicate abstractions (`maplist/N`, `foldl/N`, `tfilter/3`, `tpartition/4`) over writing repetitive primitive recursion loops:
 
 1. **Standard List Higher-Order Relations**:
@@ -507,7 +557,7 @@ sum_tree(Tree, Sum) :-
     tree_fold(\V^Acc^Out^(Out #= Acc + V), Tree, 0, Sum).
 ```
 
-### 6.8 Declarative Slicing & Failure-Slice Debugging (`false`)
+### 6.10 Declarative Slicing & Failure-Slice Debugging (`false`)
 In pure Prolog programs (programs devoid of cuts, impure side effects, and non-logical built-ins), non-termination, unexpected failures, and logical defects can be diagnosed using **declarative slicing** (pioneered by Ulrich Neumerkel).
 
 1. **The Mathematical Invariant of Slicing**:

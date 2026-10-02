@@ -8,10 +8,14 @@
 - **Double quotes**: `double_quotes` MUST always be set to `chars`.
 - **Prohibited**: Never use engine-specific string types, SWI dicts, or atomic strings for textual manipulation in portable code.
 
-## 2. Logical Purity & Sound Term Inequality (`dif/2`, `dif/3`, `if_/3`)
+## 2. Logical Purity & Sound Term Inequality (`dif/2`, `dif/3`, `if_/3`, DCG Pushback Lists)
 - **Purity First**: Write pure, declarative relations that preserve bidirectionality and work in all argument modes (`+`, `-`, `?`).
-- **No Impurity for Performance**: NEVER introduce cuts (`!`), negation-as-failure (`\+/1`), or soft cuts (`->`) merely for performance optimization.
-- **Mandatory Justification for Correctness**: If an impure construct (`!`, `\+/1`, or `->`) must be introduced for *correctness* when pure logic constructs (`if_/3`, `dif/2`) cannot express the relation, write an explicit inline comment explaining precisely why pure constructs were insufficient (e.g. `% Justification: foreign I/O boundary`).
+- **No Impurity for Performance or Lookahead**: NEVER introduce cuts (`!`), negation-as-failure (`\+/1`), or soft cuts (`->`) for performance or lookahead.
+- **Pure Alternatives Preferred**:
+  - For conditional branching: Always prefer `if_/3` or `cond_t`.
+  - For DCG lookahead / token inspection: Always prefer **pure DCG pushback / semicontext lists** (`lookahead(T), [T] --> [T]`) over cuts (`!`) or soft cuts (`->`).
+  - For code duplication and table generation: Aggressively use **compile-time macro expansion (`term_expansion/2`, `maplist/3`)** for DRY.
+- **Mandatory Justification for Correctness**: If an impure construct (`!`, `\+/1`, or `->`) must be introduced for *correctness* when pure logic constructs (`if_/3`, `dif/2`, pushback lists) cannot express the relation, write an explicit inline comment explaining precisely why pure constructs were insufficient (e.g. `% Justification: foreign I/O boundary`).
 - **Sound Inequality**: Always prefer `dif(X, Y)` over `\+ (X = Y)` or `X \= Y`. Use `dif(X, Y, Truth)` to reify term inequality into boolean `Truth`.
 
 ## 3. AI Agent Cognitive Traps: Why LLMs Default to `!`, `\+`, `->` and How to Overcome Them
@@ -86,8 +90,9 @@ Before presenting or committing any generated Prolog code, every AI agent MUST p
 - **Mandatory Declarations**: When defining module-level predicates that accept callable goals (`0`), closures (`1`..`N`), DCG non-terminals (`//` or `2`), or module-sensitive terms (`:`), always insert explicit `:- meta_predicate` declarations directly below the module header.
 - **Exact Arity Specification**: Specify exact closure arities for higher-order arguments (e.g. `2` for a closure taking 2 extra arguments) and standard specifiers (`+`, `-`, `?`, `*`) for non-callable data arguments. Never declare data arguments as `:` or `0`.
 
-## 11. Batch Collection Macros (`maplist/3`) over Repeated Directive Invocations (DRY)
-- **Prefer Batch `maplist/3` over Repeated Sequential Macro Invocations**: Whenever defining macro-expanded tables (character escapes, grammar keywords, opcode decoders, lookup facts), AI agents MUST generate a single batch collection macro (`maplist(ExpandItem, List, Clauses)`) rather than outputting repeated top-level single-item invocations (`f(x1). f(x2). f(x3).`).
+## 11. Aggressive Compile-Time Macro Expansion (`term_expansion/2`, `maplist/3`) for DRY
+- **Aggressive Macro Generation for DRY**: Whenever generating repetitive boilerplate, clause families, lookup tables, operator maps, character escape sequences, opcode decoders, or grammar keyword tables, AI agents MUST generate compile-time macro expansions (`user:term_expansion/2` or `user:goal_expansion/2`) rather than duplicating code across multiple clauses.
+- **Prefer Batch `maplist/3` over Repeated Sequential Macro Invocations**: When expanding collections, generate a single batch collection macro (`maplist(ExpandItem, List, Clauses)`) rather than outputting repeated top-level single-item invocations (`f(x1). f(x2). f(x3). ...`).
 - **Example Pattern**:
   ```prolog
   % Preferred (Option C Batch Collection Macro):
@@ -96,9 +101,10 @@ Before presenting or committing any generated Prolog code, every AI agent MUST p
 
   keywords([if, then, else, while, for, in, return]).
 
-  % Avoid (Repeated single-item invocations):
+  % Avoid (Repeated boilerplate declarations):
   keyword(if)   --> "if".
   keyword(then) --> "then".
   keyword(else) --> "else".
   ```
+- **Pure Lookahead & Pushback in DCGs**: When parsing ambiguous prefixes or inspecting lookahead tokens without consuming them, ALWAYS use pure DCG pushback lists (`lookahead(T), [T] --> [T]`) rather than cuts (`!`) or soft cuts (`->`).
 
