@@ -17,8 +17,9 @@ When writing, refactoring, reviewing, or running Prolog code across any project 
 
 Key high-level policies and operational invariants include:
 
-- **Canonical Coding Standards & Invariants**:
-  - Foundational, non-negotiable coding invariants (strings as `chars`, logical purity, `dif/2`, reification, `cond_t`, safe type testing `library(si)`, pure DCG pushback lookahead over cuts, aggressive compile-time macro expansion `term_expansion/2` / `maplist/3` for DRY, clean data modeling) are authoritatively declared in [codingstandards.md](codingstandards.md) and [.agents/rules/coding_invariants.md](.agents/rules/coding_invariants.md). Detailed procedural workflows are in [prolog-conventions](.agents/skills/prolog-conventions/SKILL.md).
+- **Canonical Coding Standards & Standard Resolution Protocol**:
+  - **Always-On Baseline ([`coding_invariants.md`](.agents/rules/coding_invariants.md))**: AI assistants MUST apply `coding_invariants.md` continuously on every turn and code snippet as an always-on guardrail (enforcing `chars` strings, logical purity `dif/2`, `if_/3`, `cond_t`, monotonic type testing `library(si)`, pure DCG pushback lookahead over cuts, aggressive compile-time macro expansion `term_expansion/2` / `maplist/3` for DRY, and clean data modeling).
+  - **Comprehensive Reference ([`codingstandards.md`](codingstandards.md))**: When designing new modules, complex algorithms, Covington / PlDoc documentation headers, constraint systems (`CLP(Z)` / `CLP(B)`), meta-predicate signatures, or conducting formal PR reviews, AI assistants MUST consult the relevant sections of `codingstandards.md` for exact syntax schemas, complete code templates, and theoretical invariants. Detailed procedural workflows are in [prolog-conventions](.agents/skills/prolog-conventions/SKILL.md).
 - **ISO Prolog Code Generation Goal & Engine Neutrality**:
   - AI assistants MUST attempt to produce ISO-compliant code (standard ISO/IEC 13211-1) subject to the capabilities and limitations of the target Prolog system being used.
   - AI assistants MUST NOT describe or claim that any Prolog system (e.g. Scryer, SWI, Trealla, Tau, GNU, Ciao) is "ISO compliant" or an "ISO Prolog system". Systems may make their own compliance claims.

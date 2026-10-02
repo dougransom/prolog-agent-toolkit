@@ -2,6 +2,7 @@
 
 > **System Authority**: This document defines the permanent, non-negotiable coding invariants for all Prolog code within this project.
 > These rules are persistently active for all AI agents and developers, independent of on-demand skill discovery.
+> **Relationship to [codingstandards.md](../../codingstandards.md)**: This document is the compact, always-on baseline guardrail. For exhaustive syntax schemas, Covington layout, PlDoc mode/determinism contracts, CLP constraint modeling, and higher-order architecture patterns, AI agents and developers MUST consult [codingstandards.md](../../codingstandards.md).
 
 ## 1. Text & Strings as Character Lists (`chars`)
 - **Strings are character lists**: Text and string data MUST be represented as lists of characters (`chars`).
